@@ -33,7 +33,11 @@ ruleTester.run("authority-import", rule, {
     invalid: [
         {
             code: `import { vb } from './src/store/index.ts'`,
-            options
+            options,
+            errors: [{
+                message: 'this module is not authority to use',
+                type: 'ImportDeclaration',
+            }],
         }
     ]
 });
