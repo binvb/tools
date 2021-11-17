@@ -45,6 +45,12 @@ Then configure the rules you want to use under the rules section.
 }
 ```
 
+### TODO
+
+1 缩小权限粒度，限制模块里某些方法的调用权限；  
+2 支持 vue/react 模块;  
+3 测试用例覆盖率；
+
 ## Supported Rules
 
 - Fill in provided rules here
