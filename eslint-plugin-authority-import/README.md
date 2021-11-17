@@ -1,6 +1,6 @@
 # eslint-plugin-authority-import
 
- a plugin for eslint which can limit module/methods be import;
+a plugin for eslint which can limit module/methods be import;
 
 ## Installation
 
@@ -22,25 +22,29 @@ Add `authority-import` to the plugins section of your `.eslintrc` configuration 
 
 ```json
 {
-    "plugins": [
-        "authority-import"
-    ]
+  "plugins": ["authority-import"]
 }
 ```
-
 
 Then configure the rules you want to use under the rules section.
 
 ```json
 {
-    "rules": {
-        "authority-import/rule-name": 2
-    }
+  "rules": {
+    "authority-import/authority-import": 2
+  },
+  "settings": {
+    "authorityImport": [
+      // demo
+      {
+        "module": "./src/components/authority.component.js",
+        "authorityList": ["./src/vb.js"]
+      }
+    ]
+  }
 }
 ```
 
 ## Supported Rules
 
-* Fill in provided rules here
-
-
+- Fill in provided rules here
