@@ -1,13 +1,13 @@
 const path = require('path')
 
-module.exports.isAuthority = function (config, matcher, currentPath, cwd) {
-  let _mathObj = config.filter(item => path.resolve(cwd, item.module) === matcher)
-  let _mathPath
+module.exports.isAuthority = function (config, sourcePath, currentPath, cwd) {
+  let _matchObj = config.filter(item => path.resolve(cwd, item.module) === sourcePath) //check if import authority module
+  let _matchConfigModule
 
-  if(!_mathObj.length) {
+  if(!_matchObj.length) {
     return true
   }
-  _mathPath = _mathObj[0].authorityList.filter(item => item === currentPath).length
+  _matchConfigModule = _matchObj[0].authorityList.filter(item => path.resolve(cwd, item) === currentPath).length
 
-  return !!_mathPath
+  return !!_matchConfigModule
 }
