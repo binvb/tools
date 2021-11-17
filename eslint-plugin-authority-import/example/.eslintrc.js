@@ -20,7 +20,7 @@ module.exports = {
   },
   rules: {
     // Customize your rules
-    "authority-import/authority-import": 'error'
+    "authority-import/import": 'error'
   },
   settings: {
     authorityImport: [
