@@ -3,19 +3,19 @@ const {isAuthority} = require('./../utils')
 
 module.exports = {
   meta: {
-      type: "suggestion",
+      type: "problem",
 
       docs: {
-          description: "disallow unnecessary semicolons",
+          description: "a module which has authority",
           category: "Possible Errors",
           recommended: true,
-          url: "https://eslint.org/docs/rules/no-extra-semi"
+          url: "https://github.com/binvb/tools/tree/main/eslint-plugin-authority-import"
       },
       fixable: "code",
       schema: [{
         type: 'object',
         properties: {}
-      }] // no options
+      }]
   },
   create: function(context) {
     return {
@@ -24,14 +24,13 @@ module.exports = {
           return false
         }
         const cwd = context.getCwd()
+        const file = context.getPhysicalFilename()
         const sourcePath = path.resolve(cwd, node.source.value)
-        const currentPath = './src/index.vue'
-        console.log(cwd)
 
-        if(!isAuthority(context.options, sourcePath, currentPath, cwd)) {
+        if(!isAuthority(context.options, sourcePath, file, cwd)) {
           context.report({
             node: node,
-            message: `this module is not authority to use ${sourcePath}`
+            message: `this module is not authority to use`
           })
         }
       }

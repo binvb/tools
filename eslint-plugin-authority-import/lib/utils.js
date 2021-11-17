@@ -1,7 +1,6 @@
 const path = require('path')
+
 module.exports.isAuthority = function (config, matcher, currentPath, cwd) {
-  let test = path.resolve(cwd, './src/store/index.ts')
-  console.log(test === matcher)
   let _mathObj = config.filter(item => path.resolve(cwd, item.module) === matcher)
   let _mathPath
 
