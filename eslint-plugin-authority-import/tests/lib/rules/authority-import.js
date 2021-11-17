@@ -1,4 +1,4 @@
-const rule = require("../../../lib/rules/authority-import")
+const rule = require("../../../lib/rules/import")
 const RuleTester = require("eslint").RuleTester
 const settings = {
     authorityImport: [{
