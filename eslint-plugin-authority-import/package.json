@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-authority-import",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": " a plugin for eslint which can limit module/methods be import;",
   "keywords": [
     "eslint",
