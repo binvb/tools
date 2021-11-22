@@ -1,0 +1,80 @@
+{
+  "name": "electron-quick-start",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "webpack": "webpack",
+    "build": "electron-builder -mw",
+    "package": "node pack-script.js"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^16.0.0",
+    "electron-builder": "^22.13.1",
+    "mkdirp": "^1.0.4",
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1"
+  },
+  "build": {
+    "productName": "产品名",
+    "appId": "productId",
+    "generateUpdatesFilesForAllChannels": true,
+    "directories": {
+      "output": "build"
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://127.0.0.1:8080"
+      }
+    ],
+    "files": [
+      "!node_modules"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "./static/desktop-windows.ico",
+      "target": [
+        "nsis"
+      ]
+    },
+    "dmg": {
+      "sign": false,
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "./static/desktop.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": true
+    }
+  }
+}
