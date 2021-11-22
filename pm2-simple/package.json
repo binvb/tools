@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@types/koa": "^2.13.4",
-    "koa": "^2.13.4"
+    "koa": "^2.13.4",
+    "pstree.remy": "^1.1.8"
   }
 }
