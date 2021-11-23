@@ -1,22 +1,45 @@
-import ChildProcess from 'child_process'
-import { SubProcessArgs } from './index.d'
+import cluster from "cluster"
+import { cpus } from "os"
+import { sleep } from "./utils"
 
-// all start, default port 3000 + i
-function startServer(serverInstances: number = 1) {
-  for(let i = 0; i < serverInstances; i++) {
-    fork({
-      port: 3000 + i
-    })
+const numCPUs = cpus().length
+
+if (cluster.isMaster || cluster.isPrimary) {
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
   }
+  console.log(`main processs pid: ${process.pid}`)
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  const app = require('./app.ts')
+  console.log(`child processs pid: ${process.pid}`)
 }
 
-// hot reload
-function hotReload() {
-  
+// restart all
+function restart() {
+  eachWorker((workder:any) => {
+    workder.emit('disconnect')
+    sleep(10000)
+    workder.kill()
+    cluster.fork()
+  })
 }
 
-// stop all
+// kill all
+function killALl() {
+  eachWorker((workder:any) => {
+    workder.kill()
+  })
+  setTimeout(() => {
+    process.exit()
+  }, 1000)
+}
 
-function fork(args:SubProcessArgs) {
-  ChildProcess.fork('./app', [args.port.toString()])
+// each workder
+function eachWorker(callback: Function) {
+  for (const id in cluster.workers) {
+    callback(cluster.workers[id]);
+  }
 }

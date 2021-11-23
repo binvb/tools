@@ -19,5 +19,6 @@ module.exports = {
     },
     rules: {
       // Customize your rules
+      "no-require-imports": true
     },
   };
