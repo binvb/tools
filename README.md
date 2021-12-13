@@ -12,6 +12,6 @@ git 项目太分散，建了个目录汇总自己平时应用/学习的一些工
 2、electron-webpack: electron main process 代码打包方案(双 package 打包方案);  
 3、pm2-simple: 一个简单玩具版的 pm2 管理工具，用于进程学习;  
 4、threads-pool: node.js 线程池实现;  
-5、test    
+5、    
 
 ### rollup-loader
