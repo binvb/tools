@@ -8,12 +8,8 @@
       "type": "chrome",
       "request": "launch",
       "name": "vuejs: chrome",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/src",
-      "breakOnLoad": true,
-      "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/*"
-      }
+      "url": "http://localhost:3000", // 端口根据启动的服务端口进行调整
+      "breakOnLoad": true
     }
   ]
 }
