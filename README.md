@@ -16,5 +16,5 @@ git 项目太分散，建了个目录汇总自己平时应用/学习的一些工
 ### others
 
 1、eslint-plugin-authority-import: 通过 eslint 给部分模块的代码增加使用权限(如果没有授权则提示错误);  
-2、electron-webpack: electron main process 代码打包方案(双 package 打包方案);
+2、electron-webpack: electron main process 代码打包方案(双 package 打包方案);  
 3、debug: vscode debug 的各种姿势;
