@@ -1,0 +1,24 @@
+{
+  "name": "rollup-plugin-trycatch",
+  "version": "1.0.1",
+  "description": "insert try catch into your project width rollup.",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.0.0",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2",
+    "vue-tsc": "^0.29.8",
+    "@babel/core": "^7.13.16",
+    "@babel/parser": "^7.13.16",
+    "@babel/traverse": "^7.13.17",
+    "@babel/types": "^7.13.17"
+  }
+}
