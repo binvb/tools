@@ -1,24 +1,31 @@
 {
   "name": "rollup-plugin-trycatch",
-  "version": "1.0.1",
-  "description": "insert try catch into your project width rollup.",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "test": "jest"
   },
+  "author": "vb",
+  "license": "ISC",
   "dependencies": {
-    "vue": "^3.2.25"
+    "@babel/preset-env": "^7.16.5",
+    "@rollup/pluginutils": "^4.1.2",
+    "@types/acorn": "^4.0.6",
+    "@types/escodegen": "^0.0.7",
+    "@types/estree": "^0.0.50",
+    "@types/jest": "^27.0.3",
+    "@types/rollup": "^0.54.0",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "acorn": "^8.6.0",
+    "escodegen": "^2.0.0",
+    "eslint-config-alloy": "^4.4.0",
+    "estree-walker": "^3.0.1",
+    "jest": "^27.4.5",
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.0.0",
-    "typescript": "^4.4.4",
-    "vite": "^2.7.2",
-    "vue-tsc": "^0.29.8",
-    "@babel/core": "^7.13.16",
-    "@babel/parser": "^7.13.16",
-    "@babel/traverse": "^7.13.17",
-    "@babel/types": "^7.13.17"
+    "@babel/preset-typescript": "^7.16.5"
   }
 }

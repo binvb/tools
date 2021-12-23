@@ -1,78 +1,54 @@
-const parse = require("@babel/parser").parse
-const traverse = require("@babel/traverse").default
-const t = require("@babel/types")
-const core = require("@babel/core")
+import { Plugin } from 'rollup'
+import { createFilter } from '@rollup/pluginutils'
+import { walk } from 'estree-walker'
+import { Node, BaseFunction, BlockStatement, Program, TryStatement, Statement } from 'estree'
+import * as escodegen from 'escodegen'
 
-const isfunctionNode = node =>
-  t.isFunctionDeclaration(node, {
-    async: true
-  }) ||
-  t.isArrowFunctionExpression(node, {
-    async: true
-  }) ||
-  t.isFunctionExpression(node, {
-    async: true
-  }) ||
-  t.isObjectMethod(node, {
-    async: true
-  })
+interface Options {
+  include: string[] // include files, e.g. ['*.ts+(|x)', '**/*.ts+(|x)']
+}
+interface TryCatchNode extends Program {
+  body: TryStatement[]
+}
+interface FnNode extends BaseFunction {
+  body: BlockStatement
+}
 
-export default function tryCatchPlugin(options = {}) {
-    // 默认配置
-    const DEFAULT = {
-      catchCode: identifier => `console.error(${identifier})`,
-      identifier: "e",
-      finallyCode: null
-    }
-    options = Object.assign(DEFAULT, options)
-    if (typeof options.catchCode === "function") {
-      options.catchCode = options.catchCode(options.identifier);
-    }
-    let catchNode = parse(options.catchCode).program.body;
-    let finallyNode = options.finallyCode && parse(options.finallyCode).program.body;
+function addNode(tryCatchNode: TryCatchNode, _statementList: Statement[]) {
+  tryCatchNode.body[0].block.body = _statementList
 
-    return {
-        name: 'try-catch-plugin',
-        renderChunk(code, id) {
-            let ast = parse(code, {
-              sourceType: "module", // 支持 es6 module
-              plugins: ["dynamicImport"] // 支持动态 import
-            })
+  return tryCatchNode.body
+}
 
-            traverse(ast, {
-              AwaitExpression(path) {
-                // 递归向上找异步函数的 node 节点
-                while (path && path.node) {
-                  let parentPath = path.parentPath;
-                  if (
-                    t.isBlockStatement(path.node) &&
-                    isfunctionNode(parentPath.node)
-                  ) {
-                    let tryCatchAst = t.tryStatement(
-                      path.node,
-                      t.catchClause(
-                        t.identifier(options.identifier),
-                        t.blockStatement(catchNode)
-                      ),
-                      finallyNode && t.blockStatement(finallyNode)
-                    );
-                    path.replaceWithMultiple([tryCatchAst]);
-                    return;
-                  } else if (
-                    // 已经包含 try 语句则直接退出
-                    t.isBlockStatement(path.node) &&
-                    t.isTryStatement(parentPath.node)
-                  ) {
-                    return;
-                  }
-                  path = parentPath;
-                }
-              }
-            })
+export default function tryCatchPlugin(options:Options):Plugin {
+  const filter = createFilter(options.include)  
+  const wrapType = ['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression', 'ObjectMethod'] // handle type
+  const tryCatchCode = `try{}catch(err){tryCatchHandle(err)}`
+  // const {walk} = await import('estree-walker') // reference https://github.com/Rich-Harris/estree-walker/issues/26
 
-            return core.transformFromAstSync(ast, null, {
-              configFile: false // 屏蔽 babel.config.js，否则会注入 polyfill 使得调试变得困难
-            }).code;
+  return {
+    name: 'rollup-plugin-tryCatch',
+    transform(code, id) {
+      if (!filter(id)) return null
+
+      let ast = this.parse(code)
+      let tryCatchNode = this.parse(tryCatchCode)
+      
+      walk(ast, {
+        enter(node) {
+          if(wrapType.includes(node.type)) {   
+            let _node = node as FnNode
+            let _body = _node.body.body
+            let _statementList = _body
+
+            _node.body.body = addNode(tryCatchNode as any, _statementList)
+            this.skip()
+          }
         }
+      })
+      return {
+        code: escodegen.generate(ast)
+      }
     }
+  }
 }
