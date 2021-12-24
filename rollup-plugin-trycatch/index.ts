@@ -24,12 +24,11 @@ export default function tryCatchPlugin(options:Options):Plugin {
   const filter = createFilter(options.include)  
   const wrapType = ['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression', 'ObjectMethod'] // handle type
   const tryCatchCode = `try{}catch(err){tryCatchHandle(err)}`
-  // const {walk} = await import('estree-walker') // reference https://github.com/Rich-Harris/estree-walker/issues/26
 
   return {
     name: 'rollup-plugin-tryCatch',
     transform(code, id) {
-      if (!filter(id)) return null
+      if (!filter(id) && id) return null
 
       let ast = this.parse(code)
       let tryCatchNode = this.parse(tryCatchCode)
