@@ -30,17 +30,18 @@ export default function tryCatchPlugin(options:Options):Plugin {
     transform(code, id) {
       if (!filter(id) && id) return null
 
-      let ast = this.parse(code)
+      let ast = this.parse(code)  // todo here's error
       let tryCatchNode = this.parse(tryCatchCode)
       
       walk(ast, {
         enter(node) {
-          if(wrapType.includes(node.type)) {   
-            let _node = node as FnNode
-            let _body = _node.body.body
-            let _statementList = _body
+          let _node = node as FnNode
 
-            _node.body.body = addNode(tryCatchNode as any, _statementList)
+          if(wrapType.includes(_node.type)) {   
+            let _body = _node.body.body
+
+            if(!_body || !_body.length) return false
+            _node.body.body = addNode(tryCatchNode as any, _body)
             this.skip()
           }
         }

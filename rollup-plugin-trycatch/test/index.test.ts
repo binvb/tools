@@ -66,3 +66,44 @@ test('ObjectMethod', async() => {
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
 })
+
+test('classMethod', async() => {
+  let code = `
+  class user {
+    constructor() {}
+    sum(a, b) {
+      return a + b
+    }
+  }
+  `
+  let expectCode = 'classuser{constructor(){}sum(a,b){try{returna+b;}catch(err){tryCatchHandle(err);}}}'
+  let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
+
+  expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
+})
+
+test('emptyFunction', async() => {
+  let code = `function sum() {}`
+  let expectCode = 'functionsum(){}'
+  let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
+
+  expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
+})
+
+
+test('test', async () => {
+  const code = `
+  class User {
+    constructor() {}
+    getName () {
+      return 'a'
+    }
+    getAge() {
+      return 17
+    }
+  }`
+  let expectCode = 'classUser{constructor(){}getName(){try{return17;}catch(err){tryCatchHandle(err);}}getAge(){try{return17;}catch(err){tryCatchHandle(err);}}}'
+  let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
+
+  expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
+})

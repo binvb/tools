@@ -3,7 +3,9 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import HelloWorld from './components/HelloWorld.vue'
 import { sleep } from './utils'
+import User from './user' 
 
+console.log(User.getAge(), '静态方法获取年龄') // will throw error
 sleep()
 </script>
 

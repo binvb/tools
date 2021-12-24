@@ -13,6 +13,7 @@ module.exports = {
     // jquery: true
   },
   globals: {
+    tryCatchHandle: true
     // Your global variables (setting to false means it's not allowed to be reassigned)
     //
     // myGlobal: false
