@@ -26,7 +26,7 @@ test('FunctionDeclaration', async() => {
       return a + b
     }
   `
-  let expectCode = 'functionsum(a,b){try{returna+b;}catch(err){tryCatchHandle(err);}}'
+  let expectCode = `functionsum(a,b){try{returna+b;}catch(err){tryCatchHandle(err,'EmptyFilePath','FunctionDeclaration','sum');}}`
   let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
@@ -34,7 +34,7 @@ test('FunctionDeclaration', async() => {
 
 test('FunctionExpression', async() => {
   let code = `const sum = function(a, b) {return a + b}`
-  let expectCode = 'constsum=function(a,b){try{returna+b;}catch(err){tryCatchHandle(err);}};'
+  let expectCode = `constsum=function(a,b){try{returna+b;}catch(err){tryCatchHandle(err,'EmptyFilePath','FunctionExpression','sum');}};`
   let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
@@ -42,7 +42,7 @@ test('FunctionExpression', async() => {
 
 test('ArrowFunctionExpression', async() => {
   let code = `const sum = (a, b) => {return a + b}`
-  let expectCode = 'constsum=(a,b)=>{try{returna+b;}catch(err){tryCatchHandle(err);}};'
+  let expectCode = `constsum=(a,b)=>{try{returna+b;}catch(err){tryCatchHandle(err,'EmptyFilePath','ArrowFunctionExpression','sum');}};`
   let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
@@ -50,7 +50,7 @@ test('ArrowFunctionExpression', async() => {
 
 test('ArrowFunctionExpression', async() => {
   let code = `const sum = (a, b) => {return a + b}`
-  let expectCode = 'constsum=(a,b)=>{try{returna+b;}catch(err){tryCatchHandle(err);}};'
+  let expectCode = `constsum=(a,b)=>{try{returna+b;}catch(err){tryCatchHandle(err,'EmptyFilePath','ArrowFunctionExpression','sum');}};`
   let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
@@ -61,7 +61,7 @@ test('ObjectMethod', async() => {
   let code = `const sum = {
     sum: function(a, b) {return a + b}
   }`
-  let expectCode = 'constsum={sum:function(a,b){try{returna+b;}catch(err){tryCatchHandle(err);}}};'
+  let expectCode = `constsum={sum:function(a,b){try{returna+b;}catch(err){tryCatchHandle(err,'EmptyFilePath','FunctionExpression','sum');}}};`
   let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
@@ -76,7 +76,7 @@ test('classMethod', async() => {
     }
   }
   `
-  let expectCode = 'classuser{constructor(){}sum(a,b){try{returna+b;}catch(err){tryCatchHandle(err);}}}'
+  let expectCode = `classuser{constructor(){}sum(a,b){try{returna+b;}catch(err){tryCatchHandle(err,'EmptyFilePath','FunctionExpression','sum');}}}`
   let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
@@ -102,7 +102,7 @@ test('test', async () => {
       return 17
     }
   }`
-  let expectCode = 'classUser{constructor(){}getName(){try{return17;}catch(err){tryCatchHandle(err);}}getAge(){try{return17;}catch(err){tryCatchHandle(err);}}}'
+  let expectCode = `classUser{constructor(){}getName(){try{return'a';}catch(err){tryCatchHandle(err,'EmptyFilePath','FunctionExpression','sum');}}getAge(){try{return17;}catch(err){tryCatchHandle(err,'EmptyFilePath','FunctionExpression','sum');}}}`
   let souceCode = await transform.call(transformContext as any, code, '') as SourceDescription
 
   expect(souceCode.code.replace(/\s/g, '')).toBe(expectCode)
