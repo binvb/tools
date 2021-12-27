@@ -1,11 +1,13 @@
 import Koa from 'koa'
 import { parseSource } from './sourceMap'
+import bodyParser from 'koa-bodyparser'
 
 const app = new Koa()
 const port = 3005
 
+app.use(bodyParser())
 app.use(async (ctx, next) => {
-  const result = await parseSource('http://127.0.0.1:8080/static/js/main.e0d5fc9b.js', 2, 133262)
+  const result = await parseSource(ctx.query.source as string, +(ctx.query.lineno as string), +(ctx.query.colno as string))
   ctx.body = result
 })
 

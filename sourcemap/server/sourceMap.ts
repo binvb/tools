@@ -1,9 +1,9 @@
 import sourceMap from 'source-map'
+import { getFileName } from './utils'
 const fs = require('fs')
 
-const rawSouceMap = JSON.parse(fs.readFileSync("./sourcemapDir/main.e0d5fc9b.js.map").toString())
-
 export async function parseSource(source: string, lineno: number, colno: number) {
+  const rawSouceMap = JSON.parse(await fs.readFileSync(`./sourcemapDir/${getFileName(source)}.map`).toString()) // 根据传入文件名获取对应的sourcemap文件
   const consumer = await new sourceMap.SourceMapConsumer(rawSouceMap); // 获取sourceMap consumer，我们可以通过传入打包后的代码位置来查询源代码的位置
   const originalPosition = consumer.originalPositionFor({ // 获取 出错代码 在 哪一个源文件及其对应位置
     line: lineno,
