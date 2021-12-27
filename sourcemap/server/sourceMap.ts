@@ -10,19 +10,18 @@ export async function parseSource(source: string, lineno: number, colno: number)
     column: colno,
   });
    // 根据源文件名寻找对应源文件
-   const sourceIndex = consumer.sources.findIndex(
+  const sourceIndex = consumer.sources.findIndex(
     (item) => item === originalPosition.source
   );
   const sourceContent = consumer.sourcesContent[sourceIndex];
   const contentRowArr = sourceContent.split("\n");
-  // 接下来根据行和列可获取更加具体的位置
+
   consumer.destroy(); // 使用完后记得destroy
 
   return {
-    errorCode: contentRowArr[originalPosition.line as number - 1],
-    line: originalPosition.line,
-    column: originalPosition.column,
-    
-    originalPosition
+    errorCode: contentRowArr[originalPosition.line as number - 1], // 错误代码
+    line: originalPosition.line, // 错误行
+    column: originalPosition.column, // 错误列
+    file: originalPosition.source // 错误文件
   }
 }
