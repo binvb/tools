@@ -22,3 +22,11 @@
 ```
 
 ```
+
+### 问题记录
+
+1、create react app 添加 less;
+
+### 参考文档
+
+1、Adding SASS or LESS support to create-react-app： https://medium.com/@giordano.cardillo/adding-sass-or-less-support-to-create-react-app-38cbe6c370ce

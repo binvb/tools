@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.less';
 import { Button, Descriptions, Result, Avatar, Space, Statistic } from 'antd';
 import { LikeOutlined, UserOutlined } from '@ant-design/icons';
 
