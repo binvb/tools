@@ -25,7 +25,8 @@
 
 ### 问题记录
 
-1、create react app 添加 less;
+1、在引用 antd 时使用 less 会有报错；  
+是由 less@3 不再允许内链 js 导致，[issue](https://github.com/ant-design/ant-design/issues/7927), [解决方案](https://www.jianshu.com/p/779abdd339a9)
 
 ### 参考文档
 
