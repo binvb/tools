@@ -1,4 +1,10 @@
-import Defaultroutes from './defaultRouter'
-// 导出路由
+import DefaultRoutes from './defaultRouter'
+import BusinessRoutes from './business'
 
-export default Defaultroutes
+export interface RouteOption {
+  path: string;
+  component?: JSX.Element,
+  children?: RouteOption[]
+}
+
+export default DefaultRoutes.concat(BusinessRoutes)
