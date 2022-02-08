@@ -29,4 +29,4 @@
 是由 less@3 默认不允许内链 js 导致，[issue](https://github.com/ant-design/ant-design/issues/7927),解决方案有两种，一种是用 2.\*版本，另外一种是设置 lessOption: {javascriptEnabled: true} [具体连接](https://www.jianshu.com/p/779abdd339a9)
 
 2、react strict mode 在 antd 下会有 findDOMNode 警告;  
-[issue](https://github.com/ant-design/pro-components/issues/1144)，这个要等待 antd 的处理，因为项目严重依赖 antd，我暂时去掉了 strict mode;
+[issue](https://github.com/ant-design/pro-components/issues/1144)，这个要等待 antd 的处理，因为项目严重依赖 antd 而且因为是管理后台项目不会有太多非模板代码，我暂时不使用 strict mode;
