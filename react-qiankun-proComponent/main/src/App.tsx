@@ -52,6 +52,7 @@ export default () => {
           border: '1px solid #ddd',
         }}
         // pure={true} // 删除所有layout界面,exclude content
+        fixSiderbar
         title="管理后台模板"
         actionRef={actionRef}
         menu={{
