@@ -10,7 +10,7 @@
 
 1、登录/layout 集成;  
 2、动态路由渲染;  
-3、react demo 嵌套;  
+3、微前端集成;  
 4、基于 RBAC1 的权限系统集成;
 
 ### web
@@ -33,5 +33,3 @@
 
 3、react-router-dom 升级@6 很多更新;  
 component => element, switch => Routes;[document](https://reactrouter.com/docs/en/v6/getting-started/overview)
-
-4、

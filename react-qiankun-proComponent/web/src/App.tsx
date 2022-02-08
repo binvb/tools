@@ -40,11 +40,12 @@ export default () => {
         headerRender={Header}
       >
         <Routes>
-            {
-              routes.map((item, key) => {
-                return <Route key={key} path={item.path} element={item.component} />
-              })
-            }
+          {
+            // 路由
+            routes.map((item, key) => {
+              return <Route key={key} path={item.path} element={item.component} />
+            })
+          }
         </Routes>
       </ProLayout>
   );
