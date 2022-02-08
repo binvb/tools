@@ -1,8 +1,13 @@
 import React, { useRef } from 'react';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
-import { Button } from 'antd';
 import customMenuDate from './customMenu';
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+import routes from './routes'
+import Header from './components/common/header'
 function waitTime(time = 100) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -21,6 +26,7 @@ export default () => {
           height: '100vh',
           border: '1px solid #ddd',
         }}
+        title="管理后台模板"
         actionRef={actionRef}
         menu={{
           request: async () => {
@@ -31,20 +37,15 @@ export default () => {
         location={{
           pathname: '/welcome',
         }}
+        headerRender={Header}
       >
-        <PageContainer content="欢迎使用">
-          Hello World
-          <Button
-            style={{
-              margin: 8,
-            }}
-            onClick={() => {
-              actionRef.current?.reload();
-            }}
-          >
-            刷新菜单
-          </Button>
-        </PageContainer>
+        <Routes>
+            {
+              routes.map((item, key) => {
+                return <Route key={key} path={item.path} element={item.component} />
+              })
+            }
+        </Routes>
       </ProLayout>
   );
-};
+};  

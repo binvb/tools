@@ -1,5 +1,5 @@
-export default() => {
+export default function Wellcome() {
   return (
-    <div>404</div>
+    <div>我的测试测试手动时间发送方是</div>
   )
 }

@@ -326,6 +326,11 @@ module.exports = function (webpackEnv) {
         .map(ext => `.${ext}`)
         .filter(ext => useTypeScript || !ext.includes('ts')),
       alias: {
+        // custom module
+        '@components': path.resolve(__dirname, './../src/components'),
+        '@utils': path.resolve(__dirname, './../src/utils'),
+        '@stories': path.resolve(__dirname, './../src/stories'),
+        '@src': path.resolve(__dirname, './../src'),
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',

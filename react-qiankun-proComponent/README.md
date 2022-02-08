@@ -30,3 +30,8 @@
 
 2、react strict mode 在 antd 下会有 findDOMNode 警告;  
 [issue](https://github.com/ant-design/pro-components/issues/1144)，这个要等待 antd 的处理，因为项目严重依赖 antd 而且因为是管理后台项目不会有太多非模板代码，我暂时不使用 strict mode;
+
+3、react-router-dom 升级@6 很多更新;  
+component => element, switch => Routes;[document](https://reactrouter.com/docs/en/v6/getting-started/overview)
+
+4、
