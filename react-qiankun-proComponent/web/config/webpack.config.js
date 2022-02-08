@@ -168,19 +168,6 @@ module.exports = function (webpackEnv) {
         },
       },
     ].filter(Boolean);
-    if (lessOptions) {
-      loaders.push(
-          {
-            loader: require.resolve('less-loader'),
-            options: {
-              sourceMap: true,
-              lessOptions: {
-                ...lessOptions
-              }
-            },
-          }
-      );
-    }
     if (preProcessor) {
       loaders.push(
         {
@@ -189,14 +176,30 @@ module.exports = function (webpackEnv) {
             sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
             root: paths.appSrc,
           },
-        },
-        {
-          loader: require.resolve(preProcessor),
-          options: {
-            sourceMap: true,
-          },
         }
       );
+      if (lessOptions) {
+        loaders.push(
+            {
+              loader: require.resolve('less-loader'),
+              options: {
+                sourceMap: true,
+                lessOptions: {
+                  ...lessOptions
+                }
+              },
+            }
+        );
+      } else {
+        loaders.push(
+          {
+            loader: require.resolve(preProcessor),
+            options: {
+              sourceMap: true,
+            },
+          }
+        )
+      }
     }
     return loaders;
   };
@@ -561,35 +564,31 @@ module.exports = function (webpackEnv) {
               test: lessRegex,
               exclude: lessModuleRegex,
               use: getStyleLoaders(
-                {
-                  importLoaders: 3,
-                  sourceMap: isEnvProduction && shouldUseSourceMap,
-                },
-                'less-loader',
-                {
-                  javascriptEnabled: true   //开启 
-                }
+                  {
+                    importLoaders: 3,
+                    sourceMap: isEnvProduction && shouldUseSourceMap,
+                  },
+                  'less-loader',
+                  {
+                    javascriptEnabled: true   //开启 
+                  }
               ),
-              // Don't consider CSS imports dead code even if the
-              // containing package claims to have no side effects.
-              // Remove this when webpack adds a warning or an error for this.
-              // See <https://github.com/webpack/webpack/issues/6571>
-              sideEffects: true,
+              sideEffects: true
             },
             // Adds support for CSS Modules, but using LESS
             // using the extension .module.less or .module.less
             {
               test: lessModuleRegex,
               use: getStyleLoaders(
-                {
-                  importLoaders: 3,
-                  sourceMap: isEnvProduction && shouldUseSourceMap,
-                },
-                'less-loader',
-                {
-                  javascriptEnabled: true   //开启 
-                }
-              )
+                  {
+                    importLoaders: 3,
+                    sourceMap: isEnvProduction && shouldUseSourceMap,
+                    modules: {
+                      getLocalIdent: getCSSModuleLocalIdent,
+                    },
+                  },
+                  'less-loader'
+              ),
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
