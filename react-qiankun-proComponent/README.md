@@ -28,6 +28,5 @@
 1、在引用 antd 时使用 less 会有 Module build failed 报错；  
 是由 less@3 默认不允许内链 js 导致，[issue](https://github.com/ant-design/ant-design/issues/7927),解决方案有两种，一种是用 2.\*版本，另外一种是设置 lessOption: {javascriptEnabled: true} [具体连接](https://www.jianshu.com/p/779abdd339a9)
 
-### 参考文档
-
-1、Adding SASS or LESS support to create-react-app： https://medium.com/@giordano.cardillo/adding-sass-or-less-support-to-create-react-app-38cbe6c370ce
+2、react strict mode 在 antd 下会有 findDOMNode 警告;  
+[issue](https://github.com/ant-design/pro-components/issues/1144), antd 内部处理中，等待处理结果即可。
