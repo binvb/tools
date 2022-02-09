@@ -1,5 +1,7 @@
-export default function Login() {
+import Login from 'ant-design-pro/lib/Login';
+
+export default () => {
   return (
-    <div>登录页</div>
+    <div>登录</div>
   )
 }
