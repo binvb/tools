@@ -8,9 +8,12 @@ import {
 } from "react-router-dom";
 import routes, { RouteOption } from './routes'
 import Header from './components/common/header'
+import request from './services/axios/index'
 
 
-function waitTime(time = 100) {
+async function waitTime(time = 100) {
+  const data = await request.get('/test')
+  console.log(data, 'check data')
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
