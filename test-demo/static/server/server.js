@@ -24,6 +24,6 @@ app.use(async(ctx, next) => {
   ctx.body = src
 })
 
-app.listen(3306, () => {
+app.listen(80, () => {
   console.log('running...')
 })
