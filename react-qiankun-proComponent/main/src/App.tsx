@@ -12,10 +12,12 @@ import request from './services/axios/index'
 
 
 async function waitTime(time = 100) {
-  const data = await request.get('/test')
-  console.log(data, 'check data')
+  const data = await request.get<{data: {name: string}}>('/test')
+  console.log(111111111111)
   return new Promise((resolve) => {
-    setTimeout(() => {
+    setTimeout(async() => {
+      const data = await request.get<{data: {name: string}}>('/test')
+      console.log(2222222222222)
       resolve(true);
     }, time);
   });

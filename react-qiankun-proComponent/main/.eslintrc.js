@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     // Customize your rules
     "react/no-unstable-nested-components": "off",
-    'no-debugger': 0
+    'no-debugger': 0,
+    "no-new": 0
   }
 };

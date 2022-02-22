@@ -1,8 +1,10 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 let instance:AxiosInstance
 class Http {
-  constructor() {
+  public static singleton: any
+  public constructor() {
+    console.log(11111, '看下实例化多少次')
     instance = axios.create({
       baseURL: 'http://127.0.0.1:3002',
       timeout: 5000,
@@ -13,11 +15,27 @@ class Http {
       }
     })
   }
-  static get getInstance(): AxiosInstance {
+  public static get getInstance(): AxiosInstance {
     if(!instance) {
-      new Http()
+      console.log(222222222, '看下实例化多少次')
+      this.singleton = new Http()
     }
     return instance
+  }
+  public get<T, R, D>(url: string, config?: AxiosRequestConfig<D>): Promise<R> {
+    return instance.get<T, R, D>(url, config)
+  }
+  public post<T, R, D>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
+    return instance.post<T, R, D>(url, data, config)
+  }
+  public put<T, R, D>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
+    return instance.put<T, R, D>(url, data, config)
+  }
+  public patch<T, R, D>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
+    return instance.patch<T, R, D>(url, data, config)
+  }
+  public delete<T, R, D>(url: string, config?: AxiosRequestConfig<D>): Promise<R> {
+    return instance.get<T, R, D>(url, config)
   }
 }
 
