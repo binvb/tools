@@ -3,6 +3,8 @@ import fs from 'fs'
 import mime from 'mime-types'
 import cors from 'koa-cors'
 import path from 'path'
+import http2 from 'http2'
+import https from 'https'
 
 const app = new Koa()
 function sleep() {
@@ -24,6 +26,12 @@ app.use(async(ctx, next) => {
   ctx.body = src
 })
 
-app.listen(80, () => {
-  console.log('running...')
-})
+http2.createSecureServer({
+  "key": fs.readFileSync(path.resolve("./local.vb.tech-key.pem")),
+  "cert": fs.readFileSync(path.resolve("./local.vb.tech.pem"))
+}, app.callback()).listen(8002);
+
+// https.createServer({
+//   "key": fs.readFileSync(path.resolve("./local.vb.tech-key.pem")),
+//   "cert": fs.readFileSync(path.resolve("./local.vb.tech.pem"))
+// }, app.callback()).listen(8002);
