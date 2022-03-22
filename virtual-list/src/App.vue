@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ScrollList from './../index.vue'
+import ScrollList from './../packages/virtual-list/index.vue'
 import ScrollItem from './components/ScrollItem.vue'
 import { getMessage } from './mock'
 

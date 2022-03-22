@@ -173,10 +173,15 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.15.0", "@babel/parser@^7.16.0", "@babel/parser@^7.6.0", "@babel/parser@^7.9.6":
+"@babel/parser@^7.15.0", "@babel/parser@^7.16.0":
   version "7.16.0"
   resolved "https://registry.npmmirror.com/@babel/parser/download/@babel/parser-7.16.0.tgz#cf147d7ada0a3655e79bf4b08ee846f00a00a295"
   integrity sha1-zxR9etoKNlXnm/SwjuhG8AoAopU=
+
+"@babel/parser@^7.16.4":
+  version "7.17.8"
+  resolved "https://registry.npmmirror.com/@babel/parser/-/parser-7.17.8.tgz#2817fb9d885dd8132ea0f8eb615a6388cca1c240"
+  integrity sha512-BoHhDJrJXqcg+ZL16Xv39H9n+AqJ4pcDrQBGZN+wHxIysrLZ3/ECwCBUch/1zUNhnsXULcONU3Ei5Hmkfk6kiQ==
 
 "@babel/template@^7.16.0":
   version "7.16.0"
@@ -202,32 +207,13 @@
     debug "^4.1.0"
     globals "^11.1.0"
 
-"@babel/types@^7.16.0", "@babel/types@^7.6.1", "@babel/types@^7.9.6":
+"@babel/types@^7.16.0":
   version "7.16.0"
   resolved "https://registry.npmmirror.com/@babel/types/download/@babel/types-7.16.0.tgz?cache=0&sync_timestamp=1635560908248&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40babel%2Ftypes%2Fdownload%2F%40babel%2Ftypes-7.16.0.tgz#db3b313804f96aadd0b776c4823e127ad67289ba"
   integrity sha1-2zsxOAT5aq3Qt3bEgj4SetZyibo=
   dependencies:
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
-
-"@emmetio/abbreviation@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.nlark.com/@emmetio/abbreviation/download/@emmetio/abbreviation-2.2.2.tgz#746762fd9e7a8c2ea604f580c62e3cfe250e6989"
-  integrity sha1-dGdi/Z56jC6mBPWAxi48/iUOaYk=
-  dependencies:
-    "@emmetio/scanner" "^1.0.0"
-
-"@emmetio/css-abbreviation@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.nlark.com/@emmetio/css-abbreviation/download/@emmetio/css-abbreviation-2.1.4.tgz#90362e8a1122ce3b76f6c3157907d30182f53f54"
-  integrity sha1-kDYuihEizjt29sMVeQfTAYL1P1Q=
-  dependencies:
-    "@emmetio/scanner" "^1.0.0"
-
-"@emmetio/scanner@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npm.taobao.org/@emmetio/scanner/download/@emmetio/scanner-1.0.0.tgz#065b2af6233fe7474d44823e3deb89724af42b5f"
-  integrity sha1-Blsq9iM/50dNRII+PeuJckr0K18=
 
 "@eslint/eslintrc@^1.0.3":
   version "1.0.3"
@@ -293,6 +279,11 @@
   version "4.14.176"
   resolved "https://registry.npmmirror.com/@types/lodash/download/@types/lodash-4.14.176.tgz?cache=0&sync_timestamp=1634769451849&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Flodash%2Fdownload%2F%40types%2Flodash-4.14.176.tgz#641150fc1cda36fbfa329de603bbb175d7ee20c0"
   integrity sha1-ZBFQ/BzaNvv6Mp3mA7uxddfuIMA=
+
+"@types/node@^17.0.22":
+  version "17.0.22"
+  resolved "https://registry.npmmirror.com/@types/node/-/node-17.0.22.tgz#38b6c4b9b2f3ed9f2e376cce42a298fb2375251e"
+  integrity sha512-8FwbVoG4fy+ykY86XCAclKZDORttqE5/s7dyWZKLXTdv3vRy5HozBEinG5IqhvPXXzIZEcTVbuHlQEI6iuwcmw==
 
 "@typescript-eslint/eslint-plugin@^5.2.0":
   version "5.2.0"
@@ -369,59 +360,71 @@
   resolved "https://registry.npmmirror.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.9.4.tgz#4f48485432cbb986a9fb9d254dc33ce30ddccbfa"
   integrity sha1-T0hIVDLLuYap+50lTcM84w3cy/o=
 
-"@volar/code-gen@^0.27.24":
-  version "0.27.24"
-  resolved "https://registry.npmmirror.com/@volar/code-gen/download/@volar/code-gen-0.27.24.tgz?cache=0&sync_timestamp=1635475905337&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40volar%2Fcode-gen%2Fdownload%2F%40volar%2Fcode-gen-0.27.24.tgz#ccdbe858951c1ee4e0c3979232d52412dc46756a"
-  integrity sha1-zNvoWJUcHuTgw5eSMtUkEtxGdWo=
+"@volar/code-gen@0.33.6":
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/@volar/code-gen/-/code-gen-0.33.6.tgz#7e676c5abfea87f4cd21709747f839a348f6de4c"
+  integrity sha512-Ac2C8q530x2f6OrebHJKoSSaQPM3Gc21pahsJ2X3Nnuj01rTT1cOh/M0nUwJ9nwOWojU4DDVkZMLtKBz93QWrQ==
   dependencies:
-    "@volar/shared" "^0.27.24"
-    "@volar/source-map" "^0.27.24"
+    "@volar/source-map" "0.33.6"
 
-"@volar/html2pug@^0.27.13":
-  version "0.27.13"
-  resolved "https://registry.npmmirror.com/@volar/html2pug/download/@volar/html2pug-0.27.13.tgz?cache=0&sync_timestamp=1635475905645&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40volar%2Fhtml2pug%2Fdownload%2F%40volar%2Fhtml2pug-0.27.13.tgz#48dfa73ecf1ef1955a02a046d0c88845950fac85"
-  integrity sha1-SN+nPs8e8ZVaAqBG0MiIRZUPrIU=
+"@volar/pug-language-service@0.33.6":
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/@volar/pug-language-service/-/pug-language-service-0.33.6.tgz#541bbe2b6e2de5fc160c9344200bf74dc0666386"
+  integrity sha512-uKO6rtO/U9J7yWjp0u74WdPYN8YjoRjENWi/fgII/vH65XB+zzoUiBkUnLqzdYNGPrKbxTPUaw0KPEYAUHhN8A==
   dependencies:
-    domelementtype "^2.2.0"
-    domhandler "^4.2.0"
-    htmlparser2 "^6.1.0"
-    pug "^3.0.2"
+    "@volar/code-gen" "0.33.6"
+    "@volar/shared" "0.33.6"
+    "@volar/source-map" "0.33.6"
+    "@volar/transforms" "0.33.6"
+    pug-lexer "^5.0.1"
+    pug-parser "^6.0.0"
+    vscode-languageserver-textdocument "^1.0.3"
+    vscode-languageserver-types "^3.17.0-next.6"
 
-"@volar/shared@^0.27.24":
-  version "0.27.24"
-  resolved "https://registry.npmmirror.com/@volar/shared/download/@volar/shared-0.27.24.tgz?cache=0&sync_timestamp=1635475904555&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40volar%2Fshared%2Fdownload%2F%40volar%2Fshared-0.27.24.tgz#a33457ec8ac0b0d367ed54c9e21913a5f8c2d6c2"
-  integrity sha1-ozRX7IrAsNNn7VTJ4hkTpfjC1sI=
+"@volar/shared@0.33.6":
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/@volar/shared/-/shared-0.33.6.tgz#b48e02790aa4e2c881c26321cec7458a3301777f"
+  integrity sha512-JJRcPolX5VjqJ7bWBlsLhqeXSDhHQIAqa/cKfrgpKeqlhdAR7h7B/j4RZmDQefHZWydIxRqtpE8oMkb42gnJyA==
   dependencies:
     upath "^2.0.1"
-    vscode-jsonrpc "^8.0.0-next.2"
-    vscode-uri "^3.0.2"
+    vscode-jsonrpc "^8.0.0-next.5"
+    vscode-uri "^3.0.3"
 
-"@volar/source-map@^0.27.24":
-  version "0.27.24"
-  resolved "https://registry.npmmirror.com/@volar/source-map/download/@volar/source-map-0.27.24.tgz?cache=0&sync_timestamp=1635475905911&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40volar%2Fsource-map%2Fdownload%2F%40volar%2Fsource-map-0.27.24.tgz#60f2e070c169be82cbf7ffa296a30c2823c5205f"
-  integrity sha1-YPLgcMFpvoLL9/+ilqMMKCPFIF8=
-  dependencies:
-    "@volar/shared" "^0.27.24"
+"@volar/source-map@0.33.6":
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/@volar/source-map/-/source-map-0.33.6.tgz#c2cebe2fcdac636fdd3e57b73c669f5a21300ad0"
+  integrity sha512-q6J1+DN5McTvFsDeplTzTGdzsW4y1c/yeJvxqP74mUeofSFAswMo+zkSBDjupG9ufaa3LTLkkWHXw0UKtgA/cw==
 
-"@volar/transforms@^0.27.24":
-  version "0.27.24"
-  resolved "https://registry.npmmirror.com/@volar/transforms/download/@volar/transforms-0.27.24.tgz?cache=0&sync_timestamp=1635475906336&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40volar%2Ftransforms%2Fdownload%2F%40volar%2Ftransforms-0.27.24.tgz#68ebc53dca2e36884e247c0866ec3d24ed815784"
-  integrity sha1-aOvFPcouNohOJHwIZuw9JO2BV4Q=
+"@volar/transforms@0.33.6":
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/@volar/transforms/-/transforms-0.33.6.tgz#49506716698da1aab457ad96685ef7a65742b814"
+  integrity sha512-mdKjUP8jMiL5rHrkpNf9JbCEaSwIlzP4z68t66UhqR0x/m53uXvVCOA6Pw05WOHuHqy2iFhr93+7UC7bM669YA==
   dependencies:
-    "@volar/shared" "^0.27.24"
-    vscode-languageserver "^8.0.0-next.2"
+    "@volar/shared" "0.33.6"
+    vscode-languageserver-types "^3.17.0-next.6"
 
-"@vscode/emmet-helper@^2.7.0":
-  version "2.8.2"
-  resolved "https://registry.npmmirror.com/@vscode/emmet-helper/download/@vscode/emmet-helper-2.8.2.tgz?cache=0&sync_timestamp=1634318724263&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vscode%2Femmet-helper%2Fdownload%2F%40vscode%2Femmet-helper-2.8.2.tgz#9b2ce4fdd62cf3fda45cf8af67c012cfce55edc9"
-  integrity sha1-myzk/dYs8/2kXPivZ8ASz85V7ck=
+"@volar/vue-code-gen@0.33.6":
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/@volar/vue-code-gen/-/vue-code-gen-0.33.6.tgz#a5f559dadb5cbd74f4050447b4fcac2c7b695dca"
+  integrity sha512-NNhviw1hVhmCgEJuYV+MCu6GFfX9skkuJObhtBFxnZ7upx0z6r1WCLrrlVkaNiPpb53aAVFbLbAyHauODZftDA==
   dependencies:
-    emmet "^2.3.0"
-    jsonc-parser "^2.3.0"
-    vscode-languageserver-textdocument "^1.0.1"
-    vscode-languageserver-types "^3.15.1"
-    vscode-nls "^5.0.0"
-    vscode-uri "^2.1.2"
+    "@volar/code-gen" "0.33.6"
+    "@volar/source-map" "0.33.6"
+    "@vue/compiler-core" "^3.2.27"
+    "@vue/compiler-dom" "^3.2.27"
+    "@vue/shared" "^3.2.27"
+
+"@volar/vue-typescript@0.33.6":
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/@volar/vue-typescript/-/vue-typescript-0.33.6.tgz#1616f411a2af10c143e8b907202569c14538d3c6"
+  integrity sha512-GSU+xpshriRriTukBUYVcWXwz9cYCfR6SaWgiVfptm78jrav1pvrTphzndJxt9J0X+SNvU2zm8jTWsda+Hxppw==
+  dependencies:
+    "@volar/code-gen" "0.33.6"
+    "@volar/pug-language-service" "0.33.6"
+    "@volar/source-map" "0.33.6"
+    "@volar/vue-code-gen" "0.33.6"
+    "@vue/compiler-sfc" "^3.2.27"
+    "@vue/reactivity" "^3.2.27"
 
 "@vue/compiler-core@3.2.20":
   version "3.2.20"
@@ -433,13 +436,31 @@
     estree-walker "^2.0.2"
     source-map "^0.6.1"
 
-"@vue/compiler-dom@3.2.20", "@vue/compiler-dom@^3.2.19":
+"@vue/compiler-core@3.2.31", "@vue/compiler-core@^3.2.27":
+  version "3.2.31"
+  resolved "https://registry.npmmirror.com/@vue/compiler-core/-/compiler-core-3.2.31.tgz#d38f06c2cf845742403b523ab4596a3fda152e89"
+  integrity sha512-aKno00qoA4o+V/kR6i/pE+aP+esng5siNAVQ422TkBNM6qA4veXiZbSe8OTXHXquEi/f6Akc+nLfB4JGfe4/WQ==
+  dependencies:
+    "@babel/parser" "^7.16.4"
+    "@vue/shared" "3.2.31"
+    estree-walker "^2.0.2"
+    source-map "^0.6.1"
+
+"@vue/compiler-dom@3.2.20":
   version "3.2.20"
   resolved "https://registry.npmmirror.com/@vue/compiler-dom/download/@vue/compiler-dom-3.2.20.tgz#8e0ef354449c0faf41519b00bfc2045eae01dcb5"
   integrity sha1-jg7zVEScD69BUZsAv8IEXq4B3LU=
   dependencies:
     "@vue/compiler-core" "3.2.20"
     "@vue/shared" "3.2.20"
+
+"@vue/compiler-dom@3.2.31", "@vue/compiler-dom@^3.2.27":
+  version "3.2.31"
+  resolved "https://registry.npmmirror.com/@vue/compiler-dom/-/compiler-dom-3.2.31.tgz#b1b7dfad55c96c8cc2b919cd7eb5fd7e4ddbf00e"
+  integrity sha512-60zIlFfzIDf3u91cqfqy9KhCKIJgPeqxgveH2L+87RcGU/alT6BRrk5JtUso0OibH3O7NXuNOQ0cDc9beT0wrg==
+  dependencies:
+    "@vue/compiler-core" "3.2.31"
+    "@vue/shared" "3.2.31"
 
 "@vue/compiler-sfc@3.2.20":
   version "3.2.20"
@@ -457,6 +478,22 @@
     postcss "^8.1.10"
     source-map "^0.6.1"
 
+"@vue/compiler-sfc@^3.2.27":
+  version "3.2.31"
+  resolved "https://registry.npmmirror.com/@vue/compiler-sfc/-/compiler-sfc-3.2.31.tgz#d02b29c3fe34d599a52c5ae1c6937b4d69f11c2f"
+  integrity sha512-748adc9msSPGzXgibHiO6T7RWgfnDcVQD+VVwYgSsyyY8Ans64tALHZANrKtOzvkwznV/F4H7OAod/jIlp/dkQ==
+  dependencies:
+    "@babel/parser" "^7.16.4"
+    "@vue/compiler-core" "3.2.31"
+    "@vue/compiler-dom" "3.2.31"
+    "@vue/compiler-ssr" "3.2.31"
+    "@vue/reactivity-transform" "3.2.31"
+    "@vue/shared" "3.2.31"
+    estree-walker "^2.0.2"
+    magic-string "^0.25.7"
+    postcss "^8.1.10"
+    source-map "^0.6.1"
+
 "@vue/compiler-ssr@3.2.20":
   version "3.2.20"
   resolved "https://registry.npmmirror.com/@vue/compiler-ssr/download/@vue/compiler-ssr-3.2.20.tgz#9cceb6261d9932cb5568202610c1c28f86c5e521"
@@ -464,6 +501,14 @@
   dependencies:
     "@vue/compiler-dom" "3.2.20"
     "@vue/shared" "3.2.20"
+
+"@vue/compiler-ssr@3.2.31":
+  version "3.2.31"
+  resolved "https://registry.npmmirror.com/@vue/compiler-ssr/-/compiler-ssr-3.2.31.tgz#4fa00f486c9c4580b40a4177871ebbd650ecb99c"
+  integrity sha512-mjN0rqig+A8TVDnsGPYJM5dpbjlXeHUm2oZHZwGyMYiGT/F4fhJf/cXy8QpjnLQK4Y9Et4GWzHn9PS8AHUnSkw==
+  dependencies:
+    "@vue/compiler-dom" "3.2.31"
+    "@vue/shared" "3.2.31"
 
 "@vue/eslint-config-prettier@^6.0.0":
   version "6.0.0"
@@ -479,12 +524,30 @@
   dependencies:
     vue-eslint-parser "^7.0.0"
 
-"@vue/reactivity@3.2.20", "@vue/reactivity@^3.2.19":
+"@vue/reactivity-transform@3.2.31":
+  version "3.2.31"
+  resolved "https://registry.npmmirror.com/@vue/reactivity-transform/-/reactivity-transform-3.2.31.tgz#0f5b25c24e70edab2b613d5305c465b50fc00911"
+  integrity sha512-uS4l4z/W7wXdI+Va5pgVxBJ345wyGFKvpPYtdSgvfJfX/x2Ymm6ophQlXXB6acqGHtXuBqNyyO3zVp9b1r0MOA==
+  dependencies:
+    "@babel/parser" "^7.16.4"
+    "@vue/compiler-core" "3.2.31"
+    "@vue/shared" "3.2.31"
+    estree-walker "^2.0.2"
+    magic-string "^0.25.7"
+
+"@vue/reactivity@3.2.20":
   version "3.2.20"
   resolved "https://registry.npmmirror.com/@vue/reactivity/download/@vue/reactivity-3.2.20.tgz#81fe1c368e7f20bc0ec1dec1045bbee253582de8"
   integrity sha1-gf4cNo5/ILwOwd7BBFu+4lNYLeg=
   dependencies:
     "@vue/shared" "3.2.20"
+
+"@vue/reactivity@^3.2.27":
+  version "3.2.31"
+  resolved "https://registry.npmmirror.com/@vue/reactivity/-/reactivity-3.2.31.tgz#fc90aa2cdf695418b79e534783aca90d63a46bbd"
+  integrity sha512-HVr0l211gbhpEKYr2hYe7hRsV91uIVGFYNHj73njbARVGHQvIojkImKMaZNDdoDZOIkMsBc9a1sMqR+WZwfSCw==
+  dependencies:
+    "@vue/shared" "3.2.31"
 
 "@vue/ref-transform@3.2.20":
   version "3.2.20"
@@ -522,10 +585,15 @@
     "@vue/compiler-ssr" "3.2.20"
     "@vue/shared" "3.2.20"
 
-"@vue/shared@3.2.20", "@vue/shared@^3.2.19":
+"@vue/shared@3.2.20":
   version "3.2.20"
   resolved "https://registry.npmmirror.com/@vue/shared/download/@vue/shared-3.2.20.tgz?cache=0&sync_timestamp=1633712700180&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Fshared%2Fdownload%2F%40vue%2Fshared-3.2.20.tgz#53746961f731a8ea666e3316271e944238dc31db"
   integrity sha1-U3RpYfcxqOpmbjMWJx6UQjjcMds=
+
+"@vue/shared@3.2.31", "@vue/shared@^3.2.27":
+  version "3.2.31"
+  resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.2.31.tgz#c90de7126d833dcd3a4c7534d534be2fb41faa4e"
+  integrity sha512-ymN2pj6zEjiKJZbrf98UM2pfDd6F2H7ksKw7NDt/ZZ1fh5Ei39X5tABugtT03ZRlWd9imccoK0hE8hpjpU7irQ==
 
 acorn-jsx@^5.2.0, acorn-jsx@^5.3.1:
   version "5.3.2"
@@ -592,23 +660,6 @@ array-union@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/array-union/download/array-union-2.1.0.tgz#b798420adbeb1de828d84acd8a2e23d3efe85e8d"
   integrity sha1-t5hCCtvrHego2ErNii4j0+/oXo0=
-
-asap@~2.0.3:
-  version "2.0.6"
-  resolved "https://registry.npm.taobao.org/asap/download/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
-  integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
-
-assert-never@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.npm.taobao.org/assert-never/download/assert-never-1.2.1.tgz#11f0e363bf146205fb08193b5c7b90f4d1cf44fe"
-  integrity sha1-EfDjY78UYgX7CBk7XHuQ9NHPRP4=
-
-babel-walk@3.0.0-canary-5:
-  version "3.0.0-canary-5"
-  resolved "https://registry.npm.taobao.org/babel-walk/download/babel-walk-3.0.0-canary-5.tgz#f66ecd7298357aee44955f235a6ef54219104b11"
-  integrity sha1-9m7Ncpg1eu5ElV8jWm71QhkQSxE=
-  dependencies:
-    "@babel/types" "^7.9.6"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -712,14 +763,6 @@ concat-map@0.0.1:
   resolved "https://registry.nlark.com/concat-map/download/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
-constantinople@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npm.taobao.org/constantinople/download/constantinople-4.0.1.tgz#0def113fa0e4dc8de83331a5cf79c8b325213151"
-  integrity sha1-De8RP6Dk3I3oMzGlz3nIsyUhMVE=
-  dependencies:
-    "@babel/parser" "^7.6.0"
-    "@babel/types" "^7.6.1"
-
 convert-source-map@^1.7.0:
   version "1.8.0"
   resolved "https://registry.nlark.com/convert-source-map/download/convert-source-map-1.8.0.tgz#f3373c32d21b4d780dd8004514684fb791ca4369"
@@ -781,53 +824,10 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-doctypes@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.nlark.com/doctypes/download/doctypes-1.1.0.tgz#ea80b106a87538774e8a3a4a5afe293de489e0a9"
-  integrity sha1-6oCxBqh1OHdOijpKWv4pPeSJ4Kk=
-
-dom-serializer@^1.0.1:
-  version "1.3.2"
-  resolved "https://registry.nlark.com/dom-serializer/download/dom-serializer-1.3.2.tgz?cache=0&sync_timestamp=1621256830355&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdom-serializer%2Fdownload%2Fdom-serializer-1.3.2.tgz#6206437d32ceefaec7161803230c7a20bc1b4d91"
-  integrity sha1-YgZDfTLO767HFhgDIwx6ILwbTZE=
-  dependencies:
-    domelementtype "^2.0.1"
-    domhandler "^4.2.0"
-    entities "^2.0.0"
-
-domelementtype@^2.0.1, domelementtype@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npm.taobao.org/domelementtype/download/domelementtype-2.2.0.tgz?cache=0&sync_timestamp=1617298545989&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdomelementtype%2Fdownload%2Fdomelementtype-2.2.0.tgz#9a0b6c2782ed6a1c7323d42267183df9bd8b1d57"
-  integrity sha1-mgtsJ4LtahxzI9QiZxg9+b2LHVc=
-
-domhandler@^4.0.0, domhandler@^4.2.0:
-  version "4.2.2"
-  resolved "https://registry.nlark.com/domhandler/download/domhandler-4.2.2.tgz?cache=0&sync_timestamp=1630246778110&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdomhandler%2Fdownload%2Fdomhandler-4.2.2.tgz#e825d721d19a86b8c201a35264e226c678ee755f"
-  integrity sha1-6CXXIdGahrjCAaNSZOImxnjudV8=
-  dependencies:
-    domelementtype "^2.2.0"
-
-domutils@^2.5.2:
-  version "2.8.0"
-  resolved "https://registry.nlark.com/domutils/download/domutils-2.8.0.tgz?cache=0&sync_timestamp=1630106606599&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdomutils%2Fdownload%2Fdomutils-2.8.0.tgz#4437def5db6e2d1f5d6ee859bd95ca7d02048135"
-  integrity sha1-RDfe9dtuLR9dbuhZvZXKfQIEgTU=
-  dependencies:
-    dom-serializer "^1.0.1"
-    domelementtype "^2.2.0"
-    domhandler "^4.2.0"
-
 electron-to-chromium@^1.3.878:
   version "1.3.885"
   resolved "https://registry.npmmirror.com/electron-to-chromium/download/electron-to-chromium-1.3.885.tgz#c8cec32fbc61364127849ae00f2395a1bae7c454"
   integrity sha1-yM7DL7xhNkEnhJrgDyOVobrnxFQ=
-
-emmet@^2.3.0:
-  version "2.3.4"
-  resolved "https://registry.npm.taobao.org/emmet/download/emmet-2.3.4.tgz#5ba0d7a5569a68c7697dfa890c772e4f3179d123"
-  integrity sha1-W6DXpVaaaMdpffqJDHcuTzF50SM=
-  dependencies:
-    "@emmetio/abbreviation" "^2.2.2"
-    "@emmetio/css-abbreviation" "^2.1.4"
 
 enquirer@^2.3.5:
   version "2.3.6"
@@ -835,11 +835,6 @@ enquirer@^2.3.5:
   integrity sha1-Kn/l3WNKHkElqXXsmU/1RW3Dc00=
   dependencies:
     ansi-colors "^4.1.1"
-
-entities@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.nlark.com/entities/download/entities-2.2.0.tgz?cache=0&sync_timestamp=1628508189267&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fentities%2Fdownload%2Fentities-2.2.0.tgz#098dc90ebb83d8dffa089d55256b351d34c4da55"
-  integrity sha1-CY3JDruD2N/6CJ1VJWs1HTTE2lU=
 
 errno@^0.1.1:
   version "0.1.8"
@@ -1327,16 +1322,6 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-htmlparser2@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.nlark.com/htmlparser2/download/htmlparser2-6.1.0.tgz#c4d762b6c3371a05dbe65e94ae43a9f845fb8fb7"
-  integrity sha1-xNditsM3GgXb5l6UrkOp+EX7j7c=
-  dependencies:
-    domelementtype "^2.0.1"
-    domhandler "^4.0.0"
-    domutils "^2.5.2"
-    entities "^2.0.0"
-
 iconv-lite@^0.4.4:
   version "0.4.24"
   resolved "https://registry.nlark.com/iconv-lite/download/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -1417,11 +1402,6 @@ is-number@^7.0.0:
   resolved "https://registry.npm.taobao.org/is-number/download/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha1-dTU0W4lnNNX4DE0GxQlVUnoU8Ss=
 
-is-promise@^2.0.0:
-  version "2.2.2"
-  resolved "https://registry.nlark.com/is-promise/download/is-promise-2.2.2.tgz#39ab959ccbf9a774cf079f7b40c7a26f763135f1"
-  integrity sha1-OauVnMv5p3TPB597QMeib3YxNfE=
-
 is-regex@^1.0.3:
   version "1.1.4"
   resolved "https://registry.nlark.com/is-regex/download/is-regex-1.1.4.tgz?cache=0&sync_timestamp=1628221905423&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fis-regex%2Fdownload%2Fis-regex-1.1.4.tgz#eef5663cd59fa4c0ae339505323df6854bb15958"
@@ -1439,11 +1419,6 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/isexe/download/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
-
-js-stringify@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npm.taobao.org/js-stringify/download/js-stringify-1.0.2.tgz#1736fddfd9724f28a3682adc6230ae7e4e9679db"
-  integrity sha1-Fzb939lyTyijaCrcYjCufk6Weds=
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -1486,24 +1461,6 @@ json5@^2.1.2:
   integrity sha1-Lf7+cgxrpSXZ69kJlQ8FFTFsiaM=
   dependencies:
     minimist "^1.2.5"
-
-jsonc-parser@^2.3.0:
-  version "2.3.1"
-  resolved "https://registry.npm.taobao.org/jsonc-parser/download/jsonc-parser-2.3.1.tgz?cache=0&sync_timestamp=1605281904422&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjsonc-parser%2Fdownload%2Fjsonc-parser-2.3.1.tgz#59549150b133f2efacca48fe9ce1ec0659af2342"
-  integrity sha1-WVSRULEz8u+sykj+nOHsBlmvI0I=
-
-jsonc-parser@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npm.taobao.org/jsonc-parser/download/jsonc-parser-3.0.0.tgz?cache=0&sync_timestamp=1605281904422&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjsonc-parser%2Fdownload%2Fjsonc-parser-3.0.0.tgz#abdd785701c7e7eaca8a9ec8cf070ca51a745a22"
-  integrity sha1-q914VwHH5+rKip7IzwcMpRp0WiI=
-
-jstransformer@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npm.taobao.org/jstransformer/download/jstransformer-1.0.0.tgz#ed8bf0921e2f3f1ed4d5c1a44f68709ed24722c3"
-  integrity sha1-7Yvwkh4vPx7U1cGkT2hwntJHIsM=
-  dependencies:
-    is-promise "^2.0.0"
-    promise "^7.0.1"
 
 less@^4.1.2:
   version "4.1.2"
@@ -1733,56 +1690,15 @@ progress@^2.0.0:
   resolved "https://registry.nlark.com/progress/download/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha1-foz42PW48jnBvGi+tOt4Vn1XLvg=
 
-promise@^7.0.1:
-  version "7.3.1"
-  resolved "https://registry.nlark.com/promise/download/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
-  integrity sha1-BktyYCsY+Q8pGSuLG8QY/9Hr078=
-  dependencies:
-    asap "~2.0.3"
-
 prr@~1.0.1:
   version "1.0.1"
   resolved "https://registry.nlark.com/prr/download/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
   integrity sha1-0/wRS6BplaRexok/SEzrHXj19HY=
 
-pug-attrs@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npm.taobao.org/pug-attrs/download/pug-attrs-3.0.0.tgz#b10451e0348165e31fad1cc23ebddd9dc7347c41"
-  integrity sha1-sQRR4DSBZeMfrRzCPr3dncc0fEE=
-  dependencies:
-    constantinople "^4.0.1"
-    js-stringify "^1.0.2"
-    pug-runtime "^3.0.0"
-
-pug-code-gen@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npm.taobao.org/pug-code-gen/download/pug-code-gen-3.0.2.tgz#ad190f4943133bf186b60b80de483100e132e2ce"
-  integrity sha1-rRkPSUMTO/GGtguA3kgxAOEy4s4=
-  dependencies:
-    constantinople "^4.0.1"
-    doctypes "^1.1.0"
-    js-stringify "^1.0.2"
-    pug-attrs "^3.0.0"
-    pug-error "^2.0.0"
-    pug-runtime "^3.0.0"
-    void-elements "^3.1.0"
-    with "^7.0.0"
-
 pug-error@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/pug-error/download/pug-error-2.0.0.tgz#5c62173cb09c34de2a2ce04f17b8adfec74d8ca5"
   integrity sha1-XGIXPLCcNN4qLOBPF7it/sdNjKU=
-
-pug-filters@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npm.taobao.org/pug-filters/download/pug-filters-4.0.0.tgz#d3e49af5ba8472e9b7a66d980e707ce9d2cc9b5e"
-  integrity sha1-0+Sa9bqEcum3pm2YDnB86dLMm14=
-  dependencies:
-    constantinople "^4.0.1"
-    jstransformer "1.0.0"
-    pug-error "^2.0.0"
-    pug-walk "^2.0.0"
-    resolve "^1.15.1"
 
 pug-lexer@^5.0.1:
   version "5.0.1"
@@ -1793,22 +1709,6 @@ pug-lexer@^5.0.1:
     is-expression "^4.0.0"
     pug-error "^2.0.0"
 
-pug-linker@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npm.taobao.org/pug-linker/download/pug-linker-4.0.0.tgz#12cbc0594fc5a3e06b9fc59e6f93c146962a7708"
-  integrity sha1-EsvAWU/Fo+Brn8Web5PBRpYqdwg=
-  dependencies:
-    pug-error "^2.0.0"
-    pug-walk "^2.0.0"
-
-pug-load@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npm.taobao.org/pug-load/download/pug-load-3.0.0.tgz#9fd9cda52202b08adb11d25681fb9f34bd41b662"
-  integrity sha1-n9nNpSICsIrbEdJWgfufNL1BtmI=
-  dependencies:
-    object-assign "^4.1.1"
-    pug-walk "^2.0.0"
-
 pug-parser@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npm.taobao.org/pug-parser/download/pug-parser-6.0.0.tgz#a8fdc035863a95b2c1dc5ebf4ecf80b4e76a1260"
@@ -1816,37 +1716,6 @@ pug-parser@^6.0.0:
   dependencies:
     pug-error "^2.0.0"
     token-stream "1.0.0"
-
-pug-runtime@^3.0.0, pug-runtime@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npm.taobao.org/pug-runtime/download/pug-runtime-3.0.1.tgz#f636976204723f35a8c5f6fad6acda2a191b83d7"
-  integrity sha1-9jaXYgRyPzWoxfb61qzaKhkbg9c=
-
-pug-strip-comments@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npm.taobao.org/pug-strip-comments/download/pug-strip-comments-2.0.0.tgz#f94b07fd6b495523330f490a7f554b4ff876303e"
-  integrity sha1-+UsH/WtJVSMzD0kKf1VLT/h2MD4=
-  dependencies:
-    pug-error "^2.0.0"
-
-pug-walk@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npm.taobao.org/pug-walk/download/pug-walk-2.0.0.tgz#417aabc29232bb4499b5b5069a2b2d2a24d5f5fe"
-  integrity sha1-QXqrwpIyu0SZtbUGmistKiTV9f4=
-
-pug@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npm.taobao.org/pug/download/pug-3.0.2.tgz#f35c7107343454e43bc27ae0ff76c731b78ea535"
-  integrity sha1-81xxBzQ0VOQ7wnrg/3bHMbeOpTU=
-  dependencies:
-    pug-code-gen "^3.0.2"
-    pug-filters "^4.0.0"
-    pug-lexer "^5.0.1"
-    pug-linker "^4.0.0"
-    pug-load "^3.0.0"
-    pug-parser "^6.0.0"
-    pug-runtime "^3.0.1"
-    pug-strip-comments "^2.0.0"
 
 punycode@^2.1.0:
   version "2.1.1"
@@ -1863,17 +1732,12 @@ regexpp@^3.2.0:
   resolved "https://registry.nlark.com/regexpp/download/regexpp-3.2.0.tgz?cache=0&sync_timestamp=1623669331185&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fregexpp%2Fdownload%2Fregexpp-3.2.0.tgz#0425a2768d8f23bad70ca4b90461fa2f1213e1b2"
   integrity sha1-BCWido2PI7rXDKS5BGH6LxIT4bI=
 
-request-light@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.nlark.com/request-light/download/request-light-0.5.4.tgz#497a98c6d8ae49536417a5e2d7f383b934f3e38c"
-  integrity sha1-SXqYxtiuSVNkF6Xi1/ODuTTz44w=
-
 resolve-from@^4.0.0:
   version "4.0.0"
   resolved "https://registry.nlark.com/resolve-from/download/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
   integrity sha1-SrzYUq0y3Xuqv+m0DgCjbbXzkuY=
 
-resolve@^1.15.1, resolve@^1.20.0:
+resolve@^1.20.0:
   version "1.20.0"
   resolved "https://registry.npm.taobao.org/resolve/download/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
   integrity sha1-YpoBP7P3B1XW8LeTXMHCxTeLGXU=
@@ -2120,139 +1984,25 @@ vite@^2.6.4:
   optionalDependencies:
     fsevents "~2.3.2"
 
-void-elements@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npm.taobao.org/void-elements/download/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
-  integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
+vscode-jsonrpc@^8.0.0-next.5:
+  version "8.0.0-next.7"
+  resolved "https://registry.npmmirror.com/vscode-jsonrpc/-/vscode-jsonrpc-8.0.0-next.7.tgz#6819ee92b3f43943b935f11b814d8e08bdabad35"
+  integrity sha512-JX/F31LEsims0dAlOTKFE4E+AJMiJvdRSRViifFJSqSN7EzeYyWlfuDchF7g91oRNPZOIWfibTkDf3/UMsQGzQ==
 
-vscode-css-languageservice@^5.1.4:
-  version "5.1.8"
-  resolved "https://registry.npmmirror.com/vscode-css-languageservice/download/vscode-css-languageservice-5.1.8.tgz?cache=0&sync_timestamp=1635297350573&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-css-languageservice%2Fdownload%2Fvscode-css-languageservice-5.1.8.tgz#36cb389788ffc2d5e6630ffc84e55ee38f8a2338"
-  integrity sha1-Nss4l4j/wtXmYw/8hOVe44+KIzg=
-  dependencies:
-    vscode-languageserver-textdocument "^1.0.1"
-    vscode-languageserver-types "^3.16.0"
-    vscode-nls "^5.0.0"
-    vscode-uri "^3.0.2"
+vscode-languageserver-textdocument@^1.0.3:
+  version "1.0.4"
+  resolved "https://registry.npmmirror.com/vscode-languageserver-textdocument/-/vscode-languageserver-textdocument-1.0.4.tgz#3cd56dd14cec1d09e86c4bb04b09a246cb3df157"
+  integrity sha512-/xhqXP/2A2RSs+J8JNXpiiNVvvNM0oTosNVmQnunlKvq9o4mupHOBAnnzH0lwIPKazXKvAKsVp1kr+H/K4lgoQ==
 
-vscode-html-languageservice@^4.0.7:
-  version "4.1.1"
-  resolved "https://registry.npmmirror.com/vscode-html-languageservice/download/vscode-html-languageservice-4.1.1.tgz?cache=0&sync_timestamp=1635297350982&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-html-languageservice%2Fdownload%2Fvscode-html-languageservice-4.1.1.tgz#93739c9f3d0c12c8249bad23f5005850c289ec38"
-  integrity sha1-k3Ocnz0MEsgkm60j9QBYUMKJ7Dg=
-  dependencies:
-    vscode-languageserver-textdocument "^1.0.1"
-    vscode-languageserver-types "^3.16.0"
-    vscode-nls "^5.0.0"
-    vscode-uri "^3.0.2"
-
-vscode-json-languageservice@^4.1.7:
-  version "4.1.9"
-  resolved "https://registry.npmmirror.com/vscode-json-languageservice/download/vscode-json-languageservice-4.1.9.tgz?cache=0&sync_timestamp=1635297351295&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-json-languageservice%2Fdownload%2Fvscode-json-languageservice-4.1.9.tgz#fb48edc69e37167c3cafd447c3fa898052d87b61"
-  integrity sha1-+0jtxp43Fnw8r9RHw/qJgFLYe2E=
-  dependencies:
-    jsonc-parser "^3.0.0"
-    vscode-languageserver-textdocument "^1.0.1"
-    vscode-languageserver-types "^3.16.0"
-    vscode-nls "^5.0.0"
-    vscode-uri "^3.0.2"
-
-vscode-jsonrpc@8.0.0-next.3, vscode-jsonrpc@^8.0.0-next.2:
-  version "8.0.0-next.3"
-  resolved "https://registry.npmmirror.com/vscode-jsonrpc/download/vscode-jsonrpc-8.0.0-next.3.tgz#b55edff0e550b03f3804aade44aca2699af27255"
-  integrity sha1-tV7f8OVQsD84BKreRKyiaZryclU=
-
-vscode-languageserver-protocol@3.17.0-next.9:
+vscode-languageserver-types@^3.17.0-next.6:
   version "3.17.0-next.9"
-  resolved "https://registry.npmmirror.com/vscode-languageserver-protocol/download/vscode-languageserver-protocol-3.17.0-next.9.tgz#0fd4ad43611c96acd83d8d998dbe76668f60e604"
-  integrity sha1-D9StQ2EclqzYPY2Zjb52Zo9g5gQ=
-  dependencies:
-    vscode-jsonrpc "8.0.0-next.3"
-    vscode-languageserver-types "3.17.0-next.4"
+  resolved "https://registry.npmmirror.com/vscode-languageserver-types/-/vscode-languageserver-types-3.17.0-next.9.tgz#9ea031c7c62ce6ee37918fc9edf228b2c378ae75"
+  integrity sha512-9/PeDNPYduaoXRUzYpqmu4ZV9L01HGo0wH9FUt+sSHR7IXwA7xoXBfNUlv8gB9H0D2WwEmMomSy1NmhjKQyn3A==
 
-vscode-languageserver-textdocument@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.npmmirror.com/vscode-languageserver-textdocument/download/vscode-languageserver-textdocument-1.0.2.tgz#2f9f6bd5b5eb3d8e21424c0c367009216f016236"
-  integrity sha1-L59r1bXrPY4hQkwMNnAJIW8BYjY=
-
-vscode-languageserver-types@3.17.0-next.4:
-  version "3.17.0-next.4"
-  resolved "https://registry.npmmirror.com/vscode-languageserver-types/download/vscode-languageserver-types-3.17.0-next.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-languageserver-types%2Fdownload%2Fvscode-languageserver-types-3.17.0-next.4.tgz#f6788b375ec163da8b381f2f3e3f547cbc7fbeec"
-  integrity sha1-9niLN17BY9qLOB8vPj9UfLx/vuw=
-
-vscode-languageserver-types@^3.15.1, vscode-languageserver-types@^3.16.0:
-  version "3.16.0"
-  resolved "https://registry.npmmirror.com/vscode-languageserver-types/download/vscode-languageserver-types-3.16.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-languageserver-types%2Fdownload%2Fvscode-languageserver-types-3.16.0.tgz#ecf393fc121ec6974b2da3efb3155644c514e247"
-  integrity sha1-7POT/BIexpdLLaPvsxVWRMUU4kc=
-
-vscode-languageserver@^8.0.0-next.2:
-  version "8.0.0-next.3"
-  resolved "https://registry.npmmirror.com/vscode-languageserver/download/vscode-languageserver-8.0.0-next.3.tgz?cache=0&sync_timestamp=1633678367501&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-languageserver%2Fdownload%2Fvscode-languageserver-8.0.0-next.3.tgz#36c701a6844ec269505539e3b84a37693760a52f"
-  integrity sha1-NscBpoROwmlQVTnjuEo3aTdgpS8=
-  dependencies:
-    vscode-languageserver-protocol "3.17.0-next.9"
-
-vscode-nls@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npm.taobao.org/vscode-nls/download/vscode-nls-5.0.0.tgz#99f0da0bd9ea7cda44e565a74c54b1f2bc257840"
-  integrity sha1-mfDaC9nqfNpE5WWnTFSx8rwleEA=
-
-vscode-pug-languageservice@^0.27.24:
-  version "0.27.24"
-  resolved "https://registry.npmmirror.com/vscode-pug-languageservice/download/vscode-pug-languageservice-0.27.24.tgz?cache=0&sync_timestamp=1635476204861&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-pug-languageservice%2Fdownload%2Fvscode-pug-languageservice-0.27.24.tgz#fa805c4d3e33dee3681e660a0767136738e68370"
-  integrity sha1-+oBcTT4z3uNoHmYKB2cTZzjmg3A=
-  dependencies:
-    "@volar/code-gen" "^0.27.24"
-    "@volar/shared" "^0.27.24"
-    "@volar/source-map" "^0.27.24"
-    "@volar/transforms" "^0.27.24"
-    pug-lexer "^5.0.1"
-    pug-parser "^6.0.0"
-    vscode-languageserver "^8.0.0-next.2"
-
-vscode-typescript-languageservice@^0.27.25:
-  version "0.27.25"
-  resolved "https://registry.npmmirror.com/vscode-typescript-languageservice/download/vscode-typescript-languageservice-0.27.25.tgz?cache=0&sync_timestamp=1635476205171&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-typescript-languageservice%2Fdownload%2Fvscode-typescript-languageservice-0.27.25.tgz#acd211723b600108c25515388b75d55ce15bb056"
-  integrity sha1-rNIRcjtgAQjCVRU4i3XVXOFbsFY=
-  dependencies:
-    "@volar/shared" "^0.27.24"
-    semver "^7.3.5"
-    upath "^2.0.1"
-    vscode-languageserver "^8.0.0-next.2"
-    vscode-languageserver-textdocument "^1.0.1"
-
-vscode-uri@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npm.taobao.org/vscode-uri/download/vscode-uri-2.1.2.tgz#c8d40de93eb57af31f3c715dd650e2ca2c096f1c"
-  integrity sha1-yNQN6T61evMfPHFd1lDiyiwJbxw=
-
-vscode-uri@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npm.taobao.org/vscode-uri/download/vscode-uri-3.0.2.tgz#ecfd1d066cb8ef4c3a208decdbab9a8c23d055d0"
-  integrity sha1-7P0dBmy470w6II3s26uajCPQVdA=
-
-vscode-vue-languageservice@^0.27.0:
-  version "0.27.30"
-  resolved "https://registry.npmmirror.com/vscode-vue-languageservice/download/vscode-vue-languageservice-0.27.30.tgz?cache=0&sync_timestamp=1635475904981&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvscode-vue-languageservice%2Fdownload%2Fvscode-vue-languageservice-0.27.30.tgz#1f32b0203dd233582f74a457428519a6318f039e"
-  integrity sha1-HzKwID3SM1gvdKRXQoUZpjGPA54=
-  dependencies:
-    "@volar/code-gen" "^0.27.24"
-    "@volar/html2pug" "^0.27.13"
-    "@volar/shared" "^0.27.24"
-    "@volar/source-map" "^0.27.24"
-    "@volar/transforms" "^0.27.24"
-    "@vscode/emmet-helper" "^2.7.0"
-    "@vue/compiler-dom" "^3.2.19"
-    "@vue/reactivity" "^3.2.19"
-    "@vue/shared" "^3.2.19"
-    request-light "^0.5.4"
-    upath "^2.0.1"
-    vscode-css-languageservice "^5.1.4"
-    vscode-html-languageservice "^4.0.7"
-    vscode-json-languageservice "^4.1.7"
-    vscode-languageserver "^8.0.0-next.2"
-    vscode-languageserver-textdocument "^1.0.1"
-    vscode-pug-languageservice "^0.27.24"
-    vscode-typescript-languageservice "^0.27.25"
+vscode-uri@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmmirror.com/vscode-uri/-/vscode-uri-3.0.3.tgz#a95c1ce2e6f41b7549f86279d19f47951e4f4d84"
+  integrity sha512-EcswR2S8bpR7fD0YPeS7r2xXExrScVMxg4MedACaWHEtx9ftCF/qHG1xGkolzTPcEmjTavCQgbVzHUIdTMzFGA==
 
 vue-eslint-parser@^7.0.0:
   version "7.11.0"
@@ -2280,12 +2030,12 @@ vue-eslint-parser@^8.0.1:
     lodash "^4.17.21"
     semver "^7.3.5"
 
-vue-tsc@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npmmirror.com/vue-tsc/download/vue-tsc-0.3.0.tgz?cache=0&sync_timestamp=1635475904214&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvue-tsc%2Fdownload%2Fvue-tsc-0.3.0.tgz#3b3872bf4f1d2e4409b57adbd826032e253db406"
-  integrity sha1-Ozhyv08dLkQJtXrb2CYDLiU9tAY=
+vue-tsc@^0.33.6:
+  version "0.33.6"
+  resolved "https://registry.npmmirror.com/vue-tsc/-/vue-tsc-0.33.6.tgz#0ffd5aee175e473e7612289923fa5ff34a304bbd"
+  integrity sha512-q1Fa1XudGoh3CB3vCbeRef7nlTTrEvMNrzCnk7gx7oU3biP+IpUKdfF9rrIWctNvZwYK5u0oEWjKG65p1aGcWg==
   dependencies:
-    vscode-vue-languageservice "^0.27.0"
+    "@volar/vue-typescript" "0.33.6"
 
 vue@^3.2.16:
   version "3.2.20"
@@ -2304,16 +2054,6 @@ which@^2.0.1:
   integrity sha1-fGqN0KY2oDJ+ELWckobu6T8/UbE=
   dependencies:
     isexe "^2.0.0"
-
-with@^7.0.0:
-  version "7.0.2"
-  resolved "https://registry.npm.taobao.org/with/download/with-7.0.2.tgz#ccee3ad542d25538a7a7a80aad212b9828495bac"
-  integrity sha1-zO461ULSVTinp6gKrSErmChJW6w=
-  dependencies:
-    "@babel/parser" "^7.9.6"
-    "@babel/types" "^7.9.6"
-    assert-never "^1.2.1"
-    babel-walk "3.0.0-canary-5"
 
 word-wrap@^1.2.3:
   version "1.2.3"

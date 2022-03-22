@@ -1,31 +1,23 @@
 module.exports = {
-	extends: [
-		'alloy',
-		'alloy/typescript',
-		'alloy/vue',
-	],
-	env: {
-		browser: true,
-	},
-	parser: "vue-eslint-parser",
-	parserOptions: {
-			parser: {
-					"js": "espree",
-					"ts": "@typescript-eslint/parser",
-					"<template>": "espree",
-			}
-	},
-	globals: {
-		Sentry: true,
-    defineProps: 'readonly',
-    defineEmits: 'readonly',
-    defineExpose: 'readonly',
-    withDefaults: 'readonly'
-	},
-	rules: {
-		'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-		'vue/no-v-for-template-key': 'off',
-		'vue/no-multiple-template-root': 'off'
-	},
-	ignorePatterns: ['src/env.d.ts', 'node_modules']
-}
+  extends: [
+    'alloy',
+    'alloy/vue',
+  ],
+  env: {
+    // Your environments (which contains several predefined global variables)
+    //
+    browser: true,
+    node: true,
+    // mocha: true,
+    // jest: true,
+    // jquery: true
+  },
+  globals: {
+    // Your global variables (setting to false means it's not allowed to be reassigned)
+    //
+    // myGlobal: false
+  },
+  rules: {
+    // Customize your rules
+  },
+};

@@ -1,4 +1,4 @@
-import { ItemProps, Direction } from './index'
+import { ItemProps, Direction } from './index.d'
 /**
  * sleep function
  * @param period 中断时间，单位ms
@@ -36,12 +36,12 @@ export function getShowData(sourceData: ItemProps[], list: ItemProps[], directio
   switch(direction) {
     case 'init':
       _data = getInnerIndex(list, index > 0 ? index - 1 : 0)
-      _transformY = _data ? _data.transformY + _data.offsetHeight : 0
+      _transformY = _data ? (_data as ItemProps).transformY + (_data as ItemProps).offsetHeight : 0
       list.splice(index, 1, {...sourceData[index], offsetHeight, transformY: _transformY})
       break;
     case 'down':
       _data = getInnerIndex(list, index - 1)
-      _transformY = _data ? _data.transformY + _data.offsetHeight : 0
+      _transformY = _data ? (_data as ItemProps).transformY + (_data as ItemProps).offsetHeight : 0
       list.push({...sourceData[index], offsetHeight, transformY: _transformY})
       if(_itemSeat.beforeItemNum >= initDataNum) {
         list.shift()
@@ -49,7 +49,7 @@ export function getShowData(sourceData: ItemProps[], list: ItemProps[], directio
       break
     case 'up':
       _data = getInnerIndex(list, index + 1)
-      _transformY = _data ? _data.transformY - offsetHeight : 0
+      _transformY = _data ? (_data as ItemProps).transformY - offsetHeight : 0
       list.unshift({...sourceData[index], offsetHeight, transformY: _transformY})
       if(_itemSeat.afterItemNum >= initDataNum * 2) {
         list.pop()
@@ -64,7 +64,7 @@ export function getShowData(sourceData: ItemProps[], list: ItemProps[], directio
  * @param index 
  * @returns 
  */
-function getInnerIndex(list, index) {
+function getInnerIndex(list:ItemProps[], index: number):ItemProps | boolean  {
   for(let i = 0, len = list.length; i < len; i++) {
     if(list[i].index === index) {
       return list[i]
