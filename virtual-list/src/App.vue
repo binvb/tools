@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import ScrollList from './../packages/virtual-list/index.vue'
+// import MyComponent from './../packages/index'
+import MyComponent from './../dist/my-kit.es'
 import ScrollItem from './components/ScrollItem.vue'
 import { getMessage } from './mock'
+
 
 let sourceData = getMessage(50000)
 </script>
 <template>
-  <ScrollList :sourceData="sourceData" :initDataNum="20" :ScrollItemComponent="ScrollItem"></ScrollList>
+  <MyComponent.VirtualList :sourceData="sourceData" :initDataNum="20" :ScrollItemComponent="ScrollItem"></MyComponent.VirtualList>
 </template>
 <style lang="less" scoped>
 .myTest {

@@ -1,10 +1,14 @@
 import Koa from 'koa'
 import cors from '@koa/cors'
+const utils = require('./utils')
 
 const app = new Koa()
 
 app.use(cors())
-app.use((ctx, next) => {
+app.use(async(ctx, next) => {
+  utils.changePeriod()
+  console.log(require.cache)
+  await utils.sleep()
   ctx.body = {
     code: 200,
     data: {

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ComponentPublicInstance, reactive, ref, onMounted} from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUnmounted} from 'vue'
 import { sleep, getOffsetHeight, getShowData, getScrollItemNum } from './utils'
 import { SourceData, ItemProps, ReactiveData, Direction } from './index.d'
 import addQueue from './queue'
@@ -19,6 +19,9 @@ const data = reactive<ReactiveData>({
   currentScrollTop: 0
 })
 const itemTemplate = ref()
+let throttleWraper = throttle(() => {
+  scrollHandler()
+}, 200)
 
 // init data
 initData()
@@ -27,9 +30,13 @@ initData()
 onMounted(() => {
   let _scrollEl = document.querySelector('.scroll-wrapper')
 
-  _scrollEl?.addEventListener('scroll', throttle(scrollHandler, 200))
+  _scrollEl?.addEventListener('scroll', throttleWraper, false)
 })
+onUnmounted(() => {
+  let _scrollEl = document.querySelector('.scroll-wrapper')
 
+  _scrollEl?.removeEventListener('scroll', throttleWraper, false)
+})
 // methods
 function initData() {
   data.sourceData = data.sourceData.map((item, index) => {
@@ -42,6 +49,7 @@ function initData() {
   })
   render(0, props.initDataNum * 2, 'init')
 }
+
 async function render(start = 0, itemNum:number = props.initDataNum * 2, direction: Direction = 'down') {
   let _offsetHeight
   let _index 
@@ -64,7 +72,7 @@ function scrollHandler() {
   let _distance = _scrollTop - data.currentScrollTop
   let _direction: Direction = _distance > 0 ? 'down' : 'up'
   let _scrollItemNum = getScrollItemNum(data.currentData, _distance, _direction)
-
+  
   if(_scrollItemNum > 0) {
     data.currentScrollTop += _distance
     addQueue(() => {
@@ -75,7 +83,7 @@ function scrollHandler() {
 </script>
     
 <template>
-  <ul ref="scrollArea" class="scroll-wrapper" data-testid="scroll-wrapper">
+  <ul class="scroll-wrapper" data-testid="scroll-wrapper">
       <template v-for="item in data.currentData" :key="item.index">
         <li :data-scrollId="item.index" :data-offsetHeight="item.offsetHeight" :style="{position: 'absolute', transform: `translateY(${item.transformY || 0}px)`}">
             <component :is="props.ScrollItemComponent" :itemData="item" />

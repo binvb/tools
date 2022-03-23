@@ -4,7 +4,7 @@
   "description": "noe.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node-dev --transpile-only --respawn --project tsconfig.json index.ts"
   },
   "author": "vb",
   "license": "ISC",
