@@ -3,7 +3,7 @@ import { ComponentPublicInstance, reactive, ref, onMounted, onUnmounted} from 'v
 import { sleep, getOffsetHeight, getShowData, getScrollItemNum } from './utils'
 import { SourceData, ItemProps, ReactiveData, Direction } from './index.d'
 import addQueue from './queue'
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 
 interface Props {
   sourceData: SourceData[],

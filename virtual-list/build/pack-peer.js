@@ -1,9 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import postcss from 'rollup-plugin-postcss'
-import css from 'rollup-plugin-css-only'
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,9 +10,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     lib: {
-      entry: resolve(__dirname, './packages/index.ts'),
       name: 'lib',
-      fileName: (format) => `my-kit.${format}.js`,
+      formats: ['es'],
+      entry: resolve(__dirname, './../packages/virtual-list/index.vue'),
     },
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
