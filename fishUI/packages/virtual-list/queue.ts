@@ -1,16 +1,17 @@
-
-   
-const EventQueue: Function[] = []
+interface Task {
+    (): Promise<any>
+}
+let EventQueue: Task[] = []
 let pending: boolean = false
 
-function addQueue(event: Function) {
+function addQueue(event: Task):void {
     EventQueue.push(event)
     if(!pending) {
         executionQueue(event)
     }
 }
 
-async function executionQueue(event: Function) {
+async function executionQueue(event: Task): Promise<void> {
     pending = true
     await event()
     EventQueue.shift()

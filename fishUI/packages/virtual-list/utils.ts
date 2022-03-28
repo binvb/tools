@@ -4,10 +4,10 @@ import { ItemProps, Direction } from './index.d'
  * @param period 中断时间，单位ms
  * @returns 
  */
-export function sleep(period = 0):Promise<void> {
+export function sleep(period = 0):Promise<Boolean> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve()
+      resolve(true)
     }, period)
   })
 }

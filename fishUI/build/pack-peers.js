@@ -2,6 +2,8 @@ const { resolve, basename, dirname } = require('path')
 const vue = require('@vitejs/plugin-vue')
 const { build } = require('vite')
 const glob = require('fast-glob')
+// const dts = require('vite-plugin-dts')
+const typescript2 = require('rollup-plugin-typescript2')
 
 function packPeers() {
   const imports = []
@@ -26,7 +28,10 @@ function packPeers() {
   imports.forEach(async item => {
     await build({
       outDir: 'dist',
-      plugins: [vue()],
+      plugins: [
+        vue(),
+        typescript2()
+      ],
       build: {
         lib: item,
         rollupOptions: {
