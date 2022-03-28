@@ -3,10 +3,9 @@
   "version": "0.2.0",
   "author": "vb",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config ./build/pack-all.js",
     "build": "vue-tsc --noEmit &&vite build --config ./build/pack-all.js",
-    "build:peer": "vue-tsc --noEmit && vite build --config ./build/pack-peers.js",
-    "build:peer2": "vue-tsc --noEmit && vite build --config ./build/pack-peer.js"
+    "build:peers": "node ./build/pack-peers.js"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -35,7 +34,7 @@
     "prettier": "^2.4.1",
     "rollup-plugin-dynamic-import-variables": "^1.1.0",
     "typescript": "^4.4.4",
-    "vite": "^2.6.4",
+    "vite": "^2.8.6",
     "vite-plugin-inspect": "^0.3.10",
     "vue-tsc": "^0.33.6"
   }

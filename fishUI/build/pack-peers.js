@@ -1,8 +1,7 @@
-import { resolve, basename, dirname } from 'path'
-import vue from '@vitejs/plugin-vue'
-import { build } from 'vite'
-import { babel } from '@rollup/plugin-babel'
-import glob from 'fast-glob'
+const { resolve, basename, dirname } = require('path')
+const vue = require('@vitejs/plugin-vue')
+const { build } = require('vite')
+const glob = require('fast-glob')
 
 function packPeers() {
   const imports = []
@@ -37,7 +36,9 @@ function packPeers() {
             // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
             globals: {
               vue: 'Vue'
-            }
+            },
+            assetFileNames: `${item.name}/[name].[ext]`,
+            entryFileNames: () => `${item.name}/index.[format].js`
           }
         }
       }

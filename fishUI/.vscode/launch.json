@@ -11,7 +11,7 @@
       "protocol": "inspector",
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "build:peer"]
+      "runtimeArgs": ["run", "build:peers"]
   }
   ]
 }

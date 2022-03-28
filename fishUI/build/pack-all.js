@@ -10,9 +10,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     lib: {
+      entry: resolve(__dirname, './../packages/index.ts'),
       name: 'lib',
-      formats: ['es'],
-      entry: resolve(__dirname, './../packages/virtual-list/index.vue'),
+      formats: ['es']
     },
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
