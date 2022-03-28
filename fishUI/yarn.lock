@@ -811,7 +811,7 @@ debug@^3.2.6:
   dependencies:
     ms "^2.1.1"
 
-debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3:
+debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4:
   version "4.3.4"
   resolved "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
@@ -1647,9 +1647,9 @@ ms@^2.1.1:
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
 nanoid@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.npmmirror.com/nanoid/-/nanoid-3.3.1.tgz#6347a18cac88af88f58af0b3594b723d5e99bb35"
-  integrity sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==
+  version "3.3.2"
+  resolved "https://registry.npmmirror.com/nanoid/-/nanoid-3.3.2.tgz#c89622fafb4381cd221421c69ec58547a1eec557"
+  integrity sha512-CuHBogktKwpm5g2sRgv83jEy2ijFzBwMoYA60orPDR7ynsLijJDqgsi4RDGj3OJpy3Ieb+LYwiRmIOGyytgITA==
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -2165,11 +2165,12 @@ v8-compile-cache@^2.0.3:
   integrity sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==
 
 vite-plugin-dts@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmmirror.com/vite-plugin-dts/-/vite-plugin-dts-1.0.3.tgz#c38b83f7bdba285b7a19b5bde11f65cd1d6b5dd1"
-  integrity sha512-MY8BGePXuWj/shb7ZuInFluzxyyduHB8aM9ODTyj78mUU9D7eCy1Msg/GxiCUhFcZjKqzawiaScNHJ81/YLEKA==
+  version "1.0.4"
+  resolved "https://registry.npmmirror.com/vite-plugin-dts/-/vite-plugin-dts-1.0.4.tgz#90a3716303a642ad58dbfb37e3f9f56113bb2094"
+  integrity sha512-RANcFpButKOiYIwiC33DmmMRa75tDzaov8FHRM643ZyLTIVGENo3mG92plevQIX2eaiYA4kA+OgQm8d59TmIBQ==
   dependencies:
     chalk "^4.1.2"
+    debug "^4.3.4"
     fast-glob "^3.2.11"
     fs-extra "^10.0.1"
     ts-morph "^14.0.0"

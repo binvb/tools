@@ -2,8 +2,7 @@ const { resolve, basename, dirname } = require('path')
 const vue = require('@vitejs/plugin-vue')
 const { build } = require('vite')
 const glob = require('fast-glob')
-// const dts = require('vite-plugin-dts')
-const typescript2 = require('rollup-plugin-typescript2')
+const dts = require('vite-plugin-dts')
 
 function packPeers() {
   const imports = []
@@ -30,7 +29,18 @@ function packPeers() {
       outDir: 'dist',
       plugins: [
         vue(),
-        typescript2()
+        dts({
+          skipDiagnostics: false,
+          logDiagnostics: true,
+          cleanVueFileName: true,
+          beforeWriteFile(filePath, content) {
+            console.log(filePath.replace(resolve(`./dist/packages`), resolve(`./dist`)), 'result')
+            return {
+              filePath: filePath.replace(resolve(`./dist/packages`), resolve(`./dist`)),
+              content,
+            };
+          },
+        })
       ],
       build: {
         lib: item,

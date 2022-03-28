@@ -11,10 +11,7 @@
     "esModuleInterop": true,
     "allowJs": true,
     "lib": ["esnext", "dom"],
-    "skipLibCheck": true,
-    "paths": {
-      "packages/*": ["./packages/*"]
-    }
+    "skipLibCheck": true
   },
   "include": [
     "*.ts",
