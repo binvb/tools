@@ -20,4 +20,5 @@ module.exports = {
   rules: {
     // Customize your rules
   },
+  ignorePatterns: ['node_modules/**/*', 'dist/**/*']
 };

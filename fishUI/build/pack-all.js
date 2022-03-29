@@ -14,7 +14,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     lib: {
-      entry: resolve(__dirname, './../packages/index.ts'),
+      entry: resolve('./../packages/index.ts'),
       name: 'lib',
       formats: ['es']
     },
