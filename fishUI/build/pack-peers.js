@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue'
 import { build } from 'vite'
 import glob from 'fast-glob'
 import dts from 'vite-plugin-dts'
+import postcss from './../postcss.config.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -50,6 +51,9 @@ function packPeers() {
         }),
         vue()
       ],
+      css: {
+        postcss
+      },
       build: {
         target: 'esnext',
         outDir: 'es',
