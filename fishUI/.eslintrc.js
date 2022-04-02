@@ -3,6 +3,7 @@ module.exports = {
     'alloy',
     'alloy/vue',
   ],
+  plugins: ["prettier-plugin-tailwindcss"],
   env: {
     // Your environments (which contains several predefined global variables)
     //

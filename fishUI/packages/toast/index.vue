@@ -1,9 +1,14 @@
 <script setup lang='ts'>
-import './../index.css'
+import './index.css'
+import "tailwindcss/tailwind.css"
 
-console.log(1111111)
+interface Props {
+  message: string
+}
+
+const props = defineProps<Props>()
 </script>
   
 <template>
-  <div>toast</div>
+  <div class="text-xl font-medium text-black text-1000">{{props.message}}</div>
 </template>

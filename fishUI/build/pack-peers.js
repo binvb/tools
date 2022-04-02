@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 import { build } from 'vite'
 import glob from 'fast-glob'
 import dts from 'vite-plugin-dts'
-import postcss from './../postcss.config.js'
+import postcss from './../postcss.config.mjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
