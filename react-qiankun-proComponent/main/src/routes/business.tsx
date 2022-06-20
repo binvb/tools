@@ -6,6 +6,7 @@ import Login from './../pages/login'
 export default [
   {
     path: '/menu1',
+    name: '菜单1',
     component: <Menu1 />,
     children: [
       {

@@ -17,7 +17,6 @@ async function waitTime(time = 100) {
   return new Promise((resolve) => {
     setTimeout(async() => {
       const data = await request.get<{data: {name: string}}>('/test')
-      console.log(2222222222222)
       resolve(true);
     }, time);
   });
@@ -57,14 +56,6 @@ export default () => {
             await waitTime(2000);
             return customMenuDate;
           },
-        }}
-        menuItemRender={(menuItemProps, defaultDom) => {
-          if (menuItemProps.isUrl || !menuItemProps.path) {
-            return defaultDom;
-          }
-          return <Link onClick={() => {
-            setPathname(menuItemProps.path || '')
-          }} to={menuItemProps.path}>{defaultDom}</Link>;
         }}
         headerRender={Header}
       >

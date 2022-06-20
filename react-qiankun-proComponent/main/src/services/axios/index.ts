@@ -17,7 +17,6 @@ class Http {
   }
   public static get getInstance(): AxiosInstance {
     if(!instance) {
-      console.log(222222222, '看下实例化多少次')
       this.singleton = new Http()
     }
     return instance
