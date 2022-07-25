@@ -1,0 +1,11 @@
+{
+  "name": "own-react",
+  "version": "1.0.0",
+  "description": "build your own react ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vb",
+  "license": "ISC"
+}
