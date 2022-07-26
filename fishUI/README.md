@@ -1,9 +1,9 @@
 ### 背景
 在项目中遇到渲染列表过大，导致页面卡顿问题；找了一下目前虚拟列表的插件，要么性能不佳，要么场景有限不能符合需求，所以考虑自己实现一个虚拟列表滚动的组件；主要是参考谷歌关于无限滚动的文章实现；
 目前版本功能和特点如下：  
-1 仅支持垂直方向虚拟滚动；  
-2 仅支持数据一次性传递到组件;  
-3 暂不支持异步渲染(图片，视频等)导致宽高变化的 rerender(异步渲染的 htmlelement 需要监听 dom 变化事件，变化后再更新数据后面的所有数据; #TODO);
+1、仅支持垂直方向虚拟滚动；  
+2、仅支持数据一次性传递到组件;  
+3、支持异步渲染(监听元素变化，e.g. 图片渲染前和渲染后);  
 
 ### 性能测试结果
 demo 测试 5 万条数据在 chrome 下测试结果，基本保持在 60fps，内存消耗在 20m-50m 之间。
@@ -63,6 +63,13 @@ npm i @vb_he/vue-virtual-scroll
 vue 无法监听到通过下标修改的数组元素变化，只能通过一些 trick 方式来修改，例如修改一个数组元素的时候，通过 splice 方式替换；  
 结论是当数据量很大而且对性能要求比较高的时候，尽量不要使用深拷贝。
 
+
+### 更新记录
+2022-07-25：  
+```
+1、用 intersectionObserve 替代滚动条事件监听；  
+2、异步监听"滚动元素",当元素发生变化时，实时更新滚动尺寸；  
+```
 ### 参考
 1 Complexities of an Infinite Scroller：https://developers.google.com/web/updates/2016/07/infinite-scroller  
 2 react-infinite-scroller： https://github.com/danbovey/react-infinite-scroller  

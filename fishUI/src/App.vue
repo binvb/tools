@@ -14,11 +14,10 @@ function toast() {
 }
 </script>
 <template>
-  <button @click="toast">测试</button>
   <div>
     <VirtualList
       :sourceData="sourceData"
-      :initDataNum="20"
+      :initDataNum="40"
       :ScrollItemComponent="ScrollItem"
     ></VirtualList>
   </div>
