@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, ref, onMounted, nextTick } from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
 import { SourceData, ReactiveData } from "./index.d"
 import utils from './utils'
-import resizeHandle from './resizeHandle'
+import sizeHandle from './sizeHandle'
 import interSectionHandle from './interSectionHandle'
 
 interface Props {
@@ -16,46 +16,55 @@ interface Props {
 
 const props = defineProps<Props>()
 const data = reactive<ReactiveData>({
-  sourceData: props.sourceData,
+  sourceData: [],
   currentData: [],
   currentScrollTop: 0
 })
+let intersectionFlag = ref(false) // flag to avoid intersectionObserver initail calculate
+
+// throttle wrapper
 const resizeThrottle = throttle((entry) => {
-	resizeHandle(entry, data.currentData)
+	sizeHandle.resizeHandle(entry, data.currentData, data.sourceData)
 }, 100)
 const intersectionThrottle = throttle((entry) => {
-	data.currentData = interSectionHandle(entry, props.initDataNum, data.currentData, props.sourceData, {intersectionObserver, resizeObserver})
+	data.currentData = interSectionHandle(entry, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 }, 100)
-// dom resize observer
+const onUpdatedThrottle = throttle(() => {
+	sizeHandle.boundSize(data.currentData, data.sourceData)
+}, 100)
+
+// resizeObserver & resizeObserver
 const resizeObserver = new ResizeObserver((entries, observer) => {
 	for (const entry of entries) {
 		resizeThrottle(entry)
 	}
 })
-// inter section observer
-let intersectionObserver = new IntersectionObserver((entries) => {
+const intersectionObserver = new IntersectionObserver((entries) => {
 	for(const entry of entries) {
 		if(!intersectionFlag.value) {
 			return false
 		}
-		if(entry.intersectionRatio === 1) { // only consider visible situation 
+		if(entry.intersectionRatio === 1) {
 			intersectionThrottle(entry)
 		}
 	}
 }, {threshold: [0, 1]})
-let intersectionFlag = ref(false) // avoid initail calculate
 
+// init data
+data.sourceData = utils.dataAddIndex(props.sourceData)
+data.currentData = utils.getInitData(data.sourceData, props.initDataNum)
+
+// life cycle
 onMounted(() => {
+	sizeHandle.boundSize(data.currentData, data.sourceData)
 	observe()
-	// observer after window scroll
 	window.onscroll = () => {
 		intersectionFlag.value = true
 	}
 })
-
-// init data
-utils.dataAddIndex(data.sourceData)
-data.currentData = utils.getInitData(data.sourceData, props.initDataNum)
+onUpdated(() => {
+	onUpdatedThrottle()
+})
 
 // observe resizeObserver and insertSectionObserver
 function observe() {
@@ -82,8 +91,8 @@ function observe() {
   </ul>
 </template>
 
-<style>
-	.fishUI-virtual-list li {
-		list-style: none;
-	}
+<style scoped>
+.fishUI-virtual-list li {
+	list-style: none;
+}
 </style>

@@ -1,21 +1,23 @@
 import { SourceData, ItemProps } from "./index.d"
 
-function dataAddIndex(data: SourceData[]) {
+function dataAddIndex(data: SourceData[]): ItemProps[] {
     data.forEach((item, index) => {
-        item.index = index
+        data[index] = {
+            ...item,
+            index,
+            transformY: 0,
+            transformX: 0,
+            offsetHeight: 0,
+            offsetWidth: 0
+        }
     })
+    return (data as ItemProps[])
 }
 
-function getInitData(dataList: SourceData[], initDataNum: number){
-    let _data: ItemProps[] = []
+function getInitData(dataList: SourceData[], initDataNum: number):ItemProps[]{
+    let _data = dataList.slice(0, initDataNum)
 
-    dataList.slice(0, initDataNum).forEach((item, index) => {
-        _data.push({
-            ...item
-        })
-    })
-
-    return _data
+    return (_data as ItemProps[])
 }
 
 export default {
