@@ -47,7 +47,7 @@ export interface Message {
     content: string;
     avatar: string;
     time: Date;
-    name: string;
+    name?: string;
     isVisible?: boolean;
     index?: number;
 }

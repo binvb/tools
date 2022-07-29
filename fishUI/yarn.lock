@@ -2260,6 +2260,11 @@ semver@^7.3.5:
   dependencies:
     lru-cache "^6.0.0"
 
+serialize-query-params@^2.0.0-rc.0:
+  version "2.0.0-rc.0"
+  resolved "https://registry.npmmirror.com/serialize-query-params/-/serialize-query-params-2.0.0-rc.0.tgz#6dafbc63203e9aaeda23b1c525212157208ee193"
+  integrity sha512-aDIaGD8yuLENUl+nt4XMuRNzp7A0x38hx/Lt2nZrfmFCfBaehDdUgOOB6pqQEOcasgcLQa86ZOKeHbTCQ7QAag==
+
 shebang-command@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/shebang-command/-/shebang-command-2.0.0.tgz#ccd0af4f8835fbdc265b82461aaf0c36663f34ea"
@@ -2463,6 +2468,13 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+use-query-params@^2.0.0-rc.1:
+  version "2.0.0-rc.1"
+  resolved "https://registry.npmmirror.com/use-query-params/-/use-query-params-2.0.0-rc.1.tgz#eba100d4e70f82e1d4aa2950d147ce7d32b6694b"
+  integrity sha512-m6clkw5+7pevCIKomP7UhboQOz3Hf+0zc+chN3HvF7ak3WhK04pYcmNgqBtgF8lCNAXXvPGXHmAFxErWDuI+4w==
+  dependencies:
+    serialize-query-params "^2.0.0-rc.0"
 
 util-deprecate@^1.0.2:
   version "1.0.2"

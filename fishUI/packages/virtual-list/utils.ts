@@ -5,10 +5,8 @@ function dataAddIndex(data: SourceData[]): ItemProps[] {
         data[index] = {
             ...item,
             index,
-            transformY: 0,
-            transformX: 0,
-            offsetHeight: 0,
-            offsetWidth: 0
+            transformY: 10 * index,
+            offsetHeight: 10,
         }
     })
     return (data as ItemProps[])
@@ -20,7 +18,16 @@ function getInitData(dataList: SourceData[], initDataNum: number):ItemProps[]{
     return (_data as ItemProps[])
 }
 
+function sleep(period: number): Promise<boolean> {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(true)
+        },period)
+    })
+}
+
 export default {
     dataAddIndex,
-    getInitData
+    getInitData,
+    sleep
 }

@@ -1,9 +1,11 @@
 <script setup lang='ts'>
 import { defineProps } from 'vue'
+
 interface Item {
+  index: number,
   avatar: string,
   content: string,
-  time: string
+  time: Date
 }
 
 defineProps<{itemData: Item}>()
@@ -11,11 +13,12 @@ defineProps<{itemData: Item}>()
 function getPicUrl() {
   const imgList = [
     'https://cdn.pixabay.com/photo/2022/06/29/10/38/job-7291427__340.png',
-    'https://cdn.pixabay.com/photo/2022/06/21/23/11/asian-7276658__340.jpg',
-    'https://cdn.pixabay.com/photo/2022/07/16/15/34/kid-7325370__340.jpg',
-    'https://cdn.pixabay.com/photo/2022/07/12/15/36/tree-7317683__340.jpg',
-    'https://cdn.pixabay.com/photo/2022/02/08/15/48/frog-7001629__340.png',
-    'https://cdn.pixabay.com/photo/2022/07/06/07/46/lavender-7304564__340.jpg'
+    'https://cdn.pixabay.com/photo/2020/08/07/11/57/raindrops-5470467__480.jpg',
+    'https://cdn.pixabay.com/photo/2022/07/26/00/01/rain-7344787__240.png',
+    'https://cdn.pixabay.com/photo/2022/02/15/13/00/building-7014904__340.jpg',
+    'https://cdn.pixabay.com/photo/2022/07/24/01/57/whistling-kite-7340817__340.jpg',
+    'https://cdn.pixabay.com/photo/2022/06/23/17/13/ball-7280265__340.jpg',
+    'https://cdn.pixabay.com/photo/2021/05/04/20/57/woman-6229693__340.jpg'
   ]
 
   return imgList[Math.ceil(Math.random()*6)]
@@ -27,9 +30,9 @@ function getPicUrl() {
     <img class="avatar" :src="itemData.avatar" />
     <div class="bubble">
         <p v-if="itemData.content">{{itemData.content}}</p>
-        <img v-else :src=getPicUrl() />
+        <img  v-else :src=getPicUrl() />
         <div class="meta">
-            <time class="posted-date">{{itemData.time}}</time>
+            <time class="posted-date">{{itemData.time}},第{{itemData.index}}条</time>
         </div>
     </div>
 </div>
