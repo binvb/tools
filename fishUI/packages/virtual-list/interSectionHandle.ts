@@ -24,7 +24,7 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
         let _data = dataSource.slice(_start > 0 ? _start : 0, _end)
 
         if(_data.length > screenNum) {
-            _data = _data.splice(_data.length - screenNum, _data.length)
+            _data = _data.splice(_data.length - 2 * screenNum, _data.length)
         }
         currentList = _data.concat(currentList)
         observeHandle('add', _data, observer)
@@ -38,7 +38,7 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
         let _data = dataSource.slice(_start + 1, _end + 1)
 
         if(_data.length > screenNum) {
-            _data = _data.splice(_data.length - screenNum, _data.length)
+            _data = _data.splice(_data.length - 2 * screenNum, _data.length)
         }
         currentList = currentList.concat(_data) 
         observeHandle('add', _data, observer)

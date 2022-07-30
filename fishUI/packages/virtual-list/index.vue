@@ -34,6 +34,7 @@ const intersectionThrottle = throttle((entry) => {
 	data.currentData = interSectionHandle.interAction(currentIndex, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 }, 100)
 const onUpdatedThrottle = throttle(() => {
+	console.log(`这里先执行了？`)
 	sizeHandle.boundSize(data.currentData, data.sourceData)
 	calculateTransFormY()
 }, 100)
@@ -41,7 +42,13 @@ const onUpdatedThrottle = throttle(() => {
 // resizeObserver & resizeObserver
 const resizeObserver = new ResizeObserver((entries, observer) => {
 	for (const entry of entries) {
+		let _currentIndex:number = +entry.target.getAttribute('data-index')!
+		let _currentitem = data.sourceData[_currentIndex]
+		let {height} = entry.contentRect
+		console.log(`第几个index: ${_currentIndex}, height: ${height}, _currentitem.offsetHeight: ${_currentitem.offsetHeight}`)
 		resizeThrottle(entry)
+		// ajust scroll position after rerender
+		scrollInstance().ajustScrollPosition(data.sourceData[_currentIndex].transformY, height - _currentitem.offsetHeight)
 	}
 })
 const intersectionObserver = new IntersectionObserver((entries) => {

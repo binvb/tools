@@ -10,12 +10,7 @@ function resizeHandle(entry: ResizeObserverEntry, currentList: ItemProps[], sour
     for(let i = 0; i < len; i += 1) {
         // if current el, set offsetHeight
         if(currentList[i].index === elIndex) {
-            let _offset = height - currentList[i].offsetHeight
-            let _currentElTransformY = currentList[i].transformY
-
             currentList[i].offsetHeight = height
-            // ajust after rerender
-            ajustScrollPosition(_currentElTransformY, _offset)
         }
         // reset transofrmY after current el
         if(currentList[i].index! > elIndex) {
@@ -46,17 +41,6 @@ function boundSize(currentList: ItemProps[], SourceData: ItemProps[]) {
     }
 }
 
-function ajustScrollPosition(transformY: number, offset: number) {
-    let container = document.querySelector('.fishUI-virtual-list-wrapper')!
-    let currentScrollPosition = container.scrollTop
-    // 滚动过程中不调整，滚动后调整
-    console.log(`调整滚动条高度，这里进来了？transformY: ${transformY}, currentScrollPosition: ${currentScrollPosition}, offset: ${offset}, scrollInstance.scrolling: ${scrollInstance().scrolling}`)
-    // only if resize above scrollTop
-    if(transformY < currentScrollPosition && offset && !scrollInstance().scrolling) {
-        document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTo(0, currentScrollPosition + offset)
-        console.log(`调整后高度:${document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTop}`)
-    }
-}
 
 export default {
     resizeHandle,
