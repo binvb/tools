@@ -1,4 +1,3 @@
-import utils from './utils'
 import { SourceData } from './index.d'
 
 function ajustRowData(sourceData: SourceData[], endIndex:number) {

@@ -34,8 +34,7 @@ const intersectionThrottle = throttle((entry) => {
 	data.currentData = interSectionHandle.interAction(currentIndex, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 }, 100)
 const onUpdatedThrottle = throttle(() => {
-	console.log(`这里先执行了？`)
-	sizeHandle.boundSize(data.currentData, data.sourceData)
+	// sizeHandle.boundSize(data.currentData, data.sourceData)
 	calculateTransFormY()
 }, 100)
 
@@ -45,10 +44,13 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 		let _currentIndex:number = +entry.target.getAttribute('data-index')!
 		let _currentitem = data.sourceData[_currentIndex]
 		let {height} = entry.contentRect
-		console.log(`第几个index: ${_currentIndex}, height: ${height}, _currentitem.offsetHeight: ${_currentitem.offsetHeight}`)
-		resizeThrottle(entry)
+		let _currentItemOffsetHeight = _currentitem.offsetHeight
+		let _currentitemTransformY = _currentitem.transformY
+
+		console.log(`第几个index: ${_currentIndex}, height: ${height}, _currentitem.offsetHeight: ${_currentItemOffsetHeight}`)
+		sizeHandle.resizeHandle(entry, data.currentData, data.sourceData)
 		// ajust scroll position after rerender
-		scrollInstance().ajustScrollPosition(data.sourceData[_currentIndex].transformY, height - _currentitem.offsetHeight)
+		scrollInstance().ajustScrollPosition(_currentitemTransformY, height - _currentItemOffsetHeight)
 	}
 })
 const intersectionObserver = new IntersectionObserver((entries) => {
@@ -66,7 +68,7 @@ listHeight.value = data.sourceData[data.sourceData.length - 1].transformY
 
 // life cycle
 onMounted(() => {
-	sizeHandle.boundSize(data.currentData, data.sourceData)
+	// sizeHandle.boundSize(data.currentData, data.sourceData)
 	interSectionHandle.observeHandle('add', data.currentData, {resizeObserver, intersectionObserver})
 })
 onUpdated(() => {
