@@ -19,11 +19,11 @@
 //     await nextTick()
 // })
 
-describe('test', () => {
-    let mockFn = jest.fn()
+// describe('test', () => {
+//     let mockFn = jest.fn()
 
-    expect(1).toBe(1)
-})
+//     expect(1).toBe(1)
+// })
 
 // describe('🎏 scroll component init data', () => {
 //     it('init data render', async function () {

@@ -12,12 +12,12 @@ interface Observer {
 
 
 function interAction(currentIndex: number, initDataNum: number, currentList:ItemProps[], dataSource: ItemProps[], observer: Observer) {
-    let screenNum = Math.ceil(initDataNum/2)
+    let screenNum = initDataNum
     let topIndex = currentList[0].index!
     let bottomIndex = currentList[currentList.length - 1].index!
     let patchResult = patch(currentIndex, screenNum, topIndex, bottomIndex)
 
-    console.log(`看下数据, patchResult: ${JSON.stringify(patchResult)}, currentIndex: ${currentIndex}, topIndex: ${topIndex}, bottomIndex: ${bottomIndex}`)
+    // console.log(`查看调整, 调整的结果: ${JSON.stringify(patchResult)}, topIndex: ${topIndex}, bottomIndex: ${bottomIndex}, currentIndex: ${currentIndex}, data: ${JSON.stringify(currentList)}`)
     if(patchResult.before > 0) {
         let _start = topIndex - patchResult.before
         let _end = topIndex
@@ -27,6 +27,7 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
             _data = _data.splice(_data.length - 2 * screenNum, _data.length)
         }
         currentList = _data.concat(currentList)
+        addDatainitPosition('before', currentList)
         observeHandle('add', _data, observer)
     } else {
         observeHandle('remove', currentList.splice(0, Math.abs(patchResult.before)), observer)
@@ -41,6 +42,7 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
             _data = _data.splice(_data.length - 2 * screenNum, _data.length)
         }
         currentList = currentList.concat(_data) 
+        addDatainitPosition('after', currentList)
         observeHandle('add', _data, observer)
     } else {
         observeHandle('remove', currentList.splice(currentList.length + patchResult.after, Math.abs(patchResult.before)), observer)
@@ -82,6 +84,19 @@ function observeHandle(type: 'add' | 'remove', data: any[], observer: Observer) 
             }
         }
     }, 0)
+}
+
+function addDatainitPosition(position: 'before' | 'after', currentList: ItemProps[]) {
+    let len = currentList.length
+    if(position === 'before') {
+        for(let i = len - 2; i >=0; i -= 1) {
+            currentList[i].transformY = currentList[i + 1].transformY - currentList[i].offsetHeight
+        }
+    } else {
+        for(let i = 2; i < len; i += 1) {
+            currentList[i].transformY = currentList[i - 1].transformY + currentList[i - 1].offsetHeight
+        }   
+    }
 }
 
 export default  {

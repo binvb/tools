@@ -13,7 +13,7 @@ function dataAddIndex(data: SourceData[]): ItemProps[] {
 }
 
 function getInitData(dataList: SourceData[], initDataNum: number):ItemProps[]{
-    let _data = dataList.slice(0, initDataNum)
+    let _data = dataList.slice(0, initDataNum * 2)
 
     return (_data as ItemProps[])
 }
@@ -26,8 +26,15 @@ function sleep(period: number): Promise<boolean> {
     })
 }
 
+function getCurrentTopIndex(dataList: SourceData[], top: number) {
+    let afterDataList = dataList.filter(item => item.transformY! > top)
+
+    return afterDataList[0].index
+}
+
 export default {
     dataAddIndex,
     getInitData,
-    sleep
+    sleep,
+    getCurrentTopIndex
 }

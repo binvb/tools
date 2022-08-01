@@ -31,7 +31,7 @@ function submit() {
   <div style="margin: 100px;width: 1000px; height: 900px;border: 1px solid #000;">
     <VirtualList
       :sourceData="sourceData"
-      :initDataNum="40"
+      :initDataNum="20"
       :ScrollItemComponent="ScrollItem"
       ref="virtualScroll"
     ></VirtualList>

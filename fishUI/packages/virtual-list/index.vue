@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, watch, defineExpose } from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 import { SourceData, ReactiveData } from "./index.d"
 import utils from './utils'
-import sizeHandle from './sizeHandle'
+import resizeInstance from './resizeInstance'
 import interSectionHandle from './interSectionHandle'
 import rowDataHandle from './rowDataHandle'
 import scrollInstance from "./scrollInstance"
@@ -23,40 +24,46 @@ const data = reactive<ReactiveData>({
   currentScrollTop: 0
 })
 let listHeight = ref(0) // calculate list height real time
+let locateIndex = ref(0)
 
 // throttle wrapper
-const resizeThrottle = throttle((entry) => {
-	sizeHandle.resizeHandle(entry, data.currentData, data.sourceData)
-}, 100)
-const intersectionThrottle = throttle((entry) => {
-	const currentIndex = +entry.target.getAttribute('data-index')
-
-	data.currentData = interSectionHandle.interAction(currentIndex, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
-}, 100)
 const onUpdatedThrottle = throttle(() => {
-	// sizeHandle.boundSize(data.currentData, data.sourceData)
 	calculateTransFormY()
 }, 100)
+
+// scroll end by debounce
+const onScrollEnd = debounce(() => {
+	// quick scroll compensation
+	let currrentScrollTop = document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTop
+	let correctIndex = utils.getCurrentTopIndex(data.sourceData, currrentScrollTop)!
+	let scope = data.currentData.slice(2, data.currentData.length - 2)
+
+	// top #TODO
+	// bottom #TODO
+	if(!scope.find(item => item.index === correctIndex)) {
+		console.log(`看看顶部: ${correctIndex}`)
+		locate(correctIndex)
+	}
+}, 50)
 
 // resizeObserver & resizeObserver
 const resizeObserver = new ResizeObserver((entries, observer) => {
 	for (const entry of entries) {
-		let _currentIndex:number = +entry.target.getAttribute('data-index')!
-		let _currentitem = data.sourceData[_currentIndex]
 		let {height} = entry.contentRect
-		let _currentItemOffsetHeight = _currentitem.offsetHeight
-		let _currentitemTransformY = _currentitem.transformY
 
-		console.log(`第几个index: ${_currentIndex}, height: ${height}, _currentitem.offsetHeight: ${_currentItemOffsetHeight}`)
-		sizeHandle.resizeHandle(entry, data.currentData, data.sourceData)
-		// ajust scroll position after rerender
-		scrollInstance().ajustScrollPosition(_currentitemTransformY, height - _currentItemOffsetHeight)
+		// when remove item, height resize 0
+		if(!height) {
+			return false
+		}
+		resizeInstance.resizeHandle(locateIndex.value, data.currentData, data.sourceData)
 	}
 })
 const intersectionObserver = new IntersectionObserver((entries) => {
 	for(const entry of entries) {
-		if(entry.intersectionRatio === 1 && scrollInstance().scrolling) {
-			intersectionThrottle(entry)
+		if(entry.intersectionRatio === 1 && !scrollInstance().ajusting && !resizeInstance.resizeRenderStatus) {
+			const currentIndex = +entry.target.getAttribute('data-index')!
+			
+			data.currentData = interSectionHandle.interAction(currentIndex, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 		}
 	}
 }, {threshold: [0, 1]})
@@ -68,11 +75,14 @@ listHeight.value = data.sourceData[data.sourceData.length - 1].transformY
 
 // life cycle
 onMounted(() => {
-	// sizeHandle.boundSize(data.currentData, data.sourceData)
 	interSectionHandle.observeHandle('add', data.currentData, {resizeObserver, intersectionObserver})
+	scrollInstance(onScrollEnd)
 })
 onUpdated(() => {
 	onUpdatedThrottle()
+	setTimeout(() => {
+		resizeInstance.setResizeStatus(false)
+	},0)
 })
 
 // expose
@@ -87,8 +97,9 @@ function locate(index: number) {
 	let item = data.sourceData[index]
 	let locatePosition = item.transformY
 
-	document.querySelector('.fishUI-virtual-list')?.parentElement?.scrollTo(0, locatePosition)
-	// make sure after scroll
+	locateIndex.value = item.index!
+	scrollInstance().ajustAction(locatePosition)
+	// make sure after scroll, because scrolling is not going excute intersection  
 	setTimeout(() => {
 		data.currentData = interSectionHandle.interAction(index, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 	}, 0)
