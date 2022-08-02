@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { ItemProps } from "./index.d"
 
 interface PatchResult {
@@ -17,7 +18,6 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
     let bottomIndex = currentList[currentList.length - 1].index!
     let patchResult = patch(currentIndex, screenNum, topIndex, bottomIndex)
 
-    // console.log(`查看调整, 调整的结果: ${JSON.stringify(patchResult)}, topIndex: ${topIndex}, bottomIndex: ${bottomIndex}, currentIndex: ${currentIndex}, data: ${JSON.stringify(currentList)}`)
     if(patchResult.before > 0) {
         let _start = topIndex - patchResult.before
         let _end = topIndex
@@ -45,9 +45,9 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
         addDatainitPosition('after', currentList)
         observeHandle('add', _data, observer)
     } else {
-        observeHandle('remove', currentList.splice(currentList.length + patchResult.after, Math.abs(patchResult.before)), observer)
+        observeHandle('remove', currentList.splice(2 * screenNum, 100000000000), observer)
     }
-
+    
     return currentList
 }
 
@@ -67,23 +67,32 @@ function observeHandle(type: 'add' | 'remove', data: any[], observer: Observer) 
     if(!data.length) {
         return false
     }
-    // observe after render
-    setTimeout(() => {
+    // add data need observe after render
+    if(type === 'add') {
+        setTimeout(() => {
+            for(let i = 0, len = data.length; i < len; i += 1) {
+                let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)
+                let _height = _el?.offsetHeight
+                if(!_el) {
+                    continue 
+                }
+                observer.resizeObserver.observe(_el)
+                observer.intersectionObserver.observe(_el)
+            }
+        }, 0)
+    }
+    if(type === 'remove') {
         for(let i = 0, len = data.length; i < len; i += 1) {
             let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)
     
             if(!_el) {
                 continue 
             }
-            if(type === 'add') {
-                observer.resizeObserver.observe(_el)
-                observer.intersectionObserver.observe(_el)
-            } else {
-                observer.resizeObserver.unobserve(_el)
-                observer.intersectionObserver.unobserve(_el)
-            }
+            observer.resizeObserver.unobserve(_el)
+            observer.intersectionObserver.unobserve(_el)
         }
-    }, 0)
+    }
+
 }
 
 function addDatainitPosition(position: 'before' | 'after', currentList: ItemProps[]) {

@@ -1,13 +1,11 @@
-
-import utils from './utils'
-import { SourceData, ItemProps } from './index.d'
-
 let instance:Scroll
 
 class Scroll {
+    scrolling: boolean = false
     ajusting:boolean = false // ajust scroll position when resize
     constructor(onScrollEnd?: Function) {
         document.querySelector('.fishUI-virtual-list-wrapper')!.addEventListener('scroll', (e) => {
+            this.scrolling = true
             // scrolling
             if(onScrollEnd) {
                 onScrollEnd()
@@ -20,21 +18,24 @@ class Scroll {
         }
         return instance
     }
+    scrollEn() {
+        console.log(`scrollEn`)
+        this.scrolling = false
+        this.ajusting = false
+    }
     ajustScrollPosition(offset: number) {
         let container = document.querySelector('.fishUI-virtual-list-wrapper')!
         let currentScrollPosition = container.scrollTop
-        console.log(`看下调整的距离: ${offset}`)
+        console.log(`ajustscroll, offset: ${offset}, this.scrolling: ${this.scrolling}, this.ajusting: ${this.ajusting}`)
         // above item resize  
-        if(offset) {
+        if(offset && !this.scrolling) {
             this.ajustAction(currentScrollPosition + offset)
         }
     }
     ajustAction(position: number) {
+        console.log(`ajustAction: ${position}`)
         this.ajusting = true
         document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTo(0, position)
-        setTimeout(() => {
-            this.ajusting = false
-        })
     }
 }
 

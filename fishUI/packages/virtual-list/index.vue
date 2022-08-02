@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose } from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose, watch } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
@@ -15,6 +15,7 @@ interface Props {
   sourceData: SourceData[]
   ScrollItemComponent: ComponentPublicInstance
   initDataNum: number
+  retainHeightValue?: number
 }
 
 const props = defineProps<Props>()
@@ -30,6 +31,10 @@ let locateIndex = ref(0)
 const onUpdatedThrottle = throttle(() => {
 	calculateTransFormY()
 }, 100)
+const intersectionThrottle = throttle((entry: IntersectionObserverEntry) => {
+	console.log(`触发 intersectionObserver: ${entry.target.getAttribute('data-index')}`)
+	data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
+}, 100)
 
 // scroll end by debounce
 const onScrollEnd = debounce(() => {
@@ -37,11 +42,13 @@ const onScrollEnd = debounce(() => {
 	let currrentScrollTop = document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTop
 	let correctIndex = utils.getCurrentTopIndex(data.sourceData, currrentScrollTop)!
 	let scope = data.currentData.slice(2, data.currentData.length - 2)
-
-	// top #TODO
-	// bottom #TODO
+	
+	scrollInstance().scrollEn()
+	// exclude top && bottom
+	if(correctIndex <= 2 || correctIndex >= data.sourceData.length - 2) {
+		return false
+	}
 	if(!scope.find(item => item.index === correctIndex)) {
-		console.log(`看看顶部: ${correctIndex}`)
 		locate(correctIndex)
 	}
 }, 50)
@@ -55,15 +62,13 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 		if(!height) {
 			return false
 		}
-		resizeInstance.resizeHandle(locateIndex.value, data.currentData, data.sourceData)
+		resizeInstance.resizeHandle(data.currentData, data.sourceData, locateIndex.value)
 	}
 })
 const intersectionObserver = new IntersectionObserver((entries) => {
 	for(const entry of entries) {
-		if(entry.intersectionRatio === 1 && !scrollInstance().ajusting && !resizeInstance.resizeRenderStatus) {
-			const currentIndex = +entry.target.getAttribute('data-index')!
-			
-			data.currentData = interSectionHandle.interAction(currentIndex, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
+		if(entry.intersectionRatio === 1 &&  scrollInstance().scrolling && !scrollInstance().ajusting && !resizeInstance.resizeRenderStatus) {
+			intersectionThrottle(entry)
 		}
 	}
 }, {threshold: [0, 1]})
@@ -77,6 +82,7 @@ listHeight.value = data.sourceData[data.sourceData.length - 1].transformY
 onMounted(() => {
 	interSectionHandle.observeHandle('add', data.currentData, {resizeObserver, intersectionObserver})
 	scrollInstance(onScrollEnd)
+	resizeInstance.resizeHandle(data.currentData, data.sourceData)
 })
 onUpdated(() => {
 	onUpdatedThrottle()
@@ -107,11 +113,14 @@ function locate(index: number) {
 
 function calculateTransFormY() {
 	let lastItem = data.currentData[data.currentData.length - 1]
-	let height = lastItem.offsetHeight + lastItem.transformY
 
-	// only increases
-	if(height > listHeight.value) {
-		listHeight.value = height
+	if(lastItem) {
+		let height = lastItem.offsetHeight + lastItem.transformY
+
+		// only increases
+		if(height > listHeight.value) {
+			listHeight.value = height
+		}
 	}
 }
 </script>

@@ -1,12 +1,12 @@
 import { SourceData, ItemProps } from "./index.d"
 
-function dataAddIndex(data: SourceData[]): ItemProps[] {
+function dataAddIndex(data: SourceData[], retainHeightValue?: number): ItemProps[] {
     data.forEach((item, index) => {
         data[index] = {
             ...item,
             index,
-            transformY: 10 * index,
-            offsetHeight: 10,
+            transformY: (retainHeightValue || 10) * index,
+            offsetHeight: retainHeightValue || 10,
         }
     })
     return (data as ItemProps[])
