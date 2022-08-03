@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance, ComponentInternalInstance } from 'vue'
-import VirtualList from "./../packages/virtual-list/index.vue";
 // import VirtualList from './../es/virtual-list/index.js'
 // import './../es/virtual-list/style.css'
 import ScrollItem from "./components/ScrollItem.vue";

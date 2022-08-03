@@ -1,4 +1,3 @@
-import { nextTick } from 'vue'
 import { ItemProps } from "./index.d"
 
 interface PatchResult {
@@ -23,8 +22,8 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
         let _end = topIndex
         let _data = dataSource.slice(_start > 0 ? _start : 0, _end)
 
-        if(_data.length > screenNum) {
-            _data = _data.splice(_data.length - 2 * screenNum, _data.length)
+        if(_data.length > 2 * screenNum) {
+            _data.splice(0, 2 * screenNum)
         }
         currentList = _data.concat(currentList)
         addDatainitPosition('before', currentList)
@@ -39,7 +38,7 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
         let _data = dataSource.slice(_start + 1, _end + 1)
 
         if(_data.length > screenNum) {
-            _data = _data.splice(_data.length - 2 * screenNum, _data.length)
+            _data = _data.slice(_data.length - 2 * screenNum, _data.length)
         }
         currentList = currentList.concat(_data) 
         addDatainitPosition('after', currentList)
@@ -47,7 +46,6 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
     } else {
         observeHandle('remove', currentList.splice(2 * screenNum, 100000000000), observer)
     }
-    
     return currentList
 }
 
@@ -97,6 +95,7 @@ function observeHandle(type: 'add' | 'remove', data: any[], observer: Observer) 
 
 function addDatainitPosition(position: 'before' | 'after', currentList: ItemProps[]) {
     let len = currentList.length
+    
     if(position === 'before') {
         for(let i = len - 2; i >=0; i -= 1) {
             currentList[i].transformY = currentList[i + 1].transformY - currentList[i].offsetHeight

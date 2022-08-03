@@ -1,5 +1,5 @@
 
-import VirtualList from './virtual-list/index.vue'
+import VirtualList from './virtual-list/index'
 
 export default {
   VirtualList

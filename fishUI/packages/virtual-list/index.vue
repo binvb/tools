@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose, watch } from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
@@ -32,7 +32,6 @@ const onUpdatedThrottle = throttle(() => {
 	calculateTransFormY()
 }, 100)
 const intersectionThrottle = throttle((entry: IntersectionObserverEntry) => {
-	console.log(`触发 intersectionObserver: ${entry.target.getAttribute('data-index')}`)
 	data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 }, 100)
 
@@ -42,7 +41,7 @@ const onScrollEnd = debounce(() => {
 	let currrentScrollTop = document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTop
 	let correctIndex = utils.getCurrentTopIndex(data.sourceData, currrentScrollTop)!
 	let scope = data.currentData.slice(2, data.currentData.length - 2)
-	
+
 	scrollInstance().scrollEn()
 	// exclude top && bottom
 	if(correctIndex <= 2 || correctIndex >= data.sourceData.length - 2) {
@@ -104,11 +103,8 @@ function locate(index: number) {
 	let locatePosition = item.transformY
 
 	locateIndex.value = item.index!
-	scrollInstance().ajustAction(locatePosition)
-	// make sure after scroll, because scrolling is not going excute intersection  
-	setTimeout(() => {
-		data.currentData = interSectionHandle.interAction(index, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
-	}, 0)
+	scrollInstance().ajustAction(locatePosition) 
+	data.currentData = interSectionHandle.interAction(index, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 }
 
 function calculateTransFormY() {

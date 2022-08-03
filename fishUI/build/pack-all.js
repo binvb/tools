@@ -19,8 +19,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     lib: {
-      entry: resolve('./../packages/index.ts'),
-      name: 'lib',
+      entry: resolve(__dirname, './../packages/index.ts'),
+      name: 'FishUI',
+      fileName: 'fish-ui',
       formats: ['es']
     },
     rollupOptions: {
