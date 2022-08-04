@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose } from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose, watch } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
@@ -8,7 +8,8 @@ import { SourceData, ReactiveData } from "./index.d"
 import utils from './utils'
 import resizeInstance from './resizeInstance'
 import interSectionHandle from './interSectionHandle'
-import rowDataHandle from './rowDataHandle'
+import dataHandle from './dataHandle'
+import observeHandle from './observeHandle'
 import scrollInstance from "./scrollInstance"
 
 interface Props {
@@ -73,13 +74,13 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 }, {threshold: [0, 1]})
 
 // init data
-data.sourceData = utils.dataAddIndex(props.sourceData)
+data.sourceData = utils.dataAddIndex(props.sourceData, props.retainHeightValue)
 data.currentData = utils.getInitData(data.sourceData, props.initDataNum)
-listHeight.value = data.sourceData[data.sourceData.length - 1].transformY
+listHeight.value = data.sourceData[data.sourceData.length - 1]?.transformY || 0
 
 // life cycle
 onMounted(() => {
-	interSectionHandle.observeHandle('add', data.currentData, {resizeObserver, intersectionObserver})
+	observeHandle.observe(data.currentData, {resizeObserver, intersectionObserver})
 	scrollInstance(onScrollEnd)
 	resizeInstance.resizeHandle(data.currentData, data.sourceData)
 })
@@ -89,15 +90,21 @@ onUpdated(() => {
 		resizeInstance.setResizeStatus(false)
 	},0)
 })
+// watch(() => props.sourceData, (currentValue) => {
+// 	console.log(`数据改变了`)
+// }, {deep: true})
 
 // expose
 defineExpose({
-	locate
+	locate,
+	del: (index: number) => {
+		dataHandle.del(index, data.sourceData, data.currentData, {resizeObserver, intersectionObserver}, props.retainHeightValue)
+	}
 })
 
 function locate(index: number) {
 	// ajust row data
-	rowDataHandle.ajustRowData(data.sourceData, index)
+	dataHandle.getSourceDataAfterResize(data.sourceData, index)
 
 	let item = data.sourceData[index]
 	let locatePosition = item.transformY

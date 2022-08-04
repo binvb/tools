@@ -1,5 +1,5 @@
 export interface ItemProps{
-  index?: number,
+  index: number,
   transformY: number,
   offsetHeight: number,
 }
@@ -8,6 +8,11 @@ export interface ReactiveData {
   sourceData:  ItemProps[],
   currentData: ItemProps[],
   currentScrollTop: number
+}
+
+export interface Observer {
+  intersectionObserver: IntersectionObserver
+  resizeObserver: ResizeObserver
 }
 
 export interface VirtualScrollExpose {

@@ -17,6 +17,7 @@ export default defineConfig({
     host: '0.0.0.0'
   },
   build: {
+    minify: false,
     outDir: 'dist',
     lib: {
       entry: resolve(__dirname, './../packages/index.ts'),

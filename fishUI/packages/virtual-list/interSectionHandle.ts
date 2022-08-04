@@ -1,13 +1,9 @@
-import { ItemProps } from "./index.d"
+import observeHandle from './observeHandle'
+import { ItemProps, Observer } from "./index.d"
 
 interface PatchResult {
     before: number // need to fill scroll item number before
     after: number // need to fill scroll item number after
-}
-
-interface Observer {
-    intersectionObserver: IntersectionObserver
-    resizeObserver: ResizeObserver
 }
 
 
@@ -27,9 +23,9 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
         }
         currentList = _data.concat(currentList)
         addDatainitPosition('before', currentList)
-        observeHandle('add', _data, observer)
+        observeHandle.observe(_data, observer)
     } else {
-        observeHandle('remove', currentList.splice(0, Math.abs(patchResult.before)), observer)
+        observeHandle.unobserve(currentList.splice(0, Math.abs(patchResult.before)), observer)
     }
     // make sure after has more than full screens
     if(patchResult.after > 0) {
@@ -42,9 +38,9 @@ function interAction(currentIndex: number, initDataNum: number, currentList:Item
         }
         currentList = currentList.concat(_data) 
         addDatainitPosition('after', currentList)
-        observeHandle('add', _data, observer)
+        observeHandle.observe(_data, observer)
     } else {
-        observeHandle('remove', currentList.splice(2 * screenNum, 100000000000), observer)
+        observeHandle.unobserve(currentList.splice(2 * screenNum, 100000000000), observer)
     }
     return currentList
 }
@@ -59,38 +55,6 @@ function patch(currentIndex: number, screenNum: number, topIndex: number, bottom
     result.after = screenNum - (bottomIndex - currentIndex)
 
     return result
-}
-
-function observeHandle(type: 'add' | 'remove', data: any[], observer: Observer) {
-    if(!data.length) {
-        return false
-    }
-    // add data need observe after render
-    if(type === 'add') {
-        setTimeout(() => {
-            for(let i = 0, len = data.length; i < len; i += 1) {
-                let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)
-                let _height = _el?.offsetHeight
-                if(!_el) {
-                    continue 
-                }
-                observer.resizeObserver.observe(_el)
-                observer.intersectionObserver.observe(_el)
-            }
-        }, 0)
-    }
-    if(type === 'remove') {
-        for(let i = 0, len = data.length; i < len; i += 1) {
-            let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)
-    
-            if(!_el) {
-                continue 
-            }
-            observer.resizeObserver.unobserve(_el)
-            observer.intersectionObserver.unobserve(_el)
-        }
-    }
-
 }
 
 function addDatainitPosition(position: 'before' | 'after', currentList: ItemProps[]) {
