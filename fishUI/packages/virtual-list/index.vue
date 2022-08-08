@@ -4,7 +4,7 @@ import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
-import { SourceData, ReactiveData } from "./index.d"
+import { SourceData, ReactiveData, VirtualScrollExpose } from "./index.d"
 import utils from './utils'
 import resizeInstance from './resizeInstance'
 import interSectionHandle from './interSectionHandle'
@@ -62,6 +62,7 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 		if(!height) {
 			return false
 		}
+		// console.log(`执行resize的index: ${entry.target.getAttribute('data-index')}`)
 		resizeInstance.resizeHandle(data.currentData, data.sourceData, locateIndex.value)
 	}
 })
@@ -74,7 +75,7 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 }, {threshold: [0, 1]})
 
 // init data
-data.sourceData = utils.dataAddIndex(props.sourceData, props.retainHeightValue)
+data.sourceData = dataHandle.sourceDataInitail(JSON.parse(JSON.stringify(props.sourceData)), props.retainHeightValue)
 data.currentData = utils.getInitData(data.sourceData, props.initDataNum)
 listHeight.value = data.sourceData[data.sourceData.length - 1]?.transformY || 0
 
@@ -90,15 +91,29 @@ onUpdated(() => {
 		resizeInstance.setResizeStatus(false)
 	},0)
 })
-// watch(() => props.sourceData, (currentValue) => {
-// 	console.log(`数据改变了`)
-// }, {deep: true})
+watch(() => props.sourceData, (currentValue, preValue) => {
+	if(preValue.length) {
+		console.warn(`do not change prop sourceData direct, use component expose funciton, e.g. del/update/add/reassignment`)
+	}
+}, {deep: true})
 
 // expose
-defineExpose({
+defineExpose<VirtualScrollExpose>({
 	locate,
-	del: (index: number) => {
-		dataHandle.del(index, data.sourceData, data.currentData, {resizeObserver, intersectionObserver}, props.retainHeightValue)
+	del: (index) => {
+		dataHandle.del(index, data.sourceData, data.currentData, {resizeObserver, intersectionObserver}, props.initDataNum, props.retainHeightValue)
+		calculateTransFormY()
+	},
+	add: (index, insertData) => {
+		dataHandle.add(index, insertData, data.sourceData, data.currentData, {resizeObserver, intersectionObserver}, props.initDataNum, props.retainHeightValue)
+		calculateTransFormY()
+	},
+	update: (index, _data) => {
+		dataHandle.update(index, _data, data.sourceData)
+	},
+	reassignment: (_data) => {
+		dataHandle.reassignment(_data, data.sourceData, data.currentData, {resizeObserver, intersectionObserver}, props.initDataNum, props.retainHeightValue)
+		calculateTransFormY()
 	}
 })
 
@@ -152,10 +167,8 @@ function calculateTransFormY() {
 	height: 100%;
 	overflow-y: scroll;
 }
-.fishUI-virtual-list {
-	position: relative;
-}
 .fishUI-virtual-list li {
+	width: 100%;
 	list-style: none;
 }
 </style>

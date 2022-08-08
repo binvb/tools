@@ -7,5 +7,4 @@ const VirtualList: Plugin =  {
     }
 }
 
-
 export default VirtualList

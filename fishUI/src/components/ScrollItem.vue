@@ -8,7 +8,7 @@ interface Item {
   time: Date
 }
 
-defineProps<{itemData: Item}>()
+const data = defineProps<{itemData: Item}>()
 
 function getPicUrl() {
   const imgList = [

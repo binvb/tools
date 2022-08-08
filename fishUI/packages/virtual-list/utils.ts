@@ -1,17 +1,5 @@
 import { SourceData, ItemProps } from "./index.d"
 
-function dataAddIndex(data: SourceData[], retainHeightValue?: number): ItemProps[] {
-    data.forEach((item, index) => {
-        data[index] = {
-            ...item,
-            index,
-            transformY: (retainHeightValue || 10) * index,
-            offsetHeight: retainHeightValue || 10,
-        }
-    })
-    return (data as ItemProps[])
-}
-
 function getInitData(dataList: SourceData[], initDataNum: number):ItemProps[]{
     let _data = dataList.slice(0, initDataNum * 2)
 
@@ -33,7 +21,6 @@ function getCurrentTopIndex(dataList: SourceData[], top: number) {
 }
 
 export default {
-    dataAddIndex,
     getInitData,
     sleep,
     getCurrentTopIndex

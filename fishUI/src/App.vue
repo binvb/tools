@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import { ref, reactive, getCurrentInstance, ComponentInternalInstance } from 'vue'
-// import VirtualList from './../es/virtual-list/index.js'
-// import './../es/virtual-list/style.css'
+import { ref, reactive, getCurrentInstance, ComponentInternalInstance, watch } from 'vue'
 import ScrollItem from "./components/ScrollItem.vue";
 import { getMessage } from "./mock";
-
-export interface VirtualScrollExpose {
-  locate: (index: number) => void
-  del: (index: number | number[]) => void 
-}
 
 let data = reactive({
   sourceData: getMessage(50000)
 });
 const locate = ref(0)
 const delNum = ref(0)
-const virtualScroll = ref<VirtualScrollExpose>()
+const updateNum = ref(0)
+const virtualScroll = ref()
 const { proxy, appContext } = getCurrentInstance() as ComponentInternalInstance
 function toast() {
   // (proxy as ComponentPublicInstance<{$toast: (message: string, duration?: number) => {}}>).$toast('test in setup')
@@ -28,12 +22,14 @@ function submit() {
 function del() {
   virtualScroll.value?.del(delNum.value)
 }
-function changeData() {
-  setTimeout(() => {
-    virtualScroll.value?.del(3)
-  }, 5000)
+function update() {
+  virtualScroll.value?.update(updateNum.value, getMessage(1)[0])
 }
-changeData()
+
+function change() {
+  virtualScroll.value?.reassignment(getMessage(50000))
+}
+change()
 </script>
 <template>
   <div>
@@ -43,6 +39,10 @@ changeData()
   <div>
     <input v-model="delNum" type="number" placeholder="输入滚动元素索引值" />
     <button @click="del">删除</button>
+  </div>
+  <div>
+    <input v-model="updateNum" type="number" placeholder="输入滚动元素索引值" />
+    <button @click="update">更新</button>
   </div>
   <div style="margin: 100px;width: 1000px; height: 900px;border: 1px solid #000;">
     <VirtualList

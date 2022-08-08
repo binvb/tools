@@ -25,7 +25,7 @@ class ResizeInstance {
                 this.setResizeStatus(true)
                 currentList[i].offsetHeight = _elOffsetHeight
             }
-
+            // console.log(`pre item: ${JSON.stringify(_pre)}, currentList[i].index: ${currentList[i].index}`)
             if(_pre) {
                 let _elTransformY = _pre.offsetHeight! + _pre.transformY!
 
