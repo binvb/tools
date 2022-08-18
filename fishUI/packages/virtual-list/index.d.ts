@@ -9,8 +9,7 @@ export type SourceData = Partial<ItemProps> & {
 }
 export interface ReactiveData {
   sourceData:  ItemProps[],
-  currentData: ItemProps[],
-  currentScrollTop: number
+  currentData: ItemProps[]
 }
 
 export interface Observer {
@@ -23,7 +22,8 @@ export type VirtualScrollExpose =  {
   del: (index: number | number[]) => void
   add: (index: number, insertData: any[]) => void
   update: (index: number, data: any) => void
-  reassignment: (data: any[]) => void
+  setSourceData: (data: any[]) => void
+  getData: () => any[]
 }
 
-export type Direction = 'init' | 'up' | 'down' 
+export type Direction = 'up' | 'down' 

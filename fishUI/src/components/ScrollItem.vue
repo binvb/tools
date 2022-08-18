@@ -1,11 +1,12 @@
 <script setup lang='ts'>
-import { defineProps } from 'vue'
+import { defineProps, inject } from 'vue'
 
 interface Item {
   index: number,
   avatar: string,
   content: string,
-  time: Date
+  time: Date,
+  showBox?:boolean
 }
 
 const data = defineProps<{itemData: Item}>()
@@ -24,7 +25,7 @@ function getPicUrl() {
   return imgList[Math.ceil(Math.random()*6)]
 }
 </script>
-  
+
 <template>
 <div class="chat-item">
     <img class="avatar" :src="itemData.avatar" />

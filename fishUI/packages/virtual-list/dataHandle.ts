@@ -6,6 +6,9 @@ import { SourceData, ItemProps, Observer } from './index.d'
 // only update in some case
 function getSourceDataAfterResize(sourceData: SourceData[], endIndex:number) {
     for(let i = 0; i <= endIndex; i += 1) {
+        if(!sourceData[i]) {
+            return
+        }
         if(i === 0) {
             sourceData[i].transformY = 0
         } else {
@@ -30,6 +33,10 @@ function sourceDataInitail(data: SourceData[], retainHeightValue?: number, newVa
         data[index].offsetHeight = item.offsetHeight || retainHeightValue || 10
         data[index].transformY = pre ? (pre.transformY! + pre.offsetHeight!) : (retainHeightValue || 10) * index
     })
+    // splice rest item
+    if(newVal) {
+        data.splice(newVal.length, 1000000000)
+    }
     return (data as ItemProps[])
 }
 
@@ -57,22 +64,29 @@ function update(index: number, data: any, sourceData: ItemProps[]) {
     })
 }
 
-function reassignment(data: any[], sourceData: ItemProps[], currentData: ItemProps[], observer: Observer,initDataNum: number, retainHeightValue?: number) {
+function setSourceData(data: any[], sourceData: ItemProps[], currentData: ItemProps[], observer: Observer,initDataNum: number, retainHeightValue?: number) {
     sourceDataInitail(sourceData, retainHeightValue, data)
     resetCurrentData(sourceData, currentData, observer, initDataNum)
 }
 
 function resetCurrentData(sourceData: ItemProps[], currentData: ItemProps[], observer: Observer, initDataNum: number) {
-    let _startIndex = currentData[0] ? currentData[0].index : 0
+    let _startIndex = currentData[0] ? (currentData[0].index > sourceData[sourceData.length - 1].index ? 0 : currentData[0].index) : 0
     let _len = sourceData.length > initDataNum * 2 ? initDataNum * 2 : sourceData.length
 
     // unobserve
     observeHandle.unobserve(currentData, observer)
     for(let i = 0; i < _len; i += 1) {
-        currentData[i] = sourceData[_startIndex + i]
+        let _data = sourceData[_startIndex + i]
+
+        if(_data) {
+            currentData[i] = _data
+        }
     }
     if(currentData.length > _len) {
         currentData.splice(_len, 10000)
+    }
+    if(_startIndex === 0) {
+        document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTo(0, 0)
     }
     observeHandle.observe(currentData, observer)
 }
@@ -84,5 +98,5 @@ export default {
     del,
     add,
     update,
-    reassignment
+    setSourceData
 }

@@ -1,16 +1,15 @@
-let instance:Scroll
+let instance:Scroll | null
 
 class Scroll {
     scrolling: boolean = false
     ajusting:boolean = false // ajust scroll position when resize
+    onScrollEndFn: Function = () => {}
     constructor(onScrollEnd?: Function) {
-        document.querySelector('.fishUI-virtual-list-wrapper')!.addEventListener('scroll', (e) => {
-            this.scrolling = true
-            // scrolling
-            if(onScrollEnd) {
-                onScrollEnd()
-            }
-        })
+        if(onScrollEnd) {
+            this.onScrollEndFn = onScrollEnd
+            this.onScrollEndFn()
+        }
+        document.querySelector('.fishUI-virtual-list-wrapper')!.addEventListener('scroll', this.scrollEvent.bind(this))
     }
     static getInstance(onScrollEnd?: Function) {
         if(!instance) {
@@ -18,15 +17,26 @@ class Scroll {
         }
         return instance
     }
+    destroy() {
+        document.querySelector('.fishUI-virtual-list-wrapper')!.removeEventListener('scroll', this.scrollEvent)
+        instance = null
+    }
+    scrollEvent() {
+        this.scrolling = true
+        this.onScrollEndFn()
+    }
     scrollEn() {
         this.scrolling = false
         this.ajusting = false
+    }
+    locatePosition(position: number) {
+        this.ajustAction(position)
+        this.ajusting = true
     }
     ajustScrollPosition(offset: number) {
         let container = document.querySelector('.fishUI-virtual-list-wrapper')!
         let currentScrollPosition = container.scrollTop
 
-        this.ajusting = true
         if(offset) {
             this.ajustAction(currentScrollPosition + offset)
         }

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, defineExpose, watch } from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, onBeforeUnmount ,defineExpose, withDefaults, nextTick } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
-import { SourceData, ReactiveData, VirtualScrollExpose } from "./index.d"
+import Loading from './loading.vue'
+import { ReactiveData, VirtualScrollExpose, Direction } from "./index.d"
 import utils from './utils'
 import resizeInstance from './resizeInstance'
 import interSectionHandle from './interSectionHandle'
@@ -13,71 +14,59 @@ import observeHandle from './observeHandle'
 import scrollInstance from "./scrollInstance"
 
 interface Props {
-  sourceData: SourceData[]
   ScrollItemComponent: ComponentPublicInstance
   initDataNum: number
   retainHeightValue?: number
+  direction?: Direction
+  loadingFn?: Function
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+	initDataNum: 20,
+	direction: 'down'
+})
 const data = reactive<ReactiveData>({
   sourceData: [],
   currentData: [],
-  currentScrollTop: 0
 })
 let listHeight = ref(0) // calculate list height real time
-let locateIndex = ref(0)
 
 // throttle wrapper
 const onUpdatedThrottle = throttle(() => {
 	calculateTransFormY()
 }, 100)
-const intersectionThrottle = throttle((entry: IntersectionObserverEntry) => {
-	data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
-}, 100)
 
-// scroll end by debounce
+// quick scroll compensation
 const onScrollEnd = debounce(() => {
-	// quick scroll compensation
 	let currrentScrollTop = document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTop
 	let correctIndex = utils.getCurrentTopIndex(data.sourceData, currrentScrollTop)!
-	let scope = data.currentData.slice(2, data.currentData.length - 2)
+	let scope = data.currentData.slice(0, data.currentData.length)
 
 	scrollInstance().scrollEn()
-	// exclude top && bottom
-	if(correctIndex <= 2 || correctIndex >= data.sourceData.length - 2) {
-		return false
-	}
 	if(!scope.find(item => item.index === correctIndex)) {
 		locate(correctIndex)
 	}
-}, 50)
+}, 10)
 
-// resizeObserver & resizeObserver
+// resizeObserver
 const resizeObserver = new ResizeObserver((entries, observer) => {
 	for (const entry of entries) {
 		let {height} = entry.contentRect
 
-		// when remove item, height resize 0
 		if(!height) {
 			return false
 		}
-		// console.log(`执行resize的index: ${entry.target.getAttribute('data-index')}`)
-		resizeInstance.resizeHandle(data.currentData, data.sourceData, locateIndex.value)
+		resizeInstance.resizeHandle(data.currentData, data.sourceData)
 	}
 })
+// intersectionObserver
 const intersectionObserver = new IntersectionObserver((entries) => {
 	for(const entry of entries) {
-		if(entry.intersectionRatio === 1 &&  scrollInstance().scrolling && !scrollInstance().ajusting && !resizeInstance.resizeRenderStatus) {
-			intersectionThrottle(entry)
+		if(entry.intersectionRatio === 1 &&  scrollInstance().scrolling && !scrollInstance().ajusting) {
+			data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 		}
 	}
 }, {threshold: [0, 1]})
-
-// init data
-data.sourceData = dataHandle.sourceDataInitail(JSON.parse(JSON.stringify(props.sourceData)), props.retainHeightValue)
-data.currentData = utils.getInitData(data.sourceData, props.initDataNum)
-listHeight.value = data.sourceData[data.sourceData.length - 1]?.transformY || 0
 
 // life cycle
 onMounted(() => {
@@ -91,11 +80,9 @@ onUpdated(() => {
 		resizeInstance.setResizeStatus(false)
 	},0)
 })
-watch(() => props.sourceData, (currentValue, preValue) => {
-	if(preValue.length) {
-		console.warn(`do not change prop sourceData direct, use component expose funciton, e.g. del/update/add/reassignment`)
-	}
-}, {deep: true})
+onBeforeUnmount(() => {
+	scrollInstance().destroy()
+})
 
 // expose
 defineExpose<VirtualScrollExpose>({
@@ -111,39 +98,49 @@ defineExpose<VirtualScrollExpose>({
 	update: (index, _data) => {
 		dataHandle.update(index, _data, data.sourceData)
 	},
-	reassignment: (_data) => {
-		dataHandle.reassignment(_data, data.sourceData, data.currentData, {resizeObserver, intersectionObserver}, props.initDataNum, props.retainHeightValue)
+	setSourceData: (_data) => {
+		//if data.source.length === 0, initail render 
+		if(!data.sourceData.length) {
+			nextTick(() => {
+				// if direction === 'up', then scroll to bottom
+				props.direction === 'up' && locate(data.sourceData[data.sourceData.length - 1].index)
+			})
+		}
+		dataHandle.setSourceData(_data, data.sourceData, data.currentData, {resizeObserver, intersectionObserver}, props.initDataNum, props.retainHeightValue)
 		calculateTransFormY()
+	},
+	getData() {
+		return data.sourceData
 	}
 })
 
 function locate(index: number) {
+	if(!data.sourceData.length) {
+		return
+	}
 	// ajust row data
 	dataHandle.getSourceDataAfterResize(data.sourceData, index)
 
 	let item = data.sourceData[index]
 	let locatePosition = item.transformY
 
-	locateIndex.value = item.index!
-	scrollInstance().ajustAction(locatePosition) 
+	scrollInstance().locatePosition(locatePosition) 
 	data.currentData = interSectionHandle.interAction(index, props.initDataNum, data.currentData, data.sourceData, {intersectionObserver, resizeObserver})
 }
 
 function calculateTransFormY() {
-	let lastItem = data.currentData[data.currentData.length - 1]
+	let lastItem = data.sourceData[data.sourceData.length - 1]
 
 	if(lastItem) {
 		let height = lastItem.offsetHeight + lastItem.transformY
 
-		// only increases
-		if(height > listHeight.value) {
-			listHeight.value = height
-		}
+		listHeight.value = height
 	}
 }
 </script>
 <template>
 	<div class="fishUI-virtual-list-wrapper">
+		<Loading v-if="props.loadingFn && props.direction === 'up'"></Loading>
 		<ul class="fishUI-virtual-list" :style="{height: `${listHeight}px`}">
 			<template v-for="item in data.currentData" :key="item.index">
 				<li
@@ -158,6 +155,7 @@ function calculateTransFormY() {
 				</li>
 			</template>
 		</ul>
+		<Loading v-if="props.loadingFn && direction === 'down'"></Loading>
 	</div>
 </template>
 
@@ -167,7 +165,10 @@ function calculateTransFormY() {
 	height: 100%;
 	overflow-y: scroll;
 }
-.fishUI-virtual-list li {
+.fishUI-virtual-list {
+	position: relative;
+}
+.fishUI-virtual-list>li {
 	width: 100%;
 	list-style: none;
 }

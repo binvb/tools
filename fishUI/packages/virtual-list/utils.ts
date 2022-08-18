@@ -14,10 +14,14 @@ function sleep(period: number): Promise<boolean> {
     })
 }
 
+// get closed top item
 function getCurrentTopIndex(dataList: SourceData[], top: number) {
     let afterDataList = dataList.filter(item => item.transformY! > top)
 
-    return afterDataList[0].index
+    if(afterDataList.length) {
+        return afterDataList[0].index
+    }
+    return 0
 }
 
 export default {

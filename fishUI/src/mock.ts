@@ -50,6 +50,10 @@ export interface Message {
     name?: string;
     isVisible?: boolean;
     index?: number;
+    userInfo: {
+        name: string
+        age: number
+    }
 }
 /**
  * 
@@ -66,7 +70,11 @@ export function getMessage(size: number = 1):Message[] {
                 content: MESSAGES[utils.getRandom(0, MESSAGES.length)],
                 avatar: `/images/avatar${utils.getRandom(0, 3)}.jpg`,
                 time: new Date(),
-                name: NAME[utils.getRandom(0, NAME.length)]
+                name: NAME[utils.getRandom(0, NAME.length)],
+                userInfo: {
+                    name: 'vb',
+                    age: 17
+                }
             }
         )
     }
