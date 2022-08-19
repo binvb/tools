@@ -1,11 +1,5 @@
 import { SourceData, ItemProps } from "./index.d"
 
-function getInitData(dataList: SourceData[], initDataNum: number):ItemProps[]{
-    let _data = dataList.slice(0, initDataNum * 2)
-
-    return (_data as ItemProps[])
-}
-
 function sleep(period: number): Promise<boolean> {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -24,8 +18,30 @@ function getCurrentTopIndex(dataList: SourceData[], top: number) {
     return 0
 }
 
+function indexExist(index: any) {
+    if(typeof(index) === 'number') {
+        return true
+    }
+    return  false
+}
+
+function getScrollTop() {
+    return document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTop
+}
+
+function getViewPortOffsetHeight() {
+    return (document.querySelector('.fishUI-virtual-list-wrapper') as HTMLElement).offsetHeight
+}
+
+function getListHeight() {
+    return (document.querySelector('.fishUI-virtual-list') as HTMLElement).offsetHeight
+}
+
 export default {
-    getInitData,
+    indexExist,
     sleep,
-    getCurrentTopIndex
+    getCurrentTopIndex,
+    getScrollTop,
+    getViewPortOffsetHeight,
+    getListHeight
 }

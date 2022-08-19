@@ -9,7 +9,8 @@ export type SourceData = Partial<ItemProps> & {
 }
 export interface ReactiveData {
   sourceData:  ItemProps[],
-  currentData: ItemProps[]
+  currentData: ItemProps[],
+  loading: boolean
 }
 
 export interface Observer {
@@ -27,3 +28,5 @@ export type VirtualScrollExpose =  {
 }
 
 export type Direction = 'up' | 'down' 
+
+export type LoadingFn = () => Promise<SourceData[]>

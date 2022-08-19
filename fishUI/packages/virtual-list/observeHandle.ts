@@ -1,4 +1,5 @@
 import { Observer } from './index.d'
+import utils from './utils'
 
 function observe(data: any[], observer: Observer) {
     if(!data.length) {
@@ -6,7 +7,7 @@ function observe(data: any[], observer: Observer) {
     }
     setTimeout(() => {
         for(let i = 0, len = data.length; i < len; i += 1) {
-            if(!data[i] || !data[i].index) {
+            if(!data[i] || !utils.indexExist(data[i].index)) {
                 continue
             }
             let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)
@@ -26,7 +27,7 @@ function unobserve(data: any[], observer: Observer) {
         return false
     }
     for(let i = 0, len = data.length; i < len; i += 1) {
-        if(!data[i] || !data[i].index) {
+        if(!data[i] || !utils.indexExist(data[i].index)) {
             continue
         }
         let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)

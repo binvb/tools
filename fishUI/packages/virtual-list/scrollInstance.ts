@@ -1,5 +1,6 @@
-let instance:Scroll | null
+import utils from './utils'
 
+let instance:Scroll | null
 class Scroll {
     scrolling: boolean = false
     ajusting:boolean = false // ajust scroll position when resize
@@ -34,8 +35,7 @@ class Scroll {
         this.ajusting = true
     }
     ajustScrollPosition(offset: number) {
-        let container = document.querySelector('.fishUI-virtual-list-wrapper')!
-        let currentScrollPosition = container.scrollTop
+        let currentScrollPosition = utils.getScrollTop()
 
         if(offset) {
             this.ajustAction(currentScrollPosition + offset)

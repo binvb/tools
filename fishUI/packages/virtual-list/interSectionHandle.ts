@@ -1,48 +1,48 @@
 import observeHandle from './observeHandle'
-import { ItemProps, Observer } from "./index.d"
+import { ItemProps, Observer, ReactiveData } from "./index.d"
 
 interface PatchResult {
     before: number // need to fill scroll item number before
     after: number // need to fill scroll item number after
 }
 
-
-function interAction(currentIndex: number, initDataNum: number, currentList:ItemProps[], dataSource: ItemProps[], observer: Observer) {
+function interAction(currentIndex: number, initDataNum: number, data: Pick<ReactiveData, 'sourceData' | 'currentData'>, observer: Observer) {
+    let {sourceData, currentData} = data
     let screenNum = initDataNum
-    let topIndex = currentList[0].index!
-    let bottomIndex = currentList[currentList.length - 1].index!
+    let topIndex = currentData[0].index!
+    let bottomIndex = currentData[currentData.length - 1].index!
     let patchResult = patch(currentIndex, screenNum, topIndex, bottomIndex)
 
     if(patchResult.before > 0) {
         let _start = topIndex - patchResult.before
         let _end = topIndex
-        let _data = dataSource.slice(_start > 0 ? _start : 0, _end)
+        let _data = sourceData.slice(_start > 0 ? _start : 0, _end)
 
         if(_data.length > 2 * screenNum) {
             _data.splice(0, 2 * screenNum)
         }
-        currentList = _data.concat(currentList)
-        addDatainitPosition('before', currentList)
+        currentData = _data.concat(currentData)
+        addDatainitPosition('before', currentData)
         observeHandle.observe(_data, observer)
     } else {
-        observeHandle.unobserve(currentList.splice(0, Math.abs(patchResult.before)), observer)
+        observeHandle.unobserve(currentData.splice(0, Math.abs(patchResult.before)), observer)
     }
     // make sure after has more than full screens
     if(patchResult.after > 0) {
         let _start = bottomIndex
         let _end = bottomIndex + patchResult.after
-        let _data = dataSource.slice(_start + 1, _end + 1)
+        let _data = sourceData.slice(_start + 1, _end + 1)
 
         if(_data.length > screenNum) {
             _data = _data.slice(_data.length - 2 * screenNum, _data.length)
         }
-        currentList = currentList.concat(_data) 
-        addDatainitPosition('after', currentList)
+        currentData = currentData.concat(_data) 
+        addDatainitPosition('after', currentData)
         observeHandle.observe(_data, observer)
     } else {
-        observeHandle.unobserve(currentList.splice(2 * screenNum, 100000000000), observer)
+        observeHandle.unobserve(currentData.splice(2 * screenNum, 100000000000), observer)
     }
-    return currentList
+    return currentData
 }
 
 function patch(currentIndex: number, screenNum: number, topIndex: number, bottomIndex: number) {

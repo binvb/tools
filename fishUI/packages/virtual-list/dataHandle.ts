@@ -1,5 +1,8 @@
+import { nextTick } from 'vue'
 import observeHandle from './observeHandle'
-import { SourceData, ItemProps, Observer } from './index.d'
+import { SourceData, ItemProps, Observer, ReactiveData } from './index.d'
+import utils from './utils'
+import scrollInstance from "./scrollInstance"
 
 // when rendered, current data will update offsetHeight && transformY
 // when current data updated, avoid complex calculation, do not update all data all the time
@@ -19,6 +22,9 @@ function getSourceDataAfterResize(sourceData: SourceData[], endIndex:number) {
 
 function sourceDataInitail(data: SourceData[], retainHeightValue?: number, newVal?: SourceData[]){
     let _data = newVal?.length ? newVal : data
+    const currentScrollTop = utils.getScrollTop()
+    const wrapOffsetHeight = utils.getViewPortOffsetHeight()
+    const offsetHeight = utils.getListHeight()
 
     _data.forEach((item, index) => {
         let pre = data[index - 1]
@@ -37,10 +43,24 @@ function sourceDataInitail(data: SourceData[], retainHeightValue?: number, newVa
     if(newVal) {
         data.splice(newVal.length, 1000000000)
     }
+    // if in top/bottom, after data change, keep position
+    if(currentScrollTop === 0 && offsetHeight) {
+        nextTick(()=> {
+            scrollInstance().ajustAction(0)
+        })
+    }
+    if(currentScrollTop + wrapOffsetHeight >= offsetHeight && offsetHeight) {
+        nextTick(() => {
+            scrollInstance().ajustAction(1000000000)
+        })  
+    }
     return (data as ItemProps[])
 }
 
-function del(index: number | number[], sourceData: ItemProps[], currentData: ItemProps[], observer: Observer, initDataNum: number, retainHeightValue?: number) {
+function del(index: number | number[], data: ReactiveData, observer: Observer, props:any) {
+    const {initDataNum, retainHeightValue} = props
+    let {sourceData, currentData} = data
+
     if(index instanceof Array) {
         index.forEach(item => {
             sourceData.splice(item, 1)
@@ -49,13 +69,16 @@ function del(index: number | number[], sourceData: ItemProps[], currentData: Ite
         sourceData.splice(index, 1)
     }
     sourceDataInitail(sourceData, retainHeightValue)
-    resetCurrentData(sourceData, currentData, observer, initDataNum)
+    resetCurrentData(data, observer, props)
 }
 
-function add(index: number, insertData: any[], sourceData: ItemProps[], currentData: ItemProps[], observer: Observer, initDataNum: number, retainHeightValue?: number) {
+function add(index: number, insertData: any[], data: ReactiveData, observer: Observer, props:any) {
+    const {retainHeightValue} = props
+    let {sourceData} = data
+
     sourceData.splice(index,0, ...insertData)
     sourceDataInitail(sourceData, retainHeightValue)
-    resetCurrentData(sourceData, currentData, observer, initDataNum)
+    resetCurrentData(data, observer, props)
 }
 
 function update(index: number, data: any, sourceData: ItemProps[]) {
@@ -64,30 +87,39 @@ function update(index: number, data: any, sourceData: ItemProps[]) {
     })
 }
 
-function setSourceData(data: any[], sourceData: ItemProps[], currentData: ItemProps[], observer: Observer,initDataNum: number, retainHeightValue?: number) {
-    sourceDataInitail(sourceData, retainHeightValue, data)
-    resetCurrentData(sourceData, currentData, observer, initDataNum)
+function setSourceData(newData: any[], data: ReactiveData, observer: Observer, props: any) {
+    const {retainHeightValue} = props
+    let {sourceData} = data
+
+    sourceDataInitail(sourceData, retainHeightValue, newData)
+    resetCurrentData(data, observer, props)
 }
 
-function resetCurrentData(sourceData: ItemProps[], currentData: ItemProps[], observer: Observer, initDataNum: number) {
-    let _startIndex = currentData[0] ? (currentData[0].index > sourceData[sourceData.length - 1].index ? 0 : currentData[0].index) : 0
-    let _len = sourceData.length > initDataNum * 2 ? initDataNum * 2 : sourceData.length
+function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
+    const { initDataNum } = props
+    let {sourceData, currentData} = data
+    // if current Data exist, still use current Data, only change position
+    let startIndex = currentData[0] ? (currentData[0].index > sourceData[sourceData.length - 1].index ? 0 : currentData[0].index) : 0
+    let len = sourceData.length > initDataNum * 2 ? initDataNum * 2 : sourceData.length
+    const strollTop = utils.getScrollTop()
 
+    // if in top position, need start in sourceData[0]
+    if(strollTop === 0) {
+        startIndex = 0
+    }
     // unobserve
     observeHandle.unobserve(currentData, observer)
-    for(let i = 0; i < _len; i += 1) {
-        let _data = sourceData[_startIndex + i]
+    for(let i = 0; i < len; i += 1) {
+        let _data = sourceData[startIndex + i]
 
         if(_data) {
             currentData[i] = _data
         }
     }
-    if(currentData.length > _len) {
-        currentData.splice(_len, 10000)
+    if(currentData.length > len) {
+        currentData.splice(len, 10000)
     }
-    if(_startIndex === 0) {
-        document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTo(0, 0)
-    }
+    // observe
     observeHandle.observe(currentData, observer)
 }
 
