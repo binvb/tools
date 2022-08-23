@@ -1,6 +1,6 @@
 {
   "name": "@vb_he/vue-virtual-scroll",
-  "version": "1.0.0-beta.18",
+  "version": "1.0.0-beta.19",
   "author": "vb",
   "type": "module",
   "main": "./dist/fish-ui.js",

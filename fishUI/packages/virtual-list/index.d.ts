@@ -10,7 +10,9 @@ export type SourceData = Partial<ItemProps> & {
 export interface ReactiveData {
   sourceData:  ItemProps[],
   currentData: ItemProps[],
-  loading: boolean
+  loading: boolean,
+  scrolling: boolean,
+  ajusting: boolen
 }
 
 export interface Observer {

@@ -1,49 +1,37 @@
 import utils from './utils'
+import { ReactiveData } from "./index.d"
 
-let instance:Scroll | null
-class Scroll {
-    scrolling: boolean = false
-    ajusting:boolean = false // ajust scroll position when resize
-    onScrollEndFn: Function = () => {}
-    constructor(onScrollEnd?: Function) {
-        if(onScrollEnd) {
-            this.onScrollEndFn = onScrollEnd
-            this.onScrollEndFn()
-        }
-        document.querySelector('.fishUI-virtual-list-wrapper')!.addEventListener('scroll', this.scrollEvent.bind(this))
-    }
-    static getInstance(onScrollEnd?: Function) {
-        if(!instance) {
-            instance = new Scroll(onScrollEnd)
-        }
-        return instance
-    }
-    destroy() {
-        document.querySelector('.fishUI-virtual-list-wrapper')!.removeEventListener('scroll', this.scrollEvent)
-        instance = null
-    }
-    scrollEvent() {
-        this.scrolling = true
-        this.onScrollEndFn()
-    }
-    scrollEn() {
-        this.scrolling = false
-        this.ajusting = false
-    }
-    locatePosition(position: number) {
-        this.ajustAction(position)
-        this.ajusting = true
-    }
-    ajustScrollPosition(offset: number) {
-        let currentScrollPosition = utils.getScrollTop()
+// onScrollEnd is a debounce function
+export function scrollEvent(scrollDebounceFn: Function, data: ReactiveData) {
+    document.querySelector('.fishUI-virtual-list-wrapper')!.addEventListener('scroll', onScrolling.bind(null, data, scrollDebounceFn))
+}
 
-        if(offset) {
-            this.ajustAction(currentScrollPosition + offset)
-        }
+export function removeScrollEvent() {
+    document.querySelector('.fishUI-virtual-list-wrapper')!.removeEventListener('scroll', onScrolling.bind(null, undefined, undefined))
+}
+
+function onScrolling(data:ReactiveData | undefined, scrollDebounceFn?: Function) {
+    if(data) {
+        data.scrolling = true
     }
-    ajustAction(position: number) {
-        document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTo(0, position)
+    if(scrollDebounceFn) {
+        scrollDebounceFn()
     }
 }
 
-export default Scroll.getInstance
+export function locatePosition(position: number, data: ReactiveData) {
+    ajustAction(position)
+    data.ajusting = true
+}
+
+export function ajustScrollPosition(offset: number) {
+    let currentScrollPosition = utils.getScrollTop()
+
+    if(offset) {
+        ajustAction(currentScrollPosition + offset)
+    }
+}
+
+export function ajustAction(position: number) {
+    document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTo(0, position)
+}

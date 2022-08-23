@@ -2,11 +2,15 @@
 </script>
 
 <template>
-    <div>loading...</div>
+    <div><span class="loader"></span>loading...</div>
 </template>
 
 <style scoped>
-    div{
-        text-align: center;
-    }
+div{
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+    color: #666;
+}
 </style>

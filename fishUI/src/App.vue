@@ -16,7 +16,7 @@ const updateNum = ref(0)
 const virtualScroll = ref()
 const { proxy, appContext } = getCurrentInstance() as ComponentInternalInstance
 onMounted(() => {
-  virtualScroll.value.setSourceData(getMessage(50000))
+  virtualScroll.value.setSourceData(getMessage(40))
 })
 
 function toast() {
@@ -39,8 +39,8 @@ function add() {
 function loadData() {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(getMessage(20))
-    },1000)
+      resolve(getMessage(40))
+    },2000)
   })
 }
 function change() {
@@ -74,7 +74,7 @@ change()
         :ScrollItemComponent="ScrollItem"
         :retainHeightValue="100"
         :loadingFn="loadData"
-        direction="down"
+        direction="up"
         ref="virtualScroll"
       ></VirtualList>
     </div>
