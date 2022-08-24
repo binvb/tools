@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, onBeforeUnmount ,defineExpose, withDefaults, nextTick } from 'vue'
+import { ComponentPublicInstance, reactive, ref, onMounted, onUpdated, onBeforeUnmount, withDefaults, nextTick } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
@@ -30,7 +30,8 @@ const data = reactive<ReactiveData>({
   currentData: [],
   loading: false,
   scrolling: false,
-  ajusting: false
+  ajusting: false,
+  componentID: new Date().getTime() + utils.getRandom().toString()
 })
 let listHeight = ref(0) // calculate list height real time
 
@@ -41,7 +42,7 @@ const onUpdatedThrottle = throttle(() => {
 
 // quick scroll end compensation
 const checkIfCorrectPosition = debounce(() => {
-	let currrentScrollTop = utils.getScrollTop()
+	let currrentScrollTop = utils.getScrollTop(data)
 	let correctIndex = utils.getCurrentTopIndex(data.sourceData, currrentScrollTop)!
 	let scope = data.currentData.slice(0, data.currentData.length)
 
@@ -60,7 +61,7 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 		if(!height) {
 			return false
 		}
-		resizeHandle(data.currentData, data.sourceData)
+		resizeHandle(data)
 	}
 })
 // intersectionObserver
@@ -90,15 +91,15 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 
 // life cycle
 onMounted(() => {
-	observeHandle.observe(data.currentData, {resizeObserver, intersectionObserver})
+	observeHandle.observe(data.currentData, {resizeObserver, intersectionObserver}, data)
 	scrollEvent(checkIfCorrectPosition, data)
-	resizeHandle(data.currentData, data.sourceData)
+	resizeHandle(data)
 })
 onUpdated(() => {
 	onUpdatedThrottle()
 })
 onBeforeUnmount(() => {
-	removeScrollEvent()
+	removeScrollEvent(data)
 })
 
 // expose
@@ -158,9 +159,9 @@ function calculateTransFormY() {
 }
 </script>
 <template>
-	<div class="fishUI-virtual-list-wrapper">
+	<div :className="'fishUI-virtual-list_' + data.componentID" style="width: 100%; height: 100%; overflow-y: scroll">
 		<Loading v-if="props.loadingFn && props.direction === 'up' && data.loading"></Loading>
-		<ul class="fishUI-virtual-list" :style="{height: `${listHeight}px`}">
+		<ul class="fishUI-virtual-list__inner" :style="{height: `${listHeight}px`}">
 			<template v-for="item in data.currentData" :key="item.index">
 				<li
 					:data-index="item.index"
@@ -179,15 +180,10 @@ function calculateTransFormY() {
 </template>
 
 <style scoped>
-.fishUI-virtual-list-wrapper {
-	width: 100%;
-	height: 100%;
-	overflow-y: scroll;
-}
-.fishUI-virtual-list {
+.fishUI-virtual-list__inner {
 	position: relative;
 }
-.fishUI-virtual-list>li {
+.fishUI-virtual-list__inner>li {
 	width: 100%;
 	list-style: none;
 }

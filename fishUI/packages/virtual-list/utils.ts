@@ -1,4 +1,4 @@
-import { SourceData, ItemProps } from "./index.d"
+import { SourceData, ReactiveData } from "./index.d"
 
 function sleep(period: number): Promise<boolean> {
     return new Promise((resolve) => {
@@ -25,21 +25,26 @@ function indexExist(index: any) {
     return  false
 }
 
-function getScrollTop() {
-    return document.querySelector('.fishUI-virtual-list-wrapper')!.scrollTop
+function getRandom() {
+    return parseInt((Math.random() *10).toString())
 }
 
-function getViewPortOffsetHeight() {
-    return (document.querySelector('.fishUI-virtual-list-wrapper') as HTMLElement).offsetHeight
+function getScrollTop(data: ReactiveData) {
+    return document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.scrollTop
 }
 
-function getListHeight() {
-    return (document.querySelector('.fishUI-virtual-list') as HTMLElement).offsetHeight
+function getViewPortOffsetHeight(data: ReactiveData) {
+    return (document.querySelector(`.fishUI-virtual-list_${data.componentID}`) as HTMLElement).offsetHeight
+}
+
+function getListHeight(data: ReactiveData) {
+    return (document.querySelector(`.fishUI-virtual-list_${data.componentID} .fishUI-virtual-list__inner`) as HTMLElement).offsetHeight
 }
 
 export default {
     indexExist,
     sleep,
+    getRandom,
     getCurrentTopIndex,
     getScrollTop,
     getViewPortOffsetHeight,

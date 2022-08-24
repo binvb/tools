@@ -51,6 +51,7 @@ function change() {
 change()
 </script>
 <template>
+  <Hello name="vb"></Hello>
   <div class="myModule">
     <div>
       <input v-model="locate" type="number" placeholder="输入滚动元素索引值" />

@@ -12,7 +12,8 @@ export interface ReactiveData {
   currentData: ItemProps[],
   loading: boolean,
   scrolling: boolean,
-  ajusting: boolen
+  ajusting: boolen,
+  componentID: String
 }
 
 export interface Observer {

@@ -20,48 +20,46 @@ function getSourceDataAfterResize(sourceData: SourceData[], endIndex:number) {
     }
 }
 
-function sourceDataInitail(props: any, data: SourceData[], retainHeightValue?: number, newVal?: SourceData[]){
-    let _data = newVal?.length ? newVal : data
-    const currentScrollTop = utils.getScrollTop()
-    const wrapOffsetHeight = utils.getViewPortOffsetHeight()
-    const offsetHeight = utils.getListHeight()
+function sourceDataInitail(props: any, data: ReactiveData, retainHeightValue?: number, newVal?: SourceData[]){
+    const { sourceData } = data
+    let _data = newVal?.length ? newVal : sourceData
+    const currentScrollTop = utils.getScrollTop(data)
+    const wrapOffsetHeight = utils.getViewPortOffsetHeight(data)
+    const offsetHeight = utils.getListHeight(data)
 
     _data.forEach((item, index) => {
-        let pre = data[index - 1]
+        let pre = sourceData[index - 1]
 
-        Object.keys(item).forEach(key => {
-            if(!data[index]) {
-                data[index] = {}
-            }
-            data[index][key] = item[key]
-        })
-        data[index].index = index
-        data[index].offsetHeight = item.offsetHeight || retainHeightValue || 10
-        data[index].transformY = pre ? (pre.transformY! + pre.offsetHeight!) : (retainHeightValue || 10) * index
+        if(!sourceData[index]) {
+            sourceData[index] = ({...item} as ItemProps)
+        }
+        sourceData[index].index = index
+        sourceData[index].offsetHeight = item.offsetHeight || retainHeightValue || 10
+        sourceData[index].transformY = pre ? (pre.transformY! + pre.offsetHeight!) : (retainHeightValue || 10) * index
     })
     // splice rest item
     if(newVal) {
-        data.splice(newVal.length, 1000000000)
+        sourceData.splice(newVal.length, 1000000000)
     }
     // if in top/bottom(not loading mode), after data change, keep position
     // top
     if(currentScrollTop === 0 && offsetHeight && !(props.loadingFn && props.direction === 'up')) {
         nextTick(()=> {
-            ajustAction(0)
+            ajustAction(0, data)
         })
     }
     // bottom
     if(currentScrollTop + wrapOffsetHeight >= offsetHeight && offsetHeight && !(props.loadingFn && props.direction === 'down')) {
         nextTick(() => {
-            ajustAction(1000000000)
+            ajustAction(1000000000, data)
         })  
     }
-    return (data as ItemProps[])
+    return (sourceData as ItemProps[])
 }
 
 function del(index: number | number[], data: ReactiveData, observer: Observer, props:any) {
-    const {initDataNum, retainHeightValue} = props
-    let {sourceData, currentData} = data
+    const { retainHeightValue } = props
+    let { sourceData } = data
 
     if(index instanceof Array) {
         index.forEach(item => {
@@ -70,7 +68,7 @@ function del(index: number | number[], data: ReactiveData, observer: Observer, p
     } else {
         sourceData.splice(index, 1)
     }
-    sourceDataInitail(props, sourceData, retainHeightValue)
+    sourceDataInitail(props, data, retainHeightValue)
     resetCurrentData(data, observer, props)
 }
 
@@ -79,7 +77,7 @@ function add(index: number, insertData: any[], data: ReactiveData, observer: Obs
     let {sourceData} = data
 
     sourceData.splice(index,0, ...insertData)
-    sourceDataInitail(props, sourceData, retainHeightValue)
+    sourceDataInitail(props, data, retainHeightValue)
     resetCurrentData(data, observer, props)
 }
 
@@ -91,9 +89,8 @@ function update(index: number, data: any, sourceData: ItemProps[]) {
 
 function setSourceData(newData: any[], data: ReactiveData, observer: Observer, props: any) {
     const {retainHeightValue} = props
-    let {sourceData} = data
 
-    sourceDataInitail(props, sourceData, retainHeightValue, newData)
+    sourceDataInitail(props, data, retainHeightValue, newData)
     resetCurrentData(data, observer, props)
 }
 
@@ -103,14 +100,14 @@ function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
     // if current Data exist, still use current Data, only change position
     let startIndex = currentData[0] ? (currentData[0].index > sourceData[sourceData.length - 1].index ? 0 : currentData[0].index) : 0
     let len = sourceData.length > initDataNum * 2 ? initDataNum * 2 : sourceData.length
-    const strollTop = utils.getScrollTop()
+    const strollTop = utils.getScrollTop(data)
 
     // if in top position and not loading mode, need start in sourceData[0]
     if(strollTop === 0 && !props.loadingFn) {
         startIndex = 0
     }
     // unobserve
-    observeHandle.unobserve(currentData, observer)
+    observeHandle.unobserve(currentData, observer, data)
     for(let i = 0; i < len; i += 1) {
         let _data = sourceData[startIndex + i]
 
@@ -122,7 +119,7 @@ function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
         currentData.splice(len, 10000)
     }
     // observe
-    observeHandle.observe(currentData, observer)
+    observeHandle.observe(currentData, observer, data)
 }
 
 

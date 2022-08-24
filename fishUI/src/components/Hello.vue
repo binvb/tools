@@ -8,21 +8,17 @@ interface User{
 const props = defineProps<User>()
 const emit = defineEmits(['update:name', 'update:locate'])
 const virtualScroll = ref()
+const parent = ref()
 
 onMounted(() => {
-  virtualScroll.value.setSourceData(getMessage(40))
+  virtualScroll.value.setSourceData(getMessage(2))
+  let children = parent.value.querySelector('li')
+  console.log(children, 'check')
 })
-
-function itemClick() {
-  // emit('update:name', 'fish')
-  emit('update:locate', 10)
-}
 </script>
 <template>
-  <div>
-    <h1>name: {{name}}</h1>
-    <button @click="itemClick">button</button>
-          <VirtualList
+  <div ref="parent" style="display: flex; flex-direction: column;max-height: 300px;border: 1px solid #000;">
+      <VirtualList
         :initDataNum="20"
         :ScrollItemComponent="ScrollItem"
         :retainHeightValue="100"

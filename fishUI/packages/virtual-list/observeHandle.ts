@@ -1,16 +1,16 @@
-import { Observer } from './index.d'
+import { Observer, ReactiveData } from './index.d'
 import utils from './utils'
 
-function observe(data: any[], observer: Observer) {
-    if(!data.length) {
+function observe(observeList: any[], observer: Observer, data: ReactiveData) {
+    if(!observeList.length) {
         return false
     }
     setTimeout(() => {
-        for(let i = 0, len = data.length; i < len; i += 1) {
-            if(!data[i] || !utils.indexExist(data[i].index)) {
+        for(let i = 0, len = observeList.length; i < len; i += 1) {
+            if(!observeList[i] || !utils.indexExist(observeList[i].index)) {
                 continue
             }
-            let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)
+            let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list_${data.componentID} li[data-index="${observeList[i].index}"]`)
 
             if(!_el) {
                 continue 
@@ -22,15 +22,15 @@ function observe(data: any[], observer: Observer) {
     }, 0)
 }
 
-function unobserve(data: any[], observer: Observer) {
-    if(!data.length) {
+function unobserve(unobserveList: any[], observer: Observer, data: ReactiveData) {
+    if(!unobserveList.length) {
         return false
     }
-    for(let i = 0, len = data.length; i < len; i += 1) {
-        if(!data[i] || !utils.indexExist(data[i].index)) {
+    for(let i = 0, len = unobserveList.length; i < len; i += 1) {
+        if(!unobserveList[i] || !utils.indexExist(unobserveList[i].index)) {
             continue
         }
-        let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list li[data-index="${data[i].index}"]`)
+        let _el: HTMLElement | null = document.querySelector(`.fishUI-virtual-list_${data.componentID} li[data-index="${unobserveList[i].index}"]`)
 
         if(!_el) {
             continue 
