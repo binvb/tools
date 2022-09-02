@@ -1,3 +1,4 @@
+import { ComponentPublicInstance } from 'vue'
 export interface ItemProps{
   [key: string]: any,
   index: number,
@@ -13,7 +14,9 @@ export interface ReactiveData {
   loading: boolean,
   scrolling: boolean,
   ajusting: boolen,
-  componentID: String
+  componentID: String,
+  listHeight: number,
+  nomoreData: boolean
 }
 
 export interface Observer {
@@ -32,4 +35,8 @@ export type VirtualScrollExpose =  {
 
 export type Direction = 'up' | 'down' 
 
-export type LoadingFn = () => Promise<SourceData[]>
+export type LoadingOptions = {
+  loadingFn: () => Promise<SourceData[]>,
+  loadingComponent?: ComponentPublicInstance,
+  nomoreData?: boolean
+}

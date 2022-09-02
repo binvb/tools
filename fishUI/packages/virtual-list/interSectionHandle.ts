@@ -6,7 +6,7 @@ interface PatchResult {
     after: number // need to fill scroll item number after
 }
 
-function interAction(currentIndex: number, initDataNum: number, data: Pick<ReactiveData, 'sourceData' | 'currentData'>, observer: Observer) {
+function interAction(currentIndex: number, initDataNum: number, data: ReactiveData, observer: Observer) {
     let {sourceData, currentData} = data
     let screenNum = initDataNum
     let topIndex = currentData[0].index!
@@ -23,9 +23,9 @@ function interAction(currentIndex: number, initDataNum: number, data: Pick<React
         }
         currentData = _data.concat(currentData)
         addDatainitPosition('before', currentData)
-        observeHandle.observe(_data, observer)
+        observeHandle.observe(_data, observer, data)
     } else {
-        observeHandle.unobserve(currentData.splice(0, Math.abs(patchResult.before)), observer)
+        observeHandle.unobserve(currentData.splice(0, Math.abs(patchResult.before)), observer, data)
     }
     // make sure after has more than full screens
     if(patchResult.after > 0) {
@@ -38,9 +38,9 @@ function interAction(currentIndex: number, initDataNum: number, data: Pick<React
         }
         currentData = currentData.concat(_data) 
         addDatainitPosition('after', currentData)
-        observeHandle.observe(_data, observer)
+        observeHandle.observe(_data, observer, data)
     } else {
-        observeHandle.unobserve(currentData.splice(2 * screenNum, 100000000000), observer)
+        observeHandle.unobserve(currentData.splice(2 * screenNum, 100000000000), observer, data)
     }
     return currentData
 }

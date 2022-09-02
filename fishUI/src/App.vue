@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, reactive, getCurrentInstance, ComponentInternalInstance, watch, computed,  onMounted, shallowRef } from 'vue'
+import { ref, reactive, getCurrentInstance, ComponentInternalInstance, watch, computed,  onMounted, provide } from 'vue'
 import ScrollItem from "./components/ScrollItem.vue";
-import Hello from './components/Hello.vue'
+import Loading from './components/loading.vue'
 import { getMessage } from "./mock";
-import {useCounterStore} from './store/index'
 
 const data = reactive({
     userList: getMessage(100),
@@ -15,9 +14,14 @@ const delNum = ref(0)
 const updateNum = ref(0)
 const virtualScroll = ref()
 const { proxy, appContext } = getCurrentInstance() as ComponentInternalInstance
-onMounted(() => {
-  virtualScroll.value.setSourceData(getMessage(40))
+const loadingOptions = reactive({
+  loadingFn: loadData,
 })
+onMounted(async() => {
+  virtualScroll.value.setSourceData(await loadData())
+})
+
+provide<Function>('add', add)
 
 function toast() {
   // (proxy as ComponentPublicInstance<{$toast: (message: string, duration?: number) => {}}>).$toast('test in setup')
@@ -39,9 +43,12 @@ function add() {
 function loadData() {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(getMessage(40))
+      resolve(getMessage(100000))
     },2000)
   })
+}
+async function updateAll() {
+  virtualScroll.value.setSourceData(await loadData())
 }
 function change() {
   // setTimeout(() => {
@@ -51,7 +58,6 @@ function change() {
 change()
 </script>
 <template>
-  <Hello name="vb"></Hello>
   <div class="myModule">
     <div>
       <input v-model="locate" type="number" placeholder="输入滚动元素索引值" />
@@ -74,7 +80,7 @@ change()
         :initDataNum="20"
         :ScrollItemComponent="ScrollItem"
         :retainHeightValue="100"
-        :loadingFn="loadData"
+        :loadingOptions="loadingOptions"
         direction="up"
         ref="virtualScroll"
       ></VirtualList>

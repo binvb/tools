@@ -1,8 +1,9 @@
 import { nextTick } from 'vue'
+import { nanoid } from 'nanoid'
 import observeHandle from './observeHandle'
 import { SourceData, ItemProps, Observer, ReactiveData } from './index.d'
 import utils from './utils'
-import { ajustAction } from './scrollInstance'
+import { scrollToBottom } from './scrollInstance'
 
 // when rendered, current data will update offsetHeight && transformY
 // when current data updated, avoid complex calculation, do not update all data all the time
@@ -20,18 +21,15 @@ function getSourceDataAfterResize(sourceData: SourceData[], endIndex:number) {
     }
 }
 
-function sourceDataInitail(props: any, data: ReactiveData, retainHeightValue?: number, newVal?: SourceData[]){
+function sourceDataInitail(data: ReactiveData, retainHeightValue?: number, newVal?: SourceData[]){
     const { sourceData } = data
     let _data = newVal?.length ? newVal : sourceData
-    const currentScrollTop = utils.getScrollTop(data)
-    const wrapOffsetHeight = utils.getViewPortOffsetHeight(data)
-    const offsetHeight = utils.getListHeight(data)
 
     _data.forEach((item, index) => {
         let pre = sourceData[index - 1]
 
         if(!sourceData[index]) {
-            sourceData[index] = ({...item} as ItemProps)
+            sourceData[index] = ({nanoid: nanoid(), ...item} as ItemProps)
         }
         sourceData[index].index = index
         sourceData[index].offsetHeight = item.offsetHeight || retainHeightValue || 10
@@ -41,19 +39,7 @@ function sourceDataInitail(props: any, data: ReactiveData, retainHeightValue?: n
     if(newVal) {
         sourceData.splice(newVal.length, 1000000000)
     }
-    // if in top/bottom(not loading mode), after data change, keep position
-    // top
-    if(currentScrollTop === 0 && offsetHeight && !(props.loadingFn && props.direction === 'up')) {
-        nextTick(()=> {
-            ajustAction(0, data)
-        })
-    }
-    // bottom
-    if(currentScrollTop + wrapOffsetHeight >= offsetHeight && offsetHeight && !(props.loadingFn && props.direction === 'down')) {
-        nextTick(() => {
-            ajustAction(1000000000, data)
-        })  
-    }
+
     return (sourceData as ItemProps[])
 }
 
@@ -68,17 +54,23 @@ function del(index: number | number[], data: ReactiveData, observer: Observer, p
     } else {
         sourceData.splice(index, 1)
     }
-    sourceDataInitail(props, data, retainHeightValue)
+    sourceDataInitail(data, retainHeightValue)
     resetCurrentData(data, observer, props)
 }
 
 function add(index: number, insertData: any[], data: ReactiveData, observer: Observer, props:any) {
     const {retainHeightValue} = props
     let {sourceData} = data
+    let isScrollBottom = utils.ifScrollBottom(data)
 
     sourceData.splice(index,0, ...insertData)
-    sourceDataInitail(props, data, retainHeightValue)
+    sourceDataInitail(data, retainHeightValue)
     resetCurrentData(data, observer, props)
+    nextTick(() => {
+        if(isScrollBottom && props.loadingOptions && props.direction === 'up') {
+            scrollToBottom(data)
+        }
+    })
 }
 
 function update(index: number, data: any, sourceData: ItemProps[]) {
@@ -90,13 +82,18 @@ function update(index: number, data: any, sourceData: ItemProps[]) {
 function setSourceData(newData: any[], data: ReactiveData, observer: Observer, props: any) {
     const {retainHeightValue} = props
 
-    sourceDataInitail(props, data, retainHeightValue, newData)
+    sourceDataInitail(data, retainHeightValue, newData)
     resetCurrentData(data, observer, props)
 }
 
 function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
     const { initDataNum } = props
     let {sourceData, currentData} = data
+
+    if(!sourceData.length) {
+        currentData.splice(0, 10000)
+        return 
+    }
     // if current Data exist, still use current Data, only change position
     let startIndex = currentData[0] ? (currentData[0].index > sourceData[sourceData.length - 1].index ? 0 : currentData[0].index) : 0
     let len = sourceData.length > initDataNum * 2 ? initDataNum * 2 : sourceData.length

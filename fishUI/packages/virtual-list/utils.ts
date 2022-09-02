@@ -41,6 +41,18 @@ function getListHeight(data: ReactiveData) {
     return (document.querySelector(`.fishUI-virtual-list_${data.componentID} .fishUI-virtual-list__inner`) as HTMLElement).offsetHeight
 }
 
+function ifScrollBottom(data: ReactiveData) {
+    const scrollTop = getScrollTop(data)
+    const viewPortOffsetHeight = getViewPortOffsetHeight(data)
+    const listHeight = getListHeight(data)
+
+    if(scrollTop + viewPortOffsetHeight >= listHeight) {
+        return true
+    }
+
+    return false
+}
+
 export default {
     indexExist,
     sleep,
@@ -48,5 +60,6 @@ export default {
     getCurrentTopIndex,
     getScrollTop,
     getViewPortOffsetHeight,
-    getListHeight
+    getListHeight,
+    ifScrollBottom
 }

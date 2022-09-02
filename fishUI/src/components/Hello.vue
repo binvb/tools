@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import ScrollItem from './ScrollItem.vue'
 import { getMessage } from "./../mock";
 interface User{
@@ -9,6 +9,7 @@ const props = defineProps<User>()
 const emit = defineEmits(['update:name', 'update:locate'])
 const virtualScroll = ref()
 const parent = ref()
+const myFn = inject<Function>('add', () => {})
 
 onMounted(() => {
   virtualScroll.value.setSourceData(getMessage(2))

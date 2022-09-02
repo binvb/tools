@@ -24,6 +24,10 @@ export function locatePosition(position: number, data: ReactiveData) {
     data.ajusting = true
 }
 
+export function scrollToBottom(data: ReactiveData) {
+    ajustAction(10000000000000000, data)
+}
+
 export function ajustScrollPosition(offset: number, data: ReactiveData) {
     let currentScrollPosition = utils.getScrollTop(data)
 
