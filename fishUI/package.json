@@ -1,9 +1,13 @@
 {
   "name": "@vb_he/vue-virtual-scroll",
   "version": "1.0.0-beta.28",
-  "author": "vb",
   "type": "module",
   "main": "./dist/fish-ui.js",
+  "author": {
+    "name": "vb",
+    "email": "wenbin.vb@gmail.com"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "vite --config ./build/pack-all.js",
     "build": "vue-tsc --noEmit &&vite build --config ./build/pack-all.js",

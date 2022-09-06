@@ -21,7 +21,7 @@ function getSourceDataAfterResize(sourceData: SourceData[], endIndex:number) {
     }
 }
 
-function sourceDataInitail(data: ReactiveData, retainHeightValue?: number, newVal?: SourceData[]){
+function sourceDataInitail(data: ReactiveData, retainHeightValue: number, newVal?: SourceData[]){
     const { sourceData } = data
     let _data = newVal?.length ? newVal : sourceData
 
@@ -32,8 +32,8 @@ function sourceDataInitail(data: ReactiveData, retainHeightValue?: number, newVa
             sourceData[index] = ({nanoid: nanoid(), ...item} as ItemProps)
         }
         sourceData[index].index = index
-        sourceData[index].offsetHeight = item.offsetHeight || retainHeightValue || 10
-        sourceData[index].transformY = pre ? (pre.transformY! + pre.offsetHeight!) : (retainHeightValue || 10) * index
+        sourceData[index].offsetHeight = item.offsetHeight || retainHeightValue
+        sourceData[index].transformY = pre ? (pre.transformY! + pre.offsetHeight!) : retainHeightValue * index
     })
     // splice rest item
     if(newVal) {

@@ -1,4 +1,4 @@
-import { SourceData, ReactiveData } from "./index.d"
+import { SourceData, ReactiveData, ItemProps } from "./index.d"
 
 function sleep(period: number): Promise<boolean> {
     return new Promise((resolve) => {
@@ -16,6 +16,47 @@ function getCurrentTopIndex(dataList: SourceData[], top: number) {
         return afterDataList[0].index
     }
     return 0
+}
+
+async function calculateListHeight(data: ItemProps[], preItem?: ItemProps, cb?: Function) {
+    const range = 1000
+
+    for(let i = 0; i < range; i += 1){
+        if(!data[i]) {
+            cb && cb()
+            return false
+        }
+        if(i === 0) {
+            if(!preItem) {
+                continue
+            }
+            data[0].transformY = preItem.transformY + preItem.offsetHeight
+        } else {
+            data[i].transformY = data[i - 1].transformY + data[i - 1].offsetHeight
+        }
+    }
+
+    setTimeout(() => {
+        calculateListHeight(data.slice(range, data.length), data[range], cb)
+    }, 10)
+}
+
+function calculateListHeightTask(data: ItemProps[], preItem: ItemProps) {
+    return new Promise((resolve) => {
+        for(let i = 0, len = data.length; i < len; i += 1) {
+            if(i === 0) {
+                if(!preItem) {
+                    continue
+                }
+                data[0].transformY = preItem.transformY + preItem.offsetHeight
+            } else {
+                data[i].transformY = data[i - 1].transformY + data[i - 1].offsetHeight
+            }
+        }
+        setTimeout(() => {
+            resolve(true)
+        }, 100)
+    })
 }
 
 function indexExist(index: any) {
@@ -61,5 +102,6 @@ export default {
     getScrollTop,
     getViewPortOffsetHeight,
     getListHeight,
-    ifScrollBottom
+    ifScrollBottom,
+    calculateListHeight
 }

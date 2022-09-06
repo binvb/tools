@@ -5,7 +5,7 @@ import 'intersection-observer'
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 import Loading from './loading.vue'
-import { ReactiveData, VirtualScrollExpose, Direction, LoadingOptions } from "./index.d"
+import { ReactiveData, VirtualScrollExpose, Direction, LoadingOptions, ItemProps } from "./index.d"
 import utils from './utils'
 import resizeHandle from './resizeHandle'
 import interSectionHandle from './interSectionHandle'
@@ -23,6 +23,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
 	initDataNum: 20,
+	retainHeightValue: 100,
 	direction: 'down'
 })
 
@@ -37,10 +38,9 @@ const data = reactive<ReactiveData>({
   nomoreData: false
 })
 
-// throttle wrapper
-const onUpdatedThrottle = throttle(() => {
-	calculateTransFormY()
-}, 100)
+const resizeThrottle = throttle(() => {
+	utils.calculateListHeight(data.sourceData, undefined, setListHeight)
+}, 1000)
 
 // quick scroll end compensation
 const checkIfCorrectPosition = debounce(() => {
@@ -74,6 +74,7 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 
 		if(entry.intersectionRatio === 1 &&  data.scrolling && !data.ajusting) {
 			data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data, {intersectionObserver, resizeObserver})
+			resizeThrottle()
 		}
 		// if it's last item and loading mode, should trigger loadingFn
 		if(entry.intersectionRatio > 0 && lastIndex === +currentIndex! && data.scrolling && !data.ajusting) {
@@ -90,9 +91,6 @@ onMounted(() => {
 	scrollEvent(checkIfCorrectPosition, data)
 	resizeHandle(data)
 })
-onUpdated(() => {
-	onUpdatedThrottle()
-})
 onBeforeUnmount(() => {
 	removeScrollEvent(data)
 })
@@ -102,11 +100,9 @@ defineExpose<VirtualScrollExpose>({
 	locate,
 	del: (index) => {
 		dataHandle.del(index, data, {resizeObserver, intersectionObserver}, props)
-		calculateTransFormY()
 	},
 	add: (index, insertData) => {
 		dataHandle.add(index, insertData, data, {resizeObserver, intersectionObserver}, props)
-		calculateTransFormY()
 	},
 	update: (index, _data) => {
 		dataHandle.update(index, _data, data.sourceData)
@@ -115,8 +111,8 @@ defineExpose<VirtualScrollExpose>({
 		data.sourceData = []
 		//initail render
 		dataHandle.setSourceData(_data, data, {resizeObserver, intersectionObserver}, props)
-		calculateTransFormY()
 		nextTick(() => {
+			setListHeight()
 			// if direction === 'up', then scroll to bottom
 			if(props.direction === 'up' && props.loadingOptions) {
 				scrollToBottom(data)
@@ -125,6 +121,18 @@ defineExpose<VirtualScrollExpose>({
 	},
 	getData() {
 		return data.sourceData
+	},
+	getCurrentViewPortData() {
+		const scrollTop = utils.getScrollTop(data) // range[scrollTop, scrollTop + viewportOffsetHeight]
+		const viewPortOffset = utils.getViewPortOffsetHeight(data)
+		const _data:ItemProps[] = []
+
+		data.currentData.forEach(item => {
+			if((item.transformY + item.offsetHeight >= scrollTop) && (item.transformY <= scrollTop + viewPortOffset)) {
+				_data.push(item)
+			}
+		})
+		return _data
 	}
 })
 
@@ -142,7 +150,7 @@ function locate(index: number) {
 	data.currentData = interSectionHandle.interAction(index, props.initDataNum, data, {intersectionObserver, resizeObserver})
 }
 
-function calculateTransFormY() {
+function setListHeight() {
 	let lastItem = data.sourceData[data.sourceData.length - 1]
 
 	if(lastItem) {
@@ -189,6 +197,7 @@ function loadData(lastIndex: number) {
 <style scoped>
 .fishUI-virtual-list__inner {
 	position: relative;
+	margin: 0;
 }
 .fishUI-virtual-list__inner>li {
 	width: 100%;

@@ -30,7 +30,8 @@ export type VirtualScrollExpose =  {
   add: (index: number, insertData: any[]) => void
   update: (index: number, data: any) => void
   setSourceData: (data: any[]) => void
-  getData: () => any[]
+  getData: () => ItemProps[],
+  getCurrentViewPortData: () => ItemProps[]
 }
 
 export type Direction = 'up' | 'down' 

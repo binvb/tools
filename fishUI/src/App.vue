@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, getCurrentInstance, ComponentInternalInstance, watch, computed,  onMounted, provide } from 'vue'
-import ScrollItem from "./components/ScrollItem.vue";
-import Loading from './components/loading.vue'
-import { getMessage } from "./mock";
+import ScrollItem from "./components/ScrollItem.vue"
+import { getMessage } from "./mock"
 
 const data = reactive({
-    userList: getMessage(100),
     userSet: new Set(),
     addNum: 0
 })
@@ -23,11 +21,6 @@ onMounted(async() => {
 
 provide<Function>('add', add)
 
-function toast() {
-  // (proxy as ComponentPublicInstance<{$toast: (message: string, duration?: number) => {}}>).$toast('test in setup')
-  proxy?.$toast('test', 50000)
-}
-
 function submit() {
   virtualScroll.value?.locate(locate.value)
 }
@@ -43,19 +36,10 @@ function add() {
 function loadData() {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(getMessage(100000))
-    },2000)
+      resolve(getMessage(50000))
+    },1000)
   })
 }
-async function updateAll() {
-  virtualScroll.value.setSourceData(await loadData())
-}
-function change() {
-  // setTimeout(() => {
-  //   virtualScroll.value?.setSourceData(getMessage(200))
-  // }, 10000)
-}
-change()
 </script>
 <template>
   <div class="myModule">
@@ -80,8 +64,6 @@ change()
         :initDataNum="20"
         :ScrollItemComponent="ScrollItem"
         :retainHeightValue="100"
-        :loadingOptions="loadingOptions"
-        direction="up"
         ref="virtualScroll"
       ></VirtualList>
     </div>
