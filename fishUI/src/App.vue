@@ -13,7 +13,7 @@ const updateNum = ref(0)
 const virtualScroll = ref()
 const { proxy, appContext } = getCurrentInstance() as ComponentInternalInstance
 const loadingOptions = reactive({
-  loadingFn: loadData,
+  loadingFn: loadData
 })
 onMounted(async() => {
   virtualScroll.value.setSourceData(await loadData())
@@ -36,7 +36,7 @@ function add() {
 function loadData() {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(getMessage(50000))
+      resolve(getMessage(100))
     },1000)
   })
 }
@@ -64,6 +64,8 @@ function loadData() {
         :initDataNum="20"
         :ScrollItemComponent="ScrollItem"
         :retainHeightValue="100"
+        :loadingOptions="loadingOptions"
+        direction="up"
         ref="virtualScroll"
       ></VirtualList>
     </div>

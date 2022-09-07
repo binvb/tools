@@ -41,22 +41,11 @@ async function calculateListHeight(data: ItemProps[], preItem?: ItemProps, cb?: 
     }, 10)
 }
 
-function calculateListHeightTask(data: ItemProps[], preItem: ItemProps) {
-    return new Promise((resolve) => {
-        for(let i = 0, len = data.length; i < len; i += 1) {
-            if(i === 0) {
-                if(!preItem) {
-                    continue
-                }
-                data[0].transformY = preItem.transformY + preItem.offsetHeight
-            } else {
-                data[i].transformY = data[i - 1].transformY + data[i - 1].offsetHeight
-            }
-        }
-        setTimeout(() => {
-            resolve(true)
-        }, 100)
-    })
+function getCorrectCurrentData(data: ReactiveData, correctIndex: number, props:any ) {
+    const initDataNum = props.initDataNum || 20
+    const start = (correctIndex - initDataNum) || 0
+
+    return data.sourceData.slice(start, start + 2 * initDataNum)
 }
 
 function indexExist(index: any) {
@@ -82,12 +71,13 @@ function getListHeight(data: ReactiveData) {
     return (document.querySelector(`.fishUI-virtual-list_${data.componentID} .fishUI-virtual-list__inner`) as HTMLElement).offsetHeight
 }
 
-function ifScrollBottom(data: ReactiveData) {
+function ifBottomPosition(data: ReactiveData) {
     const scrollTop = getScrollTop(data)
     const viewPortOffsetHeight = getViewPortOffsetHeight(data)
     const listHeight = getListHeight(data)
 
-    if(scrollTop + viewPortOffsetHeight >= listHeight) {
+    // +1 to fix 0.5px bug
+    if(scrollTop + viewPortOffsetHeight + 1 >= listHeight) {
         return true
     }
 
@@ -102,6 +92,7 @@ export default {
     getScrollTop,
     getViewPortOffsetHeight,
     getListHeight,
-    ifScrollBottom,
-    calculateListHeight
+    ifBottomPosition,
+    calculateListHeight,
+    getCorrectCurrentData
 }

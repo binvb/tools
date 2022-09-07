@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComponentPublicInstance, reactive, onMounted, onUpdated, onBeforeUnmount, withDefaults, nextTick } from 'vue'
+import { ComponentPublicInstance, reactive, onMounted, onBeforeUnmount, withDefaults, nextTick } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
@@ -14,11 +14,11 @@ import observeHandle from './observeHandle'
 import { scrollEvent, removeScrollEvent, locatePosition, scrollToBottom } from "./scrollInstance"
 
 interface Props {
-  ScrollItemComponent: ComponentPublicInstance
-  initDataNum: number
-  retainHeightValue?: number
-  direction?: Direction
-  loadingOptions?: LoadingOptions
+	ScrollItemComponent: ComponentPublicInstance
+	initDataNum: number
+	retainHeightValue?: number
+	direction?: Direction
+	loadingOptions?: LoadingOptions
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,22 +28,22 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const data = reactive<ReactiveData>({
-  sourceData: [],
-  currentData: [],
-  loading: false,
-  scrolling: false,
-  ajusting: false,
-  componentID: new Date().getTime() + utils.getRandom().toString(),
-  listHeight: 0, // calculate list height real time
-  nomoreData: false
+	sourceData: [],
+	currentData: [],
+	loading: false,
+	scrolling: false,
+	ajusting: false,
+	componentID: new Date().getTime() + utils.getRandom().toString(), 
+	listHeight: 0,
+	mode: props.loadingOptions ? 'loading' : 'normal'
 })
 
 const resizeThrottle = throttle(() => {
 	utils.calculateListHeight(data.sourceData, undefined, setListHeight)
-}, 1000)
+}, 200)
 
 // quick scroll end compensation
-const checkIfCorrectPosition = debounce(() => {
+const checkIfCorrectCurrentData = debounce(() => {
 	let currrentScrollTop = utils.getScrollTop(data)
 	let correctIndex = utils.getCurrentTopIndex(data.sourceData, currrentScrollTop)!
 	let scope = data.currentData.slice(0, data.currentData.length)
@@ -51,7 +51,8 @@ const checkIfCorrectPosition = debounce(() => {
 	data.ajusting = false
 	data.scrolling = false
 	if(!scope.find(item => item.index === correctIndex)) {
-		locate(correctIndex)
+		data.currentData = utils.getCorrectCurrentData(data, correctIndex, props)
+		dataHandle.setSourceData(data.sourceData, data, {intersectionObserver, resizeObserver}, props)
 	}
 }, 10)
 
@@ -64,6 +65,7 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 			return false
 		}
 		resizeHandle(data)
+		resizeThrottle()
 	}
 })
 // intersectionObserver
@@ -72,7 +74,7 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 		const currentIndex = entry.target.getAttribute('data-index')
 		const lastIndex = props.direction === 'up' ? 0 : data.sourceData[data.sourceData.length - 1].index
 
-		if(entry.intersectionRatio === 1 &&  data.scrolling && !data.ajusting) {
+		if(entry.intersectionRatio > 0 &&  data.scrolling && !data.ajusting) {
 			data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data, {intersectionObserver, resizeObserver})
 			resizeThrottle()
 		}
@@ -88,7 +90,7 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 // life cycle
 onMounted(() => {
 	observeHandle.observe(data.currentData, {resizeObserver, intersectionObserver}, data)
-	scrollEvent(checkIfCorrectPosition, data)
+	scrollEvent(checkIfCorrectCurrentData, data)
 	resizeHandle(data)
 })
 onBeforeUnmount(() => {
@@ -111,13 +113,7 @@ defineExpose<VirtualScrollExpose>({
 		data.sourceData = []
 		//initail render
 		dataHandle.setSourceData(_data, data, {resizeObserver, intersectionObserver}, props)
-		nextTick(() => {
-			setListHeight()
-			// if direction === 'up', then scroll to bottom
-			if(props.direction === 'up' && props.loadingOptions) {
-				scrollToBottom(data)
-			}
-		})
+		setListHeight()
 	},
 	getData() {
 		return data.sourceData
@@ -136,12 +132,13 @@ defineExpose<VirtualScrollExpose>({
 	}
 })
 
+// methods 
 function locate(index: number) {
 	if(!data.sourceData.length) {
 		return
 	}
 	// ajust row data
-	dataHandle.getSourceDataAfterResize(data.sourceData, index)
+	dataHandle.resetSourceDataBeforeLocate(data.sourceData, index)
 
 	let item = data.sourceData[index]
 	let position = item.transformY
@@ -153,6 +150,12 @@ function locate(index: number) {
 function setListHeight() {
 	let lastItem = data.sourceData[data.sourceData.length - 1]
 
+	// keep bottom compensation
+	if(props.loadingOptions && props.direction === 'up' && utils.ifBottomPosition(data)) {
+		nextTick(() => {
+			scrollToBottom(data)
+		})
+	}
 	if(lastItem) {
 		let height = lastItem.offsetHeight + lastItem.transformY
 
@@ -164,7 +167,7 @@ function loadData(lastIndex: number) {
 	props.loadingOptions!.loadingFn().then((res) => {
 		data.loading = false
 		dataHandle.add(lastIndex, res, data, {resizeObserver, intersectionObserver}, props)
-		// if direction === up, need to locate before position
+		// when loaded data, if direction === up, need to locate before position
 		locate(data.currentData[data.currentData.length - 1].index)
 	})
 }
@@ -202,5 +205,9 @@ function loadData(lastIndex: number) {
 .fishUI-virtual-list__inner>li {
 	width: 100%;
 	list-style: none;
+}
+
+.fishUI-virtual-list__inner>ul {
+	padding: 0;
 }
 </style>

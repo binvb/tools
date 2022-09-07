@@ -13,8 +13,6 @@ const myFn = inject<Function>('add', () => {})
 
 onMounted(() => {
   virtualScroll.value.setSourceData(getMessage(2))
-  let children = parent.value.querySelector('li')
-  console.log(children, 'check')
 })
 </script>
 <template>

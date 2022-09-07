@@ -8,7 +8,7 @@ import { scrollToBottom } from './scrollInstance'
 // when rendered, current data will update offsetHeight && transformY
 // when current data updated, avoid complex calculation, do not update all data all the time
 // only update in some case
-function getSourceDataAfterResize(sourceData: SourceData[], endIndex:number) {
+function resetSourceDataBeforeLocate(sourceData: SourceData[], endIndex:number) {
     for(let i = 0; i <= endIndex; i += 1) {
         if(!sourceData[i]) {
             return
@@ -61,7 +61,7 @@ function del(index: number | number[], data: ReactiveData, observer: Observer, p
 function add(index: number, insertData: any[], data: ReactiveData, observer: Observer, props:any) {
     const {retainHeightValue} = props
     let {sourceData} = data
-    let isScrollBottom = utils.ifScrollBottom(data)
+    let isScrollBottom = utils.ifBottomPosition(data)
 
     sourceData.splice(index,0, ...insertData)
     sourceDataInitail(data, retainHeightValue)
@@ -84,6 +84,12 @@ function setSourceData(newData: any[], data: ReactiveData, observer: Observer, p
 
     sourceDataInitail(data, retainHeightValue, newData)
     resetCurrentData(data, observer, props)
+    nextTick(() => {
+        // if direction === 'up', then scroll to bottom
+        if(props.direction === 'up' && props.loadingOptions) {
+            scrollToBottom(data)
+        }
+    })
 }
 
 function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
@@ -121,10 +127,11 @@ function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
 
 
 export default {
-    getSourceDataAfterResize,
+    resetSourceDataBeforeLocate,
     sourceDataInitail,
     del,
     add,
     update,
-    setSourceData
+    setSourceData,
+    resetCurrentData
 }

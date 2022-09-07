@@ -15,7 +15,6 @@ function observe(observeList: any[], observer: Observer, data: ReactiveData) {
             if(!_el) {
                 continue 
             }
-
             observer.resizeObserver.observe(_el)
             observer.intersectionObserver.observe(_el)
             _el = null
