@@ -4,18 +4,23 @@ import { ReactiveData } from "./index.d"
 
 // onScrollEnd is a debounce function
 export function scrollEvent(scrollDebounceFn: Function, data: ReactiveData) {
-    document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.addEventListener('wheel', onScrolling.bind(null, data, scrollDebounceFn))
+    document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.addEventListener('wheel', onUserScrolling.bind(null, data, scrollDebounceFn))
+    document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.addEventListener('scroll', onScroll.bind(null, data, scrollDebounceFn))
 }
 
 export function removeScrollEvent(data: ReactiveData) {
-    document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.removeEventListener('wheel', onScrolling.bind(null, undefined, undefined))
+    document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.removeEventListener('wheel', onUserScrolling.bind(null, undefined, undefined))
+    document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.removeEventListener('scroll', onScroll.bind(null, undefined, undefined))
 }
 
-function onScrolling(data:ReactiveData | undefined, scrollDebounceFn?: Function) {
-    console.log(`滚动中`)
+function onUserScrolling(data:ReactiveData | undefined, scrollDebounceFn?: Function) {
+    if(data) {
+        data.userScrolling = true
+    }
+}
+function onScroll(data:ReactiveData | undefined, scrollDebounceFn?: Function) {
     if(data) {
         data.scrolling = true
-        data.userScrolling = true
     }
     if(scrollDebounceFn) {
         scrollDebounceFn()
@@ -41,6 +46,5 @@ export function ajustScrollPosition(offset: number, data: ReactiveData) {
 }
 
 export function ajustAction(position: number, data: ReactiveData) {
-    console.log(`滚动位置: ${position}, utils.getScrollTop(data): ${utils.getScrollTop(data)}, utils.getListHeight: ${utils.getListHeight(data)}, getViewPortOffsetHeight: ${utils.getViewPortOffsetHeight(data)}`)
     document.querySelector(`.fishUI-virtual-list_${data.componentID}`)!.scrollTo(0, position)
 }

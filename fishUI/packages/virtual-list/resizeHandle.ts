@@ -17,17 +17,16 @@ function resizeHandle(data:ReactiveData, props: any) {
         const _elOffsetHeight = (document.querySelector(`.fishUI-virtual-list_${componentID} li[data-index="${currentData[i].index}"]`) as HTMLElement).offsetHeight
 
         if(currentData[i].offsetHeight !==  _elOffsetHeight) {
-            // only above scrollTop item resize need to be compenstion, exclude top position
-            // 这里需要区分保持在底部的定位和定位，保持在底部 correctViewPortTopIndex 不正确的
+            let _offset = _elOffsetHeight - currentData[i].offsetHeight
+            // only above locate item resize need to be compenstion, exclude top position
             if (scrollTop !== 0 && correctLocateItem?.index! > currentData[i].index && !data.userScrolling) {
-                console.log(`data.locationPosition: ${data.locationPosition}, index: ${currentData[i].index}, currentData[i].transformY: ${currentData[i].transformY}`)
-                data.locationPosition += (_elOffsetHeight - currentData[i].offsetHeight)
+                data.locationPosition += _offset
                 setTimeout(() => {
                     data.ajusting = true
                     ajustAction(data.locationPosition, data)
                 }, 10)
             }
-            data.listHeight += (_elOffsetHeight - currentData[i].offsetHeight)
+            data.listHeight += _offset
             currentData[i].offsetHeight = _elOffsetHeight
         }
         if(_pre) {

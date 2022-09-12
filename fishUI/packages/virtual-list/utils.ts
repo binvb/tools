@@ -18,36 +18,6 @@ function getCorrectTopIndex(dataList: SourceData[], top: number) {
     return 0
 }
 
-async function calculateListHeight(data: ItemProps[], preItem?: ItemProps, cb?: Function) {
-    const range = 1000
-
-    for(let i = 0; i < range; i += 1){
-        if(!data[i]) {
-            cb && cb()
-            return false
-        }
-        if(i === 0) {
-            if(!preItem) {
-                continue
-            }
-            data[0].transformY = preItem.transformY + preItem.offsetHeight
-        } else {
-            data[i].transformY = data[i - 1].transformY + data[i - 1].offsetHeight
-        }
-    }
-
-    setTimeout(() => {
-        calculateListHeight(data.slice(range, data.length), data[range], cb)
-    }, 10)
-}
-
-function getCorrectCurrentData(data: ReactiveData, correctIndex: number, props:any ) {
-    const initDataNum = props.initDataNum || 20
-    const start = (correctIndex - initDataNum) || 0
-
-    return data.sourceData.slice(start, start + 2 * initDataNum)
-}
-
 function indexExist(index: any) {
     if(typeof(index) === 'number') {
         return true
@@ -90,7 +60,5 @@ export default {
     getScrollTop,
     getViewPortOffsetHeight,
     ifBottomPosition,
-    calculateListHeight,
-    getCorrectCurrentData,
     getListHeight
 }

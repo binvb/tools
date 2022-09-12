@@ -100,15 +100,9 @@ function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
         currentData.splice(0, 10000)
         return 
     }
-    // if current Data exist, still use current Data, only change position
+    // reset
     let startIndex = currentData[0] ? (currentData[0].index > sourceData[sourceData.length - 1].index ? 0 : currentData[0].index) : 0
     let len = sourceData.length > initDataNum * 2 ? initDataNum * 2 : sourceData.length
-    const strollTop = utils.getScrollTop(data)
-
-    // if in top position and not loading mode, need start in sourceData[0]
-    if(strollTop === 0 && !props.loadingFn) {
-        startIndex = 0
-    }
     // unobserve
     observeHandle.unobserve(currentData, observer, data)
     for(let i = 0; i < len; i += 1) {
@@ -116,6 +110,8 @@ function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
 
         if(_data) {
             currentData[i] = _data
+        } else {
+            currentData.splice(i, 1)
         }
     }
     if(currentData.length > len) {
@@ -128,7 +124,6 @@ function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
 
 export default {
     resetSourceDataBeforeLocate,
-    sourceDataInitail,
     del,
     add,
     update,

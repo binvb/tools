@@ -34,7 +34,6 @@ const data = reactive<ReactiveData>({
 	ajusting: false,
 	componentID: new Date().getTime() + utils.getRandom().toString(), 
 	listHeight: 0,
-	mode: props.loadingOptions ? 'loading' : 'normal',
 	locationPosition: 0,
 	userScrolling: false
 })
@@ -51,9 +50,9 @@ const checkIfCorrectCurrentData = throttle(() => {
 	data.ajusting = false
 	data.scrolling = false
 	data.userScrolling = false
+
 	if(!scope.find(item => item.index === correctIndex)) {
-		data.currentData = utils.getCorrectCurrentData(data, correctIndex, props)
-		dataHandle.setSourceData(data.sourceData, data, {intersectionObserver, resizeObserver}, props)
+		data.currentData = interSectionHandle.interAction(correctIndex, props.initDataNum, data, {intersectionObserver, resizeObserver})
 	}
 }, 100)
 
@@ -75,7 +74,6 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 		const lastIndex = props.direction === 'up' ? 0 : data.sourceData[data.sourceData.length - 1].index
 
 		if(entry.intersectionRatio > 0 &&  data.scrolling && !data.ajusting) {
-			console.log(`执行intersection: ${+entry.target.getAttribute('data-index')!}`)
 			data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data, {intersectionObserver, resizeObserver})
 		}
 		// if it's last item and loading mode, should trigger loadingFn
@@ -110,7 +108,6 @@ defineExpose<VirtualScrollExpose>({
 	},
 	setSourceData: (_data) => {
 		data.sourceData = []
-		//initail render
 		dataHandle.setSourceData(_data, data, {resizeObserver, intersectionObserver}, props)
 		setListHeight()
 	},
@@ -151,14 +148,11 @@ function locate(index: number) {
 
 function setListHeight() {
 	let lastItem = data.sourceData[data.sourceData.length - 1]
-	console.log(`setListheight`)
+
 	// keep bottom compensation
 	if(props.loadingOptions && props.direction === 'up' && utils.ifBottomPosition(data)) {
 		nextTick(() => {
 			scrollToBottom(data)
-			nextTick(() => {
-				checkIfCorrectCurrentData()
-			})
 		})
 	}
 	if(lastItem) {
