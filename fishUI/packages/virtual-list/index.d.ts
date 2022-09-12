@@ -18,7 +18,9 @@ export interface ReactiveData {
   ajusting: boolen,
   componentID: String,
   listHeight: number,
-  mode: Mode
+  mode: Mode,
+  locationPosition: number,
+  userScrolling: boolean
 }
 
 export interface Observer {

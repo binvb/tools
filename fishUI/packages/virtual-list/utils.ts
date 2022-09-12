@@ -9,8 +9,8 @@ function sleep(period: number): Promise<boolean> {
 }
 
 // get closed top item
-function getCurrentTopIndex(dataList: SourceData[], top: number) {
-    let afterDataList = dataList.filter(item => item.transformY! > top)
+function getCorrectTopIndex(dataList: SourceData[], top: number) {
+    let afterDataList = dataList.filter(item => item.transformY! >= top)
 
     if(afterDataList.length) {
         return afterDataList[0].index
@@ -66,7 +66,6 @@ function getScrollTop(data: ReactiveData) {
 function getViewPortOffsetHeight(data: ReactiveData) {
     return (document.querySelector(`.fishUI-virtual-list_${data.componentID}`) as HTMLElement).offsetHeight
 }
-
 function getListHeight(data: ReactiveData) {
     return (document.querySelector(`.fishUI-virtual-list_${data.componentID} .fishUI-virtual-list__inner`) as HTMLElement).offsetHeight
 }
@@ -74,10 +73,9 @@ function getListHeight(data: ReactiveData) {
 function ifBottomPosition(data: ReactiveData) {
     const scrollTop = getScrollTop(data)
     const viewPortOffsetHeight = getViewPortOffsetHeight(data)
-    const listHeight = getListHeight(data)
 
     // +1 to fix 0.5px bug
-    if(scrollTop + viewPortOffsetHeight + 1 >= listHeight) {
+    if(scrollTop + viewPortOffsetHeight + 1 >= getListHeight(data)) {
         return true
     }
 
@@ -88,11 +86,11 @@ export default {
     indexExist,
     sleep,
     getRandom,
-    getCurrentTopIndex,
+    getCorrectTopIndex,
     getScrollTop,
     getViewPortOffsetHeight,
-    getListHeight,
     ifBottomPosition,
     calculateListHeight,
-    getCorrectCurrentData
+    getCorrectCurrentData,
+    getListHeight
 }

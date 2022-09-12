@@ -3,7 +3,6 @@ import { ComponentPublicInstance, reactive, onMounted, onBeforeUnmount, withDefa
 import ResizeObserver from 'resize-observer-polyfill'
 import 'intersection-observer'
 import throttle from 'lodash/throttle'
-import debounce from 'lodash/debounce'
 import Loading from './loading.vue'
 import { ReactiveData, VirtualScrollExpose, Direction, LoadingOptions, ItemProps } from "./index.d"
 import utils from './utils'
@@ -35,26 +34,28 @@ const data = reactive<ReactiveData>({
 	ajusting: false,
 	componentID: new Date().getTime() + utils.getRandom().toString(), 
 	listHeight: 0,
-	mode: props.loadingOptions ? 'loading' : 'normal'
+	mode: props.loadingOptions ? 'loading' : 'normal',
+	locationPosition: 0,
+	userScrolling: false
 })
 
-const resizeThrottle = throttle(() => {
-	utils.calculateListHeight(data.sourceData, undefined, setListHeight)
-}, 200)
-
 // quick scroll end compensation
-const checkIfCorrectCurrentData = debounce(() => {
+const checkIfCorrectCurrentData = throttle(() => {
 	let currrentScrollTop = utils.getScrollTop(data)
-	let correctIndex = utils.getCurrentTopIndex(data.sourceData, currrentScrollTop)!
+	let correctIndex = utils.getCorrectTopIndex(data.sourceData, currrentScrollTop)!
 	let scope = data.currentData.slice(0, data.currentData.length)
 
+	if(data.userScrolling) {
+		data.locationPosition = currrentScrollTop
+	}
 	data.ajusting = false
 	data.scrolling = false
+	data.userScrolling = false
 	if(!scope.find(item => item.index === correctIndex)) {
 		data.currentData = utils.getCorrectCurrentData(data, correctIndex, props)
 		dataHandle.setSourceData(data.sourceData, data, {intersectionObserver, resizeObserver}, props)
 	}
-}, 10)
+}, 100)
 
 // resizeObserver
 const resizeObserver = new ResizeObserver((entries, observer) => {
@@ -64,8 +65,7 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 		if(!height) {
 			return false
 		}
-		resizeHandle(data)
-		resizeThrottle()
+		resizeHandle(data, props)
 	}
 })
 // intersectionObserver
@@ -75,8 +75,8 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 		const lastIndex = props.direction === 'up' ? 0 : data.sourceData[data.sourceData.length - 1].index
 
 		if(entry.intersectionRatio > 0 &&  data.scrolling && !data.ajusting) {
+			console.log(`执行intersection: ${+entry.target.getAttribute('data-index')!}`)
 			data.currentData = interSectionHandle.interAction(+entry.target.getAttribute('data-index')!, props.initDataNum, data, {intersectionObserver, resizeObserver})
-			resizeThrottle()
 		}
 		// if it's last item and loading mode, should trigger loadingFn
 		if(entry.intersectionRatio > 0 && lastIndex === +currentIndex! && data.scrolling && !data.ajusting) {
@@ -91,7 +91,6 @@ const intersectionObserver = new IntersectionObserver((entries) => {
 onMounted(() => {
 	observeHandle.observe(data.currentData, {resizeObserver, intersectionObserver}, data)
 	scrollEvent(checkIfCorrectCurrentData, data)
-	resizeHandle(data)
 })
 onBeforeUnmount(() => {
 	removeScrollEvent(data)
@@ -143,17 +142,23 @@ function locate(index: number) {
 	let item = data.sourceData[index]
 	let position = item.transformY
 
-	locatePosition(position, data) 
-	data.currentData = interSectionHandle.interAction(index, props.initDataNum, data, {intersectionObserver, resizeObserver})
+	data.locationPosition = position
+	locatePosition(data.locationPosition, data) 
+	nextTick(() => {
+		checkIfCorrectCurrentData()
+	})
 }
 
 function setListHeight() {
 	let lastItem = data.sourceData[data.sourceData.length - 1]
-
+	console.log(`setListheight`)
 	// keep bottom compensation
 	if(props.loadingOptions && props.direction === 'up' && utils.ifBottomPosition(data)) {
 		nextTick(() => {
 			scrollToBottom(data)
+			nextTick(() => {
+				checkIfCorrectCurrentData()
+			})
 		})
 	}
 	if(lastItem) {

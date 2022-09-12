@@ -48,10 +48,12 @@ function del(index: number | number[], data: ReactiveData, observer: Observer, p
     let { sourceData } = data
 
     if(index instanceof Array) {
-        index.forEach(item => {
-            sourceData.splice(item, 1)
+        index.forEach(_index => {
+            data.listHeight -= sourceData[_index].offsetHeight
+            sourceData.splice(_index, 1)
         })
     } else {
+        data.listHeight -= sourceData[index].offsetHeight
         sourceData.splice(index, 1)
     }
     sourceDataInitail(data, retainHeightValue)
@@ -66,6 +68,10 @@ function add(index: number, insertData: any[], data: ReactiveData, observer: Obs
     sourceData.splice(index,0, ...insertData)
     sourceDataInitail(data, retainHeightValue)
     resetCurrentData(data, observer, props)
+    insertData.forEach(item => {
+        data.listHeight += item.offsetHeight
+    })
+    // 这里需要考虑是否去掉 #TODO
     nextTick(() => {
         if(isScrollBottom && props.loadingOptions && props.direction === 'up') {
             scrollToBottom(data)
@@ -84,12 +90,6 @@ function setSourceData(newData: any[], data: ReactiveData, observer: Observer, p
 
     sourceDataInitail(data, retainHeightValue, newData)
     resetCurrentData(data, observer, props)
-    nextTick(() => {
-        // if direction === 'up', then scroll to bottom
-        if(props.direction === 'up' && props.loadingOptions) {
-            scrollToBottom(data)
-        }
-    })
 }
 
 function resetCurrentData(data: ReactiveData, observer: Observer, props: any) {
